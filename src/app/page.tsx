@@ -1,80 +1,118 @@
+import { Metadata } from 'next'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { ThemeToggle } from '@/components/theme-toggle'
+import { DependencyContainer } from '@/infrastructure/container/di'
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'Rubén González Aranda - Full Stack Developer',
+  description: 'Senior Full Stack Developer specializing in React, TypeScript, and clean architecture. View my CV, projects, and professional experience.',
+}
+
+export default async function HomePage() {
+  const container = DependencyContainer.getInstance()
+  const projectService = container.getProjectService()
+  
+  const projects = await projectService.listProjects()
+  const featuredProject = projects.length > 0 ? projects[0] : null
+  
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">CV RGA</h1>
-          <ThemeToggle />
-        </div>
-      </header>
-      
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Welcome to My Portfolio</h2>
-            <p className="text-xl text-muted-foreground">
-              Full Stack Developer passionate about creating exceptional digital experiences
-            </p>
+    <div className="container mx-auto px-4 py-16">
+      <div className="max-w-3xl mx-auto">
+        <section className="text-center mb-16">
+          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+            Rubén González Aranda
+          </h1>
+          <p className="text-2xl text-muted-foreground mb-8">
+            Senior Full Stack Developer
+          </p>
+          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
+            Passionate about clean architecture, domain-driven design, and creating exceptional digital experiences with modern web technologies.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Button size="lg" asChild>
+              <Link href="/cv" aria-label="View my CV">
+                View CV
+              </Link>
+            </Button>
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/projects" aria-label="Browse my projects">
+                Projects
+              </Link>
+            </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Web Development</CardTitle>
-                <CardDescription>
-                  Creating modern and responsive web applications
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                                  <p className="text-muted-foreground mb-4">
-                    Specialized in React, Next.js, TypeScript and Node.js
-                  </p>
-                <Button variant="outline" className="w-full" asChild>
-                  <a href="/projects">View Projects</a>
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>UI/UX Design</CardTitle>
-                <CardDescription>
-                  Intuitive interfaces and exceptional user experiences
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                                  <p className="text-muted-foreground mb-4">
-                    Using Tailwind CSS, shadcn/ui and modern design principles
-                  </p>
-                <Button variant="outline" className="w-full" asChild>
-                  <a href="/cv">View CV</a>
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Technical Blog</CardTitle>
-                <CardDescription>
-                  Sharing knowledge and development experiences
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                                  <p className="text-muted-foreground mb-4">
-                    Articles about the latest technologies and best practices
-                  </p>
-                <Button variant="outline" className="w-full" asChild>
-                  <a href="/about">About Me</a>
-                </Button>
-              </CardContent>
-            </Card>
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+            <Link 
+              href="/about" 
+              className="hover:text-foreground transition-colors"
+              aria-label="Learn more about me"
+            >
+              About
+            </Link>
+            <Link 
+              href="/now" 
+              className="hover:text-foreground transition-colors"
+              aria-label="See what I'm working on now"
+            >
+              Now
+            </Link>
+            <a 
+              href="mailto:rubenosaka@gmail.com" 
+              className="hover:text-foreground transition-colors"
+              aria-label="Send me an email"
+            >
+              Contact
+            </a>
           </div>
-        </div>
-      </main>
+        </section>
+        
+        {featuredProject && (
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold mb-8 text-center">Featured Project</h2>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-xl">{featuredProject.title.value}</CardTitle>
+                <CardDescription>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>{featuredProject.role}</span>
+                    <span>•</span>
+                    <span>{featuredProject.period}</span>
+                  </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-6">
+                  {featuredProject.summary.value}
+                </p>
+                
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {featuredProject.stack.slice(0, 4).map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {featuredProject.stack.length > 4 && (
+                    <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded">
+                      +{featuredProject.stack.length - 4} more
+                    </span>
+                  )}
+                </div>
+                
+                <Button asChild>
+                  <Link href={`/projects/${featuredProject.slug.value}`}>
+                    View Project
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+      </div>
     </div>
   )
 }
