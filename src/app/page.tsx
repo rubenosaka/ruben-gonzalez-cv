@@ -1,118 +1,121 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import type { Metadata } from 'next'
 import { DependencyContainer } from '@/infrastructure/container/di'
+import { CVService } from '@/application/services/CVService'
+import { ProjectService } from '@/application/services/ProjectService'
 
 export const metadata: Metadata = {
-  title: 'Rubén González Aranda - Full Stack Developer',
-  description: 'Senior Full Stack Developer specializing in React, TypeScript, and clean architecture. View my CV, projects, and professional experience.',
+  title: 'Rubén García Alonso - Senior Full Stack Developer',
+  description: 'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+  keywords: ['Full Stack Developer', 'React', 'TypeScript', 'Node.js', 'Clean Architecture'],
+  authors: [{ name: 'Rubén García Alonso' }],
+  openGraph: {
+    title: 'Rubén García Alonso - Senior Full Stack Developer',
+    description: 'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rubén García Alonso - Senior Full Stack Developer',
+    description: 'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+  },
 }
 
 export default async function HomePage() {
   const container = DependencyContainer.getInstance()
+  const cvService = container.getCVService()
   const projectService = container.getProjectService()
-  
+
+  const cv = await cvService.getCV()
   const projects = await projectService.listProjects()
-  const featuredProject = projects.length > 0 ? projects[0] : null
-  
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: cv.name,
+    jobTitle: cv.title,
+    email: cv.email,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: cv.location,
+    },
+    description: cv.summary,
+    knowsAbout: [
+      'React',
+      'TypeScript',
+      'Node.js',
+      'Clean Architecture',
+      'Domain-Driven Design',
+      'SOLID Principles',
+    ],
+    hasOccupation: {
+      '@type': 'Occupation',
+      name: 'Senior Full Stack Developer',
+      description: 'Building scalable web applications with modern technologies',
+    },
+  }
+
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="max-w-3xl mx-auto">
-        <section className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-            Rubén González Aranda
-          </h1>
-          <p className="text-2xl text-muted-foreground mb-8">
-            Senior Full Stack Developer
-          </p>
-          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Passionate about clean architecture, domain-driven design, and creating exceptional digital experiences with modern web technologies.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" asChild>
-              <Link href="/cv" aria-label="View my CV">
-                View CV
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/projects" aria-label="Browse my projects">
-                Projects
-              </Link>
-            </Button>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <Link 
-              href="/about" 
-              className="hover:text-foreground transition-colors"
-              aria-label="Learn more about me"
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="container mx-auto px-4 py-8">
+        <section className="mb-12">
+          <h1 className="text-4xl font-bold mb-4">{cv.name}</h1>
+          <h2 className="text-2xl text-gray-600 mb-4">{cv.title}</h2>
+          <p className="text-lg text-gray-700 mb-6">{cv.summary}</p>
+          <div className="flex gap-4">
+            <a
+              href="/cv"
+              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors"
+              aria-label="View full CV"
             >
-              About
-            </Link>
-            <Link 
-              href="/now" 
-              className="hover:text-foreground transition-colors"
-              aria-label="See what I'm working on now"
+              View CV
+            </a>
+            <a
+              href="/projects"
+              className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 transition-colors"
+              aria-label="View projects"
             >
-              Now
-            </Link>
-            <a 
-              href="mailto:rubenosaka@gmail.com" 
-              className="hover:text-foreground transition-colors"
-              aria-label="Send me an email"
-            >
-              Contact
+              View Projects
             </a>
           </div>
         </section>
-        
-        {featuredProject && (
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-8 text-center">Featured Project</h2>
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-xl">{featuredProject.title.value}</CardTitle>
-                <CardDescription>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>{featuredProject.role}</span>
-                    <span>•</span>
-                    <span>{featuredProject.period}</span>
-                  </div>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-6">
-                  {featuredProject.summary.value}
-                </p>
-                
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {featuredProject.stack.slice(0, 4).map((tech) => (
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-6">Featured Projects</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.slice(0, 3).map((project: any) => (
+              <article
+                key={project.slug.value}
+                className="border rounded-lg p-6 hover:shadow-lg transition-shadow"
+              >
+                <h3 className="text-xl font-semibold mb-2">{project.title.value}</h3>
+                <p className="text-gray-600 mb-4">{project.summary.value}</p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.stack.slice(0, 3).map((tech: string) => (
                     <span
                       key={tech}
-                      className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded"
+                      className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm"
                     >
                       {tech}
                     </span>
                   ))}
-                  {featuredProject.stack.length > 4 && (
-                    <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded">
-                      +{featuredProject.stack.length - 4} more
-                    </span>
-                  )}
                 </div>
-                
-                <Button asChild>
-                  <Link href={`/projects/${featuredProject.slug.value}`}>
-                    View Project
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </section>
-        )}
-      </div>
-    </div>
+                <a
+                  href={`/projects/${project.slug.value}`}
+                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  aria-label={`View details of ${project.title.value}`}
+                >
+                  View Details →
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+    </>
   )
 }

@@ -60,7 +60,7 @@ export default async function ProjectsPage() {
                     </Link>
                   </Button>
                   
-                  {project.links.length > 0 && (
+                  {project.links.length > 0 && project.links[0] && (
                     <Button variant="outline" size="sm" asChild>
                       <a 
                         href={project.links[0].url} 
