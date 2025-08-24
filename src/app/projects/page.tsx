@@ -1,14 +1,6 @@
-import Link from 'next/link'
 import { DependencyContainer } from '@/infrastructure/container/di'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { PageLayout } from '@/components/PageLayout'
+import { ProjectCard } from '@/components/ProjectCard'
 
 export default async function ProjectsPage() {
   const container = DependencyContainer.getInstance()
@@ -26,65 +18,18 @@ export default async function ProjectsPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <Card
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {projects.map((project, index) => (
+          <ProjectCard
             key={project.slug.value}
-            className="transition-shadow hover:shadow-lg"
-          >
-            <CardHeader>
-              <CardTitle className="text-xl">{project.title.value}</CardTitle>
-              <CardDescription>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>{project.role}</span>
-                  <span>•</span>
-                  <span>{project.period}</span>
-                </div>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 line-clamp-3 text-muted-foreground">
-                {project.summary.value}
-              </p>
-
-              <div className="mb-4 flex flex-wrap gap-2">
-                {project.stack.slice(0, 3).map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded bg-secondary px-2 py-1 text-xs text-secondary-foreground"
-                  >
-                    {tech}
-                  </span>
-                ))}
-                {project.stack.length > 3 && (
-                  <span className="rounded bg-secondary px-2 py-1 text-xs text-secondary-foreground">
-                    +{project.stack.length - 3} more
-                  </span>
-                )}
-              </div>
-
-              <div className="flex gap-2">
-                {project.links.map((link) => (
-                  <Button key={link.label} asChild size="sm" variant="outline">
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.label}
-                    </a>
-                  </Button>
-                ))}
-
-                {/* Temporarily commented until we have detailed project pages */}
-                {/* <Button asChild size="sm">
-                  <Link href={`/projects/${project.slug.value}`}>
-                    View Project
-                  </Link>
-                </Button> */}
-              </div>
-            </CardContent>
-          </Card>
+            title={project.title.value || 'Project'}
+            summary={project.summary.value || ''}
+            tags={[...project.stack]}
+            href={`/projects/${project.slug.value}`}
+            role={project.role}
+            period={project.period}
+            links={[...project.links]}
+          />
         ))}
       </div>
     </PageLayout>

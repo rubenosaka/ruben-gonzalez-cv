@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { DownloadCVButton } from '@/app/components/DownloadCVButton'
 import { MarkdownContent } from '@/components/MarkdownContent'
 import { PageLayout } from '@/components/PageLayout'
+import { Timeline } from '@/components/Timeline'
 
 export default async function CVPage() {
   const container = DependencyContainer.getInstance()
@@ -10,6 +11,34 @@ export default async function CVPage() {
 
   try {
     const cv = await cvService.getCV()
+
+    const timelineItems = [
+      {
+        year: '2021 - Present',
+        role: 'Engineering Manager',
+        company: 'Frenetic.ai',
+      },
+      {
+        year: '2019 - 2021',
+        role: 'Team Lead / Full-Stack Developer',
+        company: 'Isobar Spain (Dentsu Group)',
+      },
+      {
+        year: '2017 - 2019',
+        role: 'Senior Full-Stack Developer',
+        company: 'Digital Agencies',
+      },
+      {
+        year: '2015 - 2017',
+        role: 'Full-Stack Developer',
+        company: 'Startups & Freelance',
+      },
+      {
+        year: '2010 - 2015',
+        role: 'Web Developer',
+        company: 'Various Companies',
+      },
+    ]
 
     return (
       <PageLayout>
@@ -32,6 +61,8 @@ export default async function CVPage() {
             </a>
           </div>
         </header>
+
+        <Timeline items={timelineItems} />
 
         <div className="prose prose-gray max-w-none dark:prose-invert">
           <MarkdownContent content={cv.content} />
