@@ -56,7 +56,7 @@ Oversaw maintenance and development of guiadelocio.com using HTML, CSS, JavaScri
 - **AI & Automation:** OpenAI APIs, Langfuse, prompt engineering, Cursor automation workflows
 - **Cloud & DevOps:** AWS, Docker, GitLab CI/CD, Jenkins, Vercel, Google App Engine
 - **Management:** Agile/Scrum methodologies, team leadership, mentoring, Jira, Trello
-- **CRM / Analytics:** Salesforce, HubSpot, GA4, Mixpanel, KPI tracking
+- **CRM / Analytics:** Salesforce, HubSpot, Posthog, GTM, Mixpanel, KPI tracking
 - **Others:** WordPress, Drupal, Umbraco, Prestashop, traditional SEO/SEM
 
 ---
@@ -67,21 +67,19 @@ Oversaw maintenance and development of guiadelocio.com using HTML, CSS, JavaScri
 - Higher Technical Diploma in Graphic Design 2D/3D (2005–2007)
 - Technical training highlights:
   - MEVN stack (2025)
-  - MERN stack (2019)
-  - Python & Machine Learning (2018)
-  - Node.js (2017)
-  - PHP Development (2010)
-  - Web SEO/SEM (2010)
-  - Web Design/Animation (2006)
-  - Server administration (Apache) (2005)
-  - Adobe Edge/Muse (2013)
+  - Python & Machine Learning (2020-2025)
+  - MERN stack (2019-2022)
+  - Node.js (2017-2025)
+  - PHP Development (2010-)
+  - Web SEO/SEM (2010-2025)
+  - Web Design/Animation (2006-2025)
 
 ---
 
 ## Portfolio
 
 - **app.frenetic.ai** – SaaS magnet design platform
-- **Cartesio Investment Funds** – cart esio.com
+- **Cartesio Investment Funds** – cartesio.com
 - **Product School** – productschool.com
 - **Altamar Capital** – altamarcapital.com
 - Additional: Guía del Ocio (guiadelocio.es), Cecabank reports, Otras Políticas

@@ -2,22 +2,32 @@ import type { Metadata } from 'next'
 import { DependencyContainer } from '@/infrastructure/container/di'
 import { CVService } from '@/application/services/CVService'
 import { ProjectService } from '@/application/services/ProjectService'
+import { PageLayout } from '@/components/PageLayout'
 
 export const metadata: Metadata = {
   title: 'Rubén García Alonso - Senior Full Stack Developer',
-  description: 'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
-  keywords: ['Full Stack Developer', 'React', 'TypeScript', 'Node.js', 'Clean Architecture'],
+  description:
+    'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+  keywords: [
+    'Full Stack Developer',
+    'React',
+    'TypeScript',
+    'Node.js',
+    'Clean Architecture',
+  ],
   authors: [{ name: 'Rubén García Alonso' }],
   openGraph: {
     title: 'Rubén García Alonso - Senior Full Stack Developer',
-    description: 'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+    description:
+      'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Rubén García Alonso - Senior Full Stack Developer',
-    description: 'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+    description:
+      'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
   },
 }
 
@@ -51,7 +61,8 @@ export default async function HomePage() {
     hasOccupation: {
       '@type': 'Occupation',
       name: 'Senior Full Stack Developer',
-      description: 'Building scalable web applications with modern technologies',
+      description:
+        'Building scalable web applications with modern technologies',
     },
   }
 
@@ -61,22 +72,22 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="container mx-auto px-4 py-8">
+      <PageLayout>
         <section className="mb-12">
-          <h1 className="text-4xl font-bold mb-4">{cv.name}</h1>
-          <h2 className="text-2xl text-gray-600 mb-4">{cv.title}</h2>
-          <p className="text-lg text-gray-700 mb-6">{cv.summary}</p>
+          <h1 className="mb-4 text-4xl font-bold">{cv.name}</h1>
+          <h2 className="mb-4 text-2xl text-gray-600">{cv.title}</h2>
+          <p className="mb-6 text-lg text-gray-700">{cv.summary}</p>
           <div className="flex gap-4">
             <a
               href="/cv"
-              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors"
+              className="rounded bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700"
               aria-label="View full CV"
             >
               View CV
             </a>
             <a
               href="/projects"
-              className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 transition-colors"
+              className="rounded bg-gray-600 px-6 py-2 text-white transition-colors hover:bg-gray-700"
               aria-label="View projects"
             >
               View Projects
@@ -85,20 +96,22 @@ export default async function HomePage() {
         </section>
 
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6">Featured Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <h2 className="mb-6 text-3xl font-bold">Featured Projects</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.slice(0, 3).map((project: any) => (
               <article
                 key={project.slug.value}
-                className="border rounded-lg p-6 hover:shadow-lg transition-shadow"
+                className="rounded-lg border p-6 transition-shadow hover:shadow-lg"
               >
-                <h3 className="text-xl font-semibold mb-2">{project.title.value}</h3>
-                <p className="text-gray-600 mb-4">{project.summary.value}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
+                <h3 className="mb-2 text-xl font-semibold">
+                  {project.title.value}
+                </h3>
+                <p className="mb-4 text-gray-600">{project.summary.value}</p>
+                <div className="mb-4 flex flex-wrap gap-2">
                   {project.stack.slice(0, 3).map((tech: string) => (
                     <span
                       key={tech}
-                      className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm"
+                      className="rounded bg-gray-200 px-2 py-1 text-sm text-gray-700"
                     >
                       {tech}
                     </span>
@@ -106,7 +119,7 @@ export default async function HomePage() {
                 </div>
                 <a
                   href={`/projects/${project.slug.value}`}
-                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-blue-600 transition-colors hover:text-blue-800"
                   aria-label={`View details of ${project.title.value}`}
                 >
                   View Details →
@@ -115,7 +128,7 @@ export default async function HomePage() {
             ))}
           </div>
         </section>
-      </main>
+      </PageLayout>
     </>
   )
 }
