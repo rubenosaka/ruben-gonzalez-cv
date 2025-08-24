@@ -175,6 +175,7 @@ The application supports light, dark, and system themes through CSS custom prope
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run type-check` - Check TypeScript types
+- `npm test` - Run all tests (Jest + Playwright)
 
 ## 🚀 Deployment
 
@@ -183,6 +184,27 @@ The application supports light, dark, and system themes through CSS custom prope
 1. Connect your repository to Vercel
 2. Vercel will automatically detect Next.js configuration
 3. Deploy with zero configuration
+
+### Domain Configuration
+
+To configure the custom domain `rubengonzalez.dev`:
+
+1. **In Vercel Dashboard:**
+   - Go to your project settings
+   - Navigate to "Domains" section
+   - Add `rubengonzalez.dev` and `www.rubengonzalez.dev`
+
+2. **DNS Configuration:**
+   - **A Record** for apex domain:
+     - Name: `@`
+     - Value: `76.76.21.21`
+   - **CNAME Record** for www subdomain:
+     - Name: `www`
+     - Value: `cname.vercel-dns.com`
+
+3. **SSL Certificate:**
+   - Vercel automatically provisions SSL certificates
+   - Wait for DNS propagation (up to 48 hours)
 
 ### Manual Deployment
 
@@ -198,10 +220,25 @@ npm run start
 
 ## 🧪 Testing Strategy
 
-- **Unit Tests**: Test individual components and functions
-- **Integration Tests**: Test component interactions
-- **E2E Tests**: Test complete user workflows
+- **Unit Tests**: Jest for testing individual components and functions
+- **E2E Tests**: Playwright for testing complete user workflows
 - **Type Safety**: TypeScript provides compile-time error checking
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run only Jest tests
+npm run test:watch
+
+# Run only Playwright tests
+npx playwright test
+
+# Run tests with coverage
+npm run test:coverage
+```
 
 ## 📊 Performance Optimization
 

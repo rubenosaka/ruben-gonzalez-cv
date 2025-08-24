@@ -4,16 +4,17 @@ import { MarkdownContent } from '@/components/MarkdownContent'
 import { Button } from '@/components/ui/button'
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { slug } = await params
   const container = DependencyContainer.getInstance()
   const projectService = container.getProjectService()
 
-  const project = await projectService.getProjectBySlug(params.slug)
+  const project = await projectService.getProjectBySlug(slug)
 
   if (!project) {
     notFound()

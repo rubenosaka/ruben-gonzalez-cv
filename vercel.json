@@ -1,6 +1,16 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "framework": "nextjs",
-  "installCommand": "npm install"
+  "functions": {
+    "api/**": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 20,
+      "memory": 1024
+    }
+  },
+  "redirects": [
+    {
+      "source": "/www",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
 }

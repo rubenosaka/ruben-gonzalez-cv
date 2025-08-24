@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Download } from 'lucide-react'
+import { Download, Printer } from 'lucide-react'
 import { useState } from 'react'
 
 export const DownloadCVButton = () => {
@@ -24,10 +24,12 @@ export const DownloadCVButton = () => {
         window.URL.revokeObjectURL(url)
         document.body.removeChild(a)
       } else {
-        console.error('Failed to download PDF')
+        console.error('Failed to download PDF, falling back to print')
+        window.print()
       }
     } catch (error) {
-      console.error('Error downloading PDF:', error)
+      console.error('Error downloading PDF, falling back to print:', error)
+      window.print()
     } finally {
       setIsLoading(false)
     }
