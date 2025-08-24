@@ -6,6 +6,15 @@ const nextConfig = {
   images: {
     domains: ['localhost'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/www',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {

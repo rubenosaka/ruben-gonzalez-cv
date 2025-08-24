@@ -181,9 +181,16 @@ The application supports light, dark, and system themes through CSS custom prope
 
 ### Vercel (Recommended)
 
-1. Connect your repository to Vercel
-2. Vercel will automatically detect Next.js configuration
-3. Deploy with zero configuration
+1. **Connect your repository to Vercel**
+2. **Configure project settings:**
+   - **Node.js Version**: 20
+   - **Framework Preset**: Next.js
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `.next`
+3. **Deploy with zero configuration**
+4. **If you encounter "Function Runtimes" errors:**
+   - Go to Project Settings → Functions
+   - Redeploy with "Clear Build Cache" option
 
 ### Domain Configuration
 

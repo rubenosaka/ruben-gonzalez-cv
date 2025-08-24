@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { DependencyContainer } from '@/infrastructure/container/di'
 
+export const runtime = 'nodejs'
+
 export async function GET() {
   try {
     const container = DependencyContainer.getInstance()
