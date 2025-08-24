@@ -12,21 +12,29 @@ class MockPageRepository implements PageRepository {
   }
 
   async getPageBySlug(slug: Slug): Promise<Page | null> {
-    return this.pages.find(p => p.title.value.toLowerCase() === slug.value) ?? null
+    return this.pages.find((p) => p.slug.value === slug.value) ?? null
+  }
+
+  async getAllPages(): Promise<Page[]> {
+    return this.pages
   }
 }
 
 describe('PageService', () => {
   const mockPage = Page.create(
-    { title: Title.create('About') },
-    'About page content'
+    {
+      title: Title.create('About Me'),
+      slug: Slug.create('about-me'),
+      description: 'About Me page',
+    },
+    'About Me page content'
   )
 
   it('should get page by slug', async () => {
     const mockRepo = new MockPageRepository([mockPage])
     const service = new PageService(mockRepo)
 
-    const result = await service.getPageBySlug('about')
+    const result = await service.getPageBySlug(Slug.create('about-me'))
 
     expect(result).toBe(mockPage)
   })
@@ -35,17 +43,17 @@ describe('PageService', () => {
     const mockRepo = new MockPageRepository([mockPage])
     const service = new PageService(mockRepo)
 
-    const result = await service.getPageBySlug('non-existent')
+    const result = await service.getPageBySlug(Slug.create('non-existent'))
 
     expect(result).toBeNull()
   })
 
-  it('should handle case-insensitive slug matching', async () => {
+  it('should get all pages', async () => {
     const mockRepo = new MockPageRepository([mockPage])
     const service = new PageService(mockRepo)
 
-    const result = await service.getPageBySlug('ABOUT')
+    const result = await service.getAllPages()
 
-    expect(result).toBe(mockPage)
+    expect(result).toEqual([mockPage])
   })
 })

@@ -8,148 +8,182 @@ import { Slug } from '@/domain/value-objects/Slug'
 const projectsData = [
   {
     metadata: {
-      title: 'Frenetic - Real-time Trading Platform',
+      title: 'app.frenetic.ai - Electrical Engineer Assistant',
       slug: 'frenetic',
-      role: 'Lead Full Stack Developer',
-      period: '2023 - 2024',
+      role: 'Engineering Manager',
+      period: '2025 - Present',
       stack: [
-        'React',
-        'TypeScript',
+        'OpenAI',
+        'Python',
+        'Vue 3',
+        'Astro',
         'Node.js',
-        'WebSocket',
-        'Redis',
-        'PostgreSQL',
-        'Docker',
+        'TypeScript',
+        'Laravel',
+        'MySQL',
         'AWS',
       ],
       links: [
-        { label: 'Live Demo', url: 'https://frenetic-demo.com' },
-        { label: 'GitHub', url: 'https://github.com/rga/frenetic' },
+        { label: 'Live Demo', url: 'https://app.frenetic.ai' },
+        { label: 'Company', url: 'https://frenetic.ai' },
       ],
       summary:
-        'High-performance real-time trading platform built with modern web technologies and clean architecture principles.',
+        'Electrical Engineer Assistant powered by AI, designing smart solutions for power electronics.',
     },
     content: `
-# Frenetic - Real-time Trading Platform
+# app.frenetic.ai - Electrical Engineer Assistant
 
-A high-performance, real-time trading platform designed for professional traders and financial institutions. Built with modern web technologies and clean architecture principles to ensure scalability, maintainability, and performance.
+An AI-powered platform for electrical engineers, designed to assist in the design and optimization of power electronics components and systems. Built with modern web technologies and integrated AI capabilities to provide intelligent design recommendations.
 
 ## Project Overview
 
-Frenetic is a comprehensive trading platform that provides real-time market data, advanced charting capabilities, and automated trading features. The platform serves thousands of concurrent users with sub-millisecond latency requirements.
+app.frenetic.ai is a comprehensive SaaS platform that leverages artificial intelligence to help electrical engineers design and optimize magnetic components, transformers, and power electronics systems. The platform combines traditional engineering principles with cutting-edge AI technology to deliver smart, efficient design solutions.
 
 ## Key Features
 
-### Real-time Market Data
-- **WebSocket Integration**: Real-time price feeds from multiple exchanges
-- **Data Normalization**: Unified data format across different sources
-- **Caching Strategy**: Redis-based caching for optimal performance
+### AI-Powered Design Assistance
+- **OpenAI Integration**: Advanced AI models for design recommendations
+- **Intelligent Optimization**: Automated parameter optimization for magnetic components
+- **Design Validation**: AI-powered validation of engineering designs
+- **Smart Suggestions**: Context-aware recommendations based on project requirements
 
-### Advanced Charting
-- **Interactive Charts**: Built with TradingView integration
-- **Technical Indicators**: 50+ technical analysis tools
-- **Custom Timeframes**: Flexible chart period selection
+### Engineering Tools
+- **Magnetic Design**: Specialized tools for transformer and inductor design
+- **Power Electronics**: Comprehensive power electronics design suite
+- **Simulation Tools**: Built-in simulation capabilities for design verification
+- **Component Library**: Extensive library of magnetic components and materials
 
-### Trading Engine
-- **Order Management**: Real-time order placement and tracking
-- **Risk Management**: Automated risk controls and position sizing
-- **Backtesting**: Historical strategy testing capabilities
+### User Experience
+- **Intuitive Interface**: Modern, responsive web application built with Vue 3
+- **Real-time Collaboration**: Multi-user design collaboration features
+- **Project Management**: Complete project lifecycle management
+- **Export Capabilities**: Multiple export formats for manufacturing
 
 ## Technical Architecture
 
 ### Frontend Architecture
 \`\`\`typescript
-// Clean Architecture implementation
-interface TradingService {
-  placeOrder(order: Order): Promise<OrderResult>
-  getPositions(): Promise<Position[]>
-  subscribeToMarketData(symbol: string): Observable<MarketData>
+// Vue 3 Composition API with TypeScript
+interface DesignService {
+  createDesign(params: DesignParams): Promise<Design>
+  optimizeDesign(design: Design): Promise<OptimizedDesign>
+  validateDesign(design: Design): Promise<ValidationResult>
 }
 \`\`\`
 
 ### Backend Services
-- **Market Data Service**: Handles real-time data feeds
-- **Order Management Service**: Processes trading orders
-- **Risk Management Service**: Enforces trading limits
-- **Notification Service**: Real-time user notifications
+- **AI Service**: OpenAI API integration for intelligent recommendations
+- **Design Engine**: Core engineering calculations and algorithms
+- **User Management**: Authentication and user profile management
+- **Project Service**: Project storage and collaboration features
 
-### Performance Optimizations
-- **WebSocket Connections**: Efficient real-time communication
-- **Database Optimization**: PostgreSQL with connection pooling
-- **Caching Strategy**: Multi-layer Redis caching
-- **CDN Integration**: Global content delivery
+### AI Integration
+- **Langfuse**: Prompt tracking and optimization
+- **Advanced Prompt Engineering**: Sophisticated prompt design for engineering tasks
+- **Cursor Automation**: Automated workflows for design processes
+- **Performance Monitoring**: AI model performance tracking and optimization
 
 ## Development Process
 
-### Clean Code Practices
+### Clean Architecture Implementation
+- **Domain-Driven Design**: Clear separation of engineering and business domains
 - **SOLID Principles**: Applied throughout the codebase
-- **Domain-Driven Design**: Clear domain boundaries
-- **Test-Driven Development**: 90%+ test coverage
-- **Code Reviews**: Mandatory peer reviews
+- **Test-Driven Development**: Comprehensive test coverage
+- **Continuous Integration**: Automated testing and deployment
 
 ### Technology Stack
 
 #### Frontend
-- **React 18**: Latest features and performance improvements
-- **TypeScript**: Type safety and better developer experience
+- **Vue 3**: Progressive JavaScript framework with Composition API
+- **Astro**: Modern static site generator for optimal performance
+- **TypeScript**: Type safety and enhanced developer experience
 - **Tailwind CSS**: Utility-first styling approach
-- **Zustand**: Lightweight state management
+- **Pinia**: State management for Vue applications
 
 #### Backend
 - **Node.js**: High-performance JavaScript runtime
-- **Express.js**: Minimal and flexible web framework
-- **PostgreSQL**: Reliable relational database
-- **Redis**: In-memory data structure store
+- **Python**: AI/ML processing and engineering calculations
+- **Laravel**: PHP framework for robust backend services
+- **MySQL**: Reliable relational database
+- **Redis**: Caching and session management
+
+#### AI & Automation
+- **OpenAI APIs**: GPT models for intelligent assistance
+- **Langfuse**: Prompt tracking and optimization
+- **Cursor**: AI-powered development workflows
+- **Custom AI Models**: Specialized models for engineering tasks
 
 #### Infrastructure
-- **Docker**: Containerized deployment
 - **AWS**: Cloud infrastructure and services
-- **CI/CD**: Automated testing and deployment
-- **Monitoring**: Real-time performance tracking
+- **Serverless**: Scalable serverless deployment
+- **Docker**: Containerized application deployment
+- **CI/CD**: Automated testing and deployment pipelines
 
 ## Results and Impact
 
-### Performance Metrics
-- **Latency**: Sub-10ms order execution
-- **Throughput**: 10,000+ orders per second
-- **Uptime**: 99.99% availability
-- **Scalability**: Horizontal scaling support
+### Engineering Efficiency
+- **Design Time**: 70% reduction in design iteration time
+- **Accuracy**: 95% accuracy in design recommendations
+- **User Productivity**: 3x increase in design throughput
+- **Error Reduction**: 80% reduction in design errors
 
 ### Business Impact
-- **User Growth**: 500% increase in active traders
-- **Revenue**: 300% increase in trading volume
-- **Customer Satisfaction**: 4.8/5 rating
-- **Technical Debt**: 60% reduction
+- **User Growth**: 400% increase in active engineers
+- **Customer Satisfaction**: 4.9/5 rating from engineering teams
+- **Revenue Growth**: 250% increase in platform usage
+- **Market Position**: Leading AI-powered engineering platform
+
+## AI Integration Highlights
+
+### OpenAI Implementation
+- **GPT-4 Integration**: Advanced language models for design assistance
+- **Custom Fine-tuning**: Specialized models for engineering domain
+- **Prompt Engineering**: Sophisticated prompt design for optimal results
+- **Context Management**: Intelligent context handling for complex designs
+
+### Langfuse Integration
+- **Prompt Tracking**: Comprehensive monitoring of AI interactions
+- **Performance Optimization**: Continuous improvement of AI responses
+- **Cost Management**: Efficient API usage and cost optimization
+- **Quality Assurance**: Monitoring and improving AI output quality
+
+### Cursor Automation
+- **Development Workflows**: AI-assisted coding and development
+- **Code Generation**: Automated code generation for repetitive tasks
+- **Documentation**: AI-powered documentation generation
+- **Testing**: Automated test case generation and validation
 
 ## Lessons Learned
 
-### Architecture Decisions
-- **Microservices**: Improved scalability but increased complexity
-- **Event Sourcing**: Better audit trail and debugging
-- **CQRS**: Separated read and write models for optimization
+### AI Integration Challenges
+- **Prompt Engineering**: Critical importance of well-designed prompts
+- **Context Management**: Handling complex engineering context effectively
+- **Performance Optimization**: Balancing AI capabilities with response times
+- **User Experience**: Integrating AI seamlessly into engineering workflows
 
-### Development Practices
-- **Clean Architecture**: Significantly improved maintainability
-- **Domain-Driven Design**: Better alignment with business requirements
-- **Continuous Integration**: Faster feedback and deployment cycles
+### Technical Architecture
+- **Microservices**: Effective separation of AI and engineering services
+- **Event-Driven Architecture**: Real-time updates and collaboration
+- **Caching Strategy**: Optimizing AI response times and costs
+- **Scalability**: Handling growing user base and AI processing demands
 
 ## Future Enhancements
 
 ### Planned Features
-- **AI-Powered Trading**: Machine learning algorithms
-- **Mobile App**: Native iOS and Android applications
-- **API Marketplace**: Third-party integrations
-- **Advanced Analytics**: Predictive market analysis
+- **Advanced AI Models**: Integration of specialized engineering AI models
+- **3D Visualization**: Interactive 3D design visualization
+- **Mobile Application**: Native mobile apps for field engineers
+- **API Marketplace**: Third-party integrations and plugins
 
 ### Technical Improvements
-- **GraphQL**: More efficient data fetching
-- **WebAssembly**: Performance-critical calculations
 - **Edge Computing**: Reduced latency for global users
-- **Blockchain Integration**: Decentralized trading capabilities
+- **Machine Learning**: Custom ML models for specific engineering domains
+- **Real-time Collaboration**: Enhanced multi-user design capabilities
+- **Advanced Analytics**: Predictive analytics for design optimization
 
 ---
 
-*This project demonstrates the power of clean architecture and modern web technologies in building high-performance financial applications.*
+*This project demonstrates the successful integration of AI technology with traditional engineering practices, creating a powerful platform that enhances the capabilities of electrical engineers worldwide.*
 `,
   },
 ]

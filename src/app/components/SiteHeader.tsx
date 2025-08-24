@@ -6,8 +6,8 @@ import { ThemeToggle } from '@/components/theme-toggle'
 const navigationItems = [
   { href: '/cv', label: 'CV' },
   { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
-  { href: '/now', label: 'Now' }
+  { href: '/about-me', label: 'About Me' },
+  { href: '/now', label: 'Now' },
 ]
 
 export const SiteHeader = () => {
@@ -16,20 +16,20 @@ export const SiteHeader = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-8">
-            <Link 
-              href="/" 
-              className="text-xl font-bold hover:text-primary transition-colors"
+            <Link
+              href="/"
+              className="text-xl font-bold transition-colors hover:text-primary"
               aria-label="Go to homepage"
             >
               Rubén González Aranda
             </Link>
-            
-            <nav className="hidden md:flex items-center space-x-6">
+
+            <nav className="hidden items-center space-x-6 md:flex">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                   aria-label={`Navigate to ${item.label} page`}
                 >
                   {item.label}
@@ -37,7 +37,7 @@ export const SiteHeader = () => {
               ))}
             </nav>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <ThemeToggle />
           </div>

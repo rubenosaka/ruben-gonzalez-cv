@@ -5,15 +5,12 @@ import { PageRepository } from '@/application/interfaces/PageRepository'
 export class PageService {
   constructor(private readonly pageRepository: PageRepository) {}
 
-  async getPageBySlug(slugValue: string): Promise<Page | null> {
-    const slug = Slug.create(slugValue)
+  async getPageBySlug(slug: Slug): Promise<Page | null> {
     return this.pageRepository.getPageBySlug(slug)
   }
 
   async getAllPages(): Promise<Page[]> {
-    // Since we don't have a getAllPages method in the repository,
-    // we'll need to implement it or modify the hook
-    return []
+    return this.pageRepository.getAllPages()
   }
 
   async searchPages(query: string): Promise<Page[]> {

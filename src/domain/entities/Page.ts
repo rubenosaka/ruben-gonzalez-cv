@@ -1,7 +1,10 @@
 import { Title } from '@/domain/value-objects/Title'
+import { Slug } from '@/domain/value-objects/Slug'
 
 export interface PageMetadata {
   title: Title
+  slug: Slug
+  description?: string
 }
 
 export class Page {
@@ -16,6 +19,10 @@ export class Page {
 
   get title(): Title {
     return this._metadata.title
+  }
+
+  get slug(): Slug {
+    return this._metadata.slug
   }
 
   get content(): string {
