@@ -17,14 +17,14 @@ export function AnimatedHero({ name, title }: AnimatedHeroProps) {
       transition={{ duration: 0.6 }}
     >
       <motion.h1
-        className="mb-4 bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-5xl font-bold text-transparent md:text-6xl"
+        className="mb-4 bg-gradient-to-r from-pink-500 to-purple-900 bg-clip-text text-5xl font-bold text-transparent md:text-6xl"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
       >
         {name}
       </motion.h1>
-      
+
       <motion.h2
         className="mb-4 text-2xl text-gray-600"
         initial={{ opacity: 0, y: 20 }}
@@ -33,16 +33,17 @@ export function AnimatedHero({ name, title }: AnimatedHeroProps) {
       >
         {title}
       </motion.h2>
-      
+
       <motion.p
         className="mb-6 text-lg text-muted-foreground"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        Engineering Manager with over 18 years of experience leading teams and building digital products.
+        Engineering Manager with over 18 years of experience leading teams and
+        building digital products.
       </motion.p>
-      
+
       <motion.div
         className="flex gap-4"
         initial={{ opacity: 0, y: 20 }}

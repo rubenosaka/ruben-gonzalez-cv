@@ -5,6 +5,7 @@ import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectCard } from '@/components/ProjectCard'
+import { TrinukiBanner } from '@/app/components/TrinukiBanner'
 
 export const metadata: Metadata = {
   title: 'Rubén García Alonso - Senior Full Stack Developer',
@@ -80,6 +81,7 @@ export default async function HomePage() {
         <section className="mb-12">
           <h2 className="mb-6 text-3xl font-bold">Featured Projects</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <TrinukiBanner variant="home" />
             {projects.slice(0, 4).map((project: any, index: number) => (
               <ProjectCard
                 key={project.slug.value}
