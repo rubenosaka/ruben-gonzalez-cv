@@ -1,5 +1,6 @@
 import { DependencyContainer } from '@/infrastructure/container/di'
 import { notFound } from 'next/navigation'
+import { DownloadCVButton } from '@/app/components/DownloadCVButton'
 
 export default async function CVPage() {
   const container = DependencyContainer.getInstance()
@@ -12,9 +13,14 @@ export default async function CVPage() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="prose prose-gray dark:prose-invert max-w-none">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">{cv.name}</h1>
-            <p className="text-xl text-muted-foreground mb-2">{cv.title}</p>
-            <p className="text-muted-foreground mb-4">{cv.location}</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div>
+                <h1 className="text-4xl font-bold mb-2">{cv.name}</h1>
+                <p className="text-xl text-muted-foreground mb-2">{cv.title}</p>
+                <p className="text-muted-foreground mb-4">{cv.location}</p>
+              </div>
+              <DownloadCVButton />
+            </div>
             <p className="text-lg leading-relaxed">{cv.summary}</p>
             <div className="flex gap-4 mt-4">
               <a 
