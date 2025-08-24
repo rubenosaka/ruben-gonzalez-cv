@@ -1,3 +1,17 @@
+import { CV } from '@/domain/entities/CV'
+import { CVRepository } from '@/application/interfaces/CVRepository'
+
+// Datos estáticos del CV
+const cvData = {
+  metadata: {
+    name: 'Rubén García Alonso',
+    title: 'Senior Full Stack Developer',
+    email: 'ruben@example.com',
+    location: 'Madrid, Spain',
+    summary:
+      'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+  },
+  content: `
 ## Profile
 
 Passionate software engineer with expertise in modern web development, clean architecture, and domain-driven design. Specialized in React, TypeScript, Node.js, and cloud technologies. Committed to writing maintainable, scalable code following SOLID principles and best practices.
@@ -90,11 +104,15 @@ Passionate software engineer with expertise in modern web development, clean arc
 - TDD/BDD (Advanced)
 - Code Review (Expert)
 - Technical Documentation (Advanced)
+`,
+}
 
-export const metadata = {
-name: "Rubén García Alonso",
-title: "Senior Full Stack Developer",
-email: "ruben@example.com",
-location: "Madrid, Spain",
-summary: "Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles."
+export class MDXCVRepository implements CVRepository {
+  async getCV(): Promise<CV> {
+    return this.mapToCV(cvData)
+  }
+
+  private mapToCV(cvData: any): CV {
+    return CV.create(cvData.metadata, cvData.content)
+  }
 }

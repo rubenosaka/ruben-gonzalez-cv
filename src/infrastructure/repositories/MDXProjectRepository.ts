@@ -1,5 +1,35 @@
+import { Project } from '@/domain/entities/Project'
+import { ProjectRepository } from '@/application/interfaces/ProjectRepository'
+import { Title } from '@/domain/value-objects/Title'
+import { Summary } from '@/domain/value-objects/Summary'
+import { Slug } from '@/domain/value-objects/Slug'
 
-
+// Datos estáticos de los proyectos
+const projectsData = [
+  {
+    metadata: {
+      title: 'Frenetic - Real-time Trading Platform',
+      slug: 'frenetic',
+      role: 'Lead Full Stack Developer',
+      period: '2023 - 2024',
+      stack: [
+        'React',
+        'TypeScript',
+        'Node.js',
+        'WebSocket',
+        'Redis',
+        'PostgreSQL',
+        'Docker',
+        'AWS',
+      ],
+      links: [
+        { label: 'Live Demo', url: 'https://frenetic-demo.com' },
+        { label: 'GitHub', url: 'https://github.com/rga/frenetic' },
+      ],
+      summary:
+        'High-performance real-time trading platform built with modern web technologies and clean architecture principles.',
+    },
+    content: `
 # Frenetic - Real-time Trading Platform
 
 A high-performance, real-time trading platform designed for professional traders and financial institutions. Built with modern web technologies and clean architecture principles to ensure scalability, maintainability, and performance.
@@ -28,14 +58,14 @@ Frenetic is a comprehensive trading platform that provides real-time market data
 ## Technical Architecture
 
 ### Frontend Architecture
-```typescript
+\`\`\`typescript
 // Clean Architecture implementation
 interface TradingService {
   placeOrder(order: Order): Promise<OrderResult>
   getPositions(): Promise<Position[]>
   subscribeToMarketData(symbol: string): Observable<MarketData>
 }
-```
+\`\`\`
 
 ### Backend Services
 - **Market Data Service**: Handles real-time data feeds
@@ -120,16 +150,31 @@ interface TradingService {
 ---
 
 *This project demonstrates the power of clean architecture and modern web technologies in building high-performance financial applications.*
+`,
+  },
+]
 
-export const metadata = {
-  title: "Frenetic - Real-time Trading Platform",
-  slug: "frenetic",
-  role: "Lead Full Stack Developer",
-  period: "2023 - 2024",
-  stack: ["React", "TypeScript", "Node.js", "WebSocket", "Redis", "PostgreSQL", "Docker", "AWS"],
-  links: [
-    { label: "Live Demo", url: "https://frenetic-demo.com" },
-    { label: "GitHub", url: "https://github.com/rga/frenetic" }
-  ],
-  summary: "High-performance real-time trading platform built with modern web technologies and clean architecture principles."
+export class MDXProjectRepository implements ProjectRepository {
+  async listProjects(): Promise<Project[]> {
+    return projectsData.map((project) => this.mapToProject(project))
+  }
+
+  async getProjectBySlug(slug: Slug): Promise<Project | null> {
+    const project = projectsData.find((p) => p.metadata.slug === slug.value)
+    return project ? this.mapToProject(project) : null
+  }
+
+  private mapToProject(projectData: any): Project {
+    const metadata = {
+      title: Title.create(projectData.metadata.title),
+      slug: Slug.create(projectData.metadata.slug),
+      role: projectData.metadata.role,
+      period: projectData.metadata.period,
+      stack: projectData.metadata.stack || [],
+      links: projectData.metadata.links || [],
+      summary: Summary.create(projectData.metadata.summary),
+    }
+
+    return Project.create(metadata, projectData.content)
+  }
 }

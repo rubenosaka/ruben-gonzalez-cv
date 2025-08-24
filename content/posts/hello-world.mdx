@@ -1,10 +1,4 @@
----
-title: "Hola Mundo - Mi Primer Post"
-date: "2024-01-15"
-description: "Un post de ejemplo para probar Contentlayer y MDX"
-tags: ["nextjs", "mdx", "contentlayer"]
-published: true
----
+
 
 # Hola Mundo
 
@@ -36,3 +30,12 @@ console.log(saludar('Mundo'))
 - Contentlayer
 
 ¡Espero que te guste este setup!
+
+export const metadata = {
+  title: "Hola Mundo - Mi Primer Post",
+  slug: "hello-world",
+  date: "2024-01-15",
+  description: "Un post de ejemplo para probar Contentlayer y MDX",
+  tags: ["nextjs", "mdx", "contentlayer"],
+  published: true
+}

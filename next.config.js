@@ -1,13 +1,21 @@
-const { withContentlayer } = require('next-contentlayer')
+const createMDX = require('@next/mdx')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
+  // Allow .mdx extensions for files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
     domains: ['localhost'],
   },
 }
 
-module.exports = withContentlayer(nextConfig)
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
+
+// Combine MDX and Next.js config
+module.exports = withMDX(nextConfig)

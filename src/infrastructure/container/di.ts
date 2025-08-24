@@ -5,9 +5,9 @@ import { CVService } from '@/application/services/CVService'
 import { ProjectService } from '@/application/services/ProjectService'
 import { PageService } from '@/application/services/PageService'
 import { CVExportService } from '@/application/services/CVExportService'
-import { ContentlayerCVRepository } from '@/infrastructure/repositories/ContentlayerCVRepository'
-import { ContentlayerProjectRepository } from '@/infrastructure/repositories/ContentlayerProjectRepository'
-import { ContentlayerPageRepository } from '@/infrastructure/repositories/ContentlayerPageRepository'
+import { MDXCVRepository } from '@/infrastructure/repositories/MDXCVRepository'
+import { MDXProjectRepository } from '@/infrastructure/repositories/MDXProjectRepository'
+import { MDXPageRepository } from '@/infrastructure/repositories/MDXPageRepository'
 import { ReactPdfCVGenerator } from '@/infrastructure/pdf/ReactPdfCVGenerator'
 import { CVPdfGenerator } from '@/domain/ports/CVPdfGenerator'
 
@@ -23,15 +23,18 @@ export class DependencyContainer {
   private cvExportService: CVExportService
 
   private constructor() {
-    this.cvRepository = new ContentlayerCVRepository()
-    this.projectRepository = new ContentlayerProjectRepository()
-    this.pageRepository = new ContentlayerPageRepository()
+    this.cvRepository = new MDXCVRepository()
+    this.projectRepository = new MDXProjectRepository()
+    this.pageRepository = new MDXPageRepository()
     this.cvPdfGenerator = new ReactPdfCVGenerator()
-    
+
     this.cvService = new CVService(this.cvRepository)
     this.projectService = new ProjectService(this.projectRepository)
     this.pageService = new PageService(this.pageRepository)
-    this.cvExportService = new CVExportService(this.cvService, this.cvPdfGenerator)
+    this.cvExportService = new CVExportService(
+      this.cvService,
+      this.cvPdfGenerator
+    )
   }
 
   static getInstance(): DependencyContainer {

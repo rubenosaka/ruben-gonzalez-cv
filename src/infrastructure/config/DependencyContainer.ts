@@ -2,8 +2,8 @@ import { PostRepository } from '@/application/interfaces/PostRepository'
 import { PageRepository } from '@/application/interfaces/PageRepository'
 import { PostService } from '@/application/services/PostService'
 import { PageService } from '@/application/services/PageService'
-import { ContentlayerPostRepository } from '@/infrastructure/content/ContentlayerPostRepository'
-import { ContentlayerPageRepository } from '@/infrastructure/content/ContentlayerPageRepository'
+import { MDXPostRepository } from '@/infrastructure/repositories/MDXPostRepository'
+import { MDXPageRepository } from '@/infrastructure/repositories/MDXPageRepository'
 
 export class DependencyContainer {
   private static instance: DependencyContainer
@@ -13,8 +13,8 @@ export class DependencyContainer {
   private pageService: PageService
 
   private constructor() {
-    this.postRepository = new ContentlayerPostRepository()
-    this.pageRepository = new ContentlayerPageRepository()
+    this.postRepository = new MDXPostRepository()
+    this.pageRepository = new MDXPageRepository()
     this.postService = new PostService(this.postRepository)
     this.pageService = new PageService(this.pageRepository)
   }
