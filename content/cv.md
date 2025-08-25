@@ -1,8 +1,8 @@
 # Rubén González Aranda
 
 **Engineering Manager / Full-Stack Tech Lead**  
-Madrid, Spain · rubenosaka@gmail.com · +34 639 176 921  
-**LinkedIn:** linkedin.com/in/rubenosaka · **GitHub/Portfolio:** github.com/rubenosaka  
+Madrid, Spain · rubenosaka@gmail.com · +34 639 176 921
+
 Spanish (Native) · English (Professional)
 
 ---
