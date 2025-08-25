@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { DependencyContainer } from '@/infrastructure/container/di'
-
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectsSection } from '@/components/ProjectsSection'
