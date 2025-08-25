@@ -68,7 +68,8 @@ export class MDXProjectRepository implements ProjectRepository {
       }
 
       const metadataString = content.substring(metadataStart, metadataEnd + 1)
-      const metadata = eval(`(${metadataString})`)
+      // Use Function constructor instead of eval for better security
+      const metadata = new Function(`return ${metadataString}`)()
 
       const projectContent = content.substring(0, startIndex).trim()
 
