@@ -83,7 +83,7 @@ export default async function HomePage() {
             stack: [...project.stack],
             role: project.role,
             period: project.period,
-            links: project.links ? [...project.links] : [],
+            links: [...project.links],
           }))}
         />
       </PageLayout>

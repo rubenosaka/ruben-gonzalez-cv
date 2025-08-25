@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm, yarn, or pnpm
 - Git
 
@@ -93,17 +93,81 @@ export const Component = ({ prop1, prop2, className, ...props }: ComponentProps)
   }
 
   return (
-    <div 
-      className={cn('base-styles', className)} 
+    <div
+      className={cn('base-styles', className)}
       onClick={handleClick}
       {...props}
     >
-      <span>{prop1}</span>
-      <span>{prop2}</span>
-    </div>
-  )
-}
 ```
+
+### 3. CV Content Components
+
+The CV supports both Markdown and MDX formats with custom components for enhanced presentation.
+
+#### Available MDX Components
+
+**SectionTitle**
+
+```mdx
+<SectionTitle>Career Highlights</SectionTitle>
+```
+
+Renders a section title with subtle underline decoration.
+
+**Highlights**
+
+```mdx
+<Highlights>
+  <HighlightItem>First highlight item</HighlightItem>
+  <HighlightItem>Second highlight item</HighlightItem>
+</Highlights>
+```
+
+Renders a list with custom bullet styling and spacing.
+
+**Callout**
+
+```mdx
+<Callout variant="info">This is an informational callout box.</Callout>
+```
+
+Renders a highlighted box with variants: `info`, `warning`, `success`.
+
+#### Markdown Support
+
+For `.md` files, standard markdown syntax is supported with enhanced styling:
+
+- Headings (h1, h2, h3) with proper hierarchy
+- Lists with custom bullet styling
+- Links with hover effects and focus states
+- Code blocks with syntax highlighting
+- Blockquotes with left border
+
+#### Content Structure
+
+The CV content should follow this structure:
+
+1. **Career Highlights** - Key achievements and skills
+2. **Experience** - Work history with detailed descriptions
+3. **Skills** - Technical and soft skills
+4. **Education** - Academic background
+5. **Languages** - Language proficiency
+
+#### Styling Classes
+
+- `.cv-prose` - Main content container with typography styles
+- `.cv-prose h1` - Page titles (text-4xl, font-semibold)
+- `.cv-prose h2` - Section titles (text-2xl, font-semibold)
+- `.cv-prose h3` - Subsection titles (text-xl, font-medium)
+- `.cv-prose ul` - Lists with custom spacing
+- `.cv-prose a` - Links with hover and focus states
+  <span>{prop1}</span>
+  <span>{prop2}</span>
+  </div>
+  )
+  }
+
+````
 
 #### Component Guidelines
 
@@ -121,7 +185,7 @@ export const Component = ({ prop1, prop2, className, ...props }: ComponentProps)
 
 ```typescript
 const [state, setState] = useState(initialState)
-```
+````
 
 #### Global State
 
@@ -154,7 +218,10 @@ export class DomainError extends Error {
 
 ```typescript
 export class ApplicationError extends Error {
-  constructor(message: string, public readonly code: string) {
+  constructor(
+    message: string,
+    public readonly code: string
+  ) {
     super(message)
     this.name = 'ApplicationError'
   }
@@ -191,10 +258,7 @@ export class ErrorBoundary extends Component {
 
 ```json
 {
-  "extends": [
-    "next/core-web-vitals",
-    "next/typescript"
-  ],
+  "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "warn",
@@ -269,12 +333,12 @@ describe('Component', () => {
 describe('PostService Integration', () => {
   it('should fetch posts from repository', async () => {
     const mockRepository = {
-      findPublished: jest.fn().mockResolvedValue([mockPost])
+      findPublished: jest.fn().mockResolvedValue([mockPost]),
     }
     const service = new PostService(mockRepository)
-    
+
     const result = await service.getPublishedPosts()
-    
+
     expect(result).toEqual([mockPost])
     expect(mockRepository.findPublished).toHaveBeenCalled()
   })
@@ -296,9 +360,9 @@ describe('PostCard Component', () => {
       content: 'Test content',
       url: '/test-post'
     }
-    
+
     render(<PostCard post={mockPost} />)
-    
+
     expect(screen.getByText('Test Post')).toBeInTheDocument()
     expect(screen.getByText('Test Description')).toBeInTheDocument()
   })
@@ -357,9 +421,9 @@ export class Tag {
     if (!value || value.trim().length === 0) {
       throw new Error('Tag cannot be empty')
     }
-    
+
     const normalizedValue = value.trim().toLowerCase()
-    
+
     if (normalizedValue.length > 50) {
       throw new Error('Tag cannot be longer than 50 characters')
     }
@@ -429,7 +493,7 @@ try {
 const Component = () => {
   useEffect(() => {
     const startTime = performance.now()
-    
+
     return () => {
       const endTime = performance.now()
       const duration = endTime - startTime
