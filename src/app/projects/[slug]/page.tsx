@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { DependencyContainer } from '@/infrastructure/container/di'
-import { MarkdownContent } from '@/components/MarkdownContent'
+import { MDXContent } from '@/components/MDXContent'
 import { Button } from '@/components/ui/button'
 import { PageLayout } from '@/components/PageLayout'
 
@@ -67,7 +67,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         )}
       </header>
 
-      <MarkdownContent content={project.content} />
+      <MDXContent content={project.content} />
     </PageLayout>
   )
 }

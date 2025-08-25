@@ -4,6 +4,8 @@
 
 This project implements a **Clean Architecture** approach with **Domain-Driven Design (DDD)** and **Hexagonal Architecture** principles. The architecture is designed to be maintainable, testable, and scalable.
 
+> **Note**: This project is intentionally over-engineered (DDD, Hexagonal, SOLID) as part of a developer CV. It demonstrates architectural thinking rather than being optimized for minimalism.
+
 ## Architecture Layers
 
 ### 1. Presentation Layer (`src/app/`, `src/components/`)
@@ -11,16 +13,19 @@ This project implements a **Clean Architecture** approach with **Domain-Driven D
 **Responsibility**: User interface and user interaction handling.
 
 **Components**:
+
 - **Pages**: Next.js App Router pages
 - **Components**: Reusable UI components
 - **Layouts**: Page layout components
 
 **Principles Applied**:
+
 - **Single Responsibility**: Each component has one clear purpose
 - **Open/Closed**: Components are extensible without modification
 - **Dependency Inversion**: Components depend on abstractions, not concretions
 
 **Example**:
+
 ```typescript
 // Clean component with single responsibility
 export const PostCard = ({ post }: { post: Post }) => {
@@ -40,15 +45,18 @@ export const PostCard = ({ post }: { post: Post }) => {
 **Responsibility**: Application use cases and business workflows.
 
 **Components**:
+
 - **Services**: Application business logic
 - **Hooks**: Custom React hooks for state management
 - **Interfaces**: Contracts for infrastructure layer
 
 **Principles Applied**:
+
 - **Interface Segregation**: Services depend only on interfaces they use
 - **Dependency Inversion**: High-level modules don't depend on low-level modules
 
 **Example**:
+
 ```typescript
 // Application service following SOLID principles
 export class PostService {
@@ -65,16 +73,19 @@ export class PostService {
 **Responsibility**: Core business logic and domain rules.
 
 **Components**:
+
 - **Entities**: Business objects with identity
 - **Value Objects**: Immutable objects without identity
 - **Domain Services**: Business logic that doesn't belong to entities
 
 **Principles Applied**:
+
 - **Encapsulation**: Business rules are encapsulated within entities
 - **Immutability**: Value objects are immutable
 - **Rich Domain Model**: Entities contain business logic
 
 **Example**:
+
 ```typescript
 // Rich domain entity with business logic
 export class Post {
@@ -100,22 +111,23 @@ export class Post {
 **Responsibility**: External concerns and technical implementations.
 
 **Components**:
+
 - **Content Management**: Contentlayer integration
 - **Configuration**: External service configurations
 - **Adapters**: Implementations of application interfaces
 
 **Principles Applied**:
+
 - **Dependency Inversion**: Implements interfaces defined in application layer
 - **Adapter Pattern**: Adapts external services to internal interfaces
 
 **Example**:
+
 ```typescript
 // Infrastructure adapter implementing application interface
 export class ContentlayerPostRepository implements PostRepository {
   async findPublished(): Promise<Post[]> {
-    return allPosts
-      .filter(post => post.published)
-      .map(this.mapToPost)
+    return allPosts.filter((post) => post.published).map(this.mapToPost)
   }
 }
 ```
@@ -163,11 +175,13 @@ High-level modules don't depend on low-level modules:
 ### 1. Entities
 
 **Post Entity**:
+
 - Has identity (id)
 - Contains business logic
 - Manages its own state
 
 **Page Entity**:
+
 - Has identity (id)
 - Represents static content
 - Encapsulates page-specific logic
@@ -175,11 +189,13 @@ High-level modules don't depend on low-level modules:
 ### 2. Value Objects
 
 **Tag Value Object**:
+
 - Immutable
 - Self-validating
 - No identity
 
 **Url Value Object**:
+
 - Immutable
 - Validates URL format
 - Provides utility methods
@@ -197,19 +213,23 @@ Data access abstraction following repository pattern.
 ### 1. Ports (Interfaces)
 
 **Input Ports**:
+
 - `PostRepository` interface
 - `PageRepository` interface
 
 **Output Ports**:
+
 - Service interfaces for external integrations
 
 ### 2. Adapters
 
 **Primary Adapters**:
+
 - React components
 - Next.js pages
 
 **Secondary Adapters**:
+
 - `ContentlayerPostRepository`
 - `ContentlayerPageRepository`
 
@@ -224,7 +244,7 @@ Core business logic isolated from external concerns.
 ```typescript
 export class DependencyContainer {
   private static instance: DependencyContainer
-  
+
   static getInstance(): DependencyContainer {
     if (!DependencyContainer.instance) {
       DependencyContainer.instance = new DependencyContainer()

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { DependencyContainer } from '@/infrastructure/container/di'
-import { MarkdownContent } from '@/components/MarkdownContent'
+import { MDXContent } from '@/components/MDXContent'
 import { PageLayout } from '@/components/PageLayout'
 import { Slug } from '@/domain/value-objects/Slug'
 
@@ -20,7 +20,7 @@ export default async function NowPage() {
         <h1 className="mb-4 text-4xl font-bold">{page.title.value}</h1>
       </header>
 
-      <MarkdownContent content={page.content} />
+      <MDXContent content={page.content} />
     </PageLayout>
   )
 }

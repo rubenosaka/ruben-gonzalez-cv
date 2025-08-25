@@ -1,7 +1,7 @@
 import { DependencyContainer } from '@/infrastructure/container/di'
 import { notFound } from 'next/navigation'
 import { DownloadCVButton } from '@/app/components/DownloadCVButton'
-import { MarkdownContent } from '@/components/MarkdownContent'
+import { MDXContent } from '@/components/MDXContent'
 import { PageLayout } from '@/components/PageLayout'
 import { Timeline } from '@/components/Timeline'
 
@@ -65,7 +65,7 @@ export default async function CVPage() {
         <Timeline items={timelineItems} />
 
         <div className="prose prose-gray max-w-none dark:prose-invert">
-          <MarkdownContent content={cv.content} />
+          <MDXContent content={cv.content} />
         </div>
       </PageLayout>
     )

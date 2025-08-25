@@ -1,3 +1,10 @@
+/**
+ * This project is intentionally over-engineered (DDD, Hexagonal, SOLID) as part of a developer CV.
+ * It demonstrates architectural thinking rather than being optimized for minimalism.
+ *
+ * This adapter implements the CVPdfGenerator port, showcasing the Hexagonal Architecture pattern.
+ * It serves as an example of how external concerns (PDF generation) are isolated from the domain.
+ */
 import { CVPdfGenerator } from '@/domain/ports/CVPdfGenerator'
 import puppeteer from 'puppeteer'
 

@@ -1,304 +1,153 @@
-# CV RGA - Personal Portfolio & Blog
+# Rubén González – Developer CV
 
-A modern, scalable personal portfolio and blog built with Next.js 15, TypeScript, and following Clean Architecture principles.
+A modern, scalable personal portfolio and CV built with Next.js 15, TypeScript, and following Clean Architecture principles. This repository serves as both a professional CV and a demonstration of engineering excellence.
 
-## 🏗️ Architecture Overview
+## Project Goal
 
-This project follows **Domain-Driven Design (DDD)** and **Hexagonal Architecture** principles, ensuring clean separation of concerns and maintainable code.
+This CV is strategically designed to impress two distinct audiences:
 
-### Architecture Layers
+- **Recruiters & HR**: Clear presentation of skills, experience, metrics, and professional achievements
+- **Developers & CTOs**: Showcase of technical architecture, engineering practices, and code quality
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Presentation Layer                       │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │   Pages     │  │ Components  │  │   Layouts   │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│                    Application Layer                        │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │   Services  │  │   Hooks     │  │   Utils     │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│                     Domain Layer                            │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │  Entities   │  │  Value      │  │  Services   │        │
-│  │             │  │  Objects    │  │             │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│                  Infrastructure Layer                       │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │ Contentlayer│  │   Config    │  │   External  │        │
-│  │             │  │             │  │   APIs      │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
-└─────────────────────────────────────────────────────────────┘
-```
+The repository is intentionally public to demonstrate not just the content but also the engineering culture and practices that would be brought to any team.
 
-## 🚀 Features
+## Strategy
 
-- **Next.js 15** with App Router for optimal performance
-- **TypeScript** for type safety and better developer experience
-- **Tailwind CSS** with dark mode support and typography plugin
-- **shadcn/ui** for consistent, accessible UI components
-- **Contentlayer** for type-safe content management
-- **Clean Architecture** following SOLID principles
-- **Domain-Driven Design** for better code organization
-- **ESLint & Prettier** for code quality and consistency
-- **Vercel-ready** deployment configuration
+### Dual-Audience Approach
 
-## 📁 Project Structure
+The project implements a **two-route strategy** to serve different stakeholders:
 
-```
-cv-rga/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── globals.css        # Global styles and CSS variables
-│   │   ├── layout.tsx         # Root layout with theme provider
-│   │   └── page.tsx           # Home page component
-│   ├── components/            # Reusable UI components
-│   │   ├── ui/               # shadcn/ui components
-│   │   │   ├── button.tsx    # Button component with variants
-│   │   │   ├── card.tsx      # Card component
-│   │   │   └── dropdown-menu.tsx # Dropdown menu component
-│   │   ├── theme-provider.tsx # Theme context provider
-│   │   └── theme-toggle.tsx  # Theme switcher component
-│   ├── lib/                  # Utility functions and configurations
-│   │   └── utils.ts          # Common utility functions
-│   ├── domain/               # Domain layer (DDD)
-│   │   ├── entities/         # Business entities
-│   │   ├── value-objects/    # Value objects
-│   │   └── services/         # Domain services
-│   ├── application/          # Application layer
-│   │   ├── services/         # Application services
-│   │   ├── hooks/           # Custom React hooks
-│   │   └── interfaces/      # Service interfaces
-│   └── infrastructure/       # Infrastructure layer
-│       ├── content/          # Content management
-│       └── config/          # External configurations
-├── content/                  # Content files (MD/MDX)
-│   ├── posts/               # Blog posts
-│   └── pages/               # Static pages
-├── public/                  # Static assets
-└── config files...          # Configuration files
-```
+1. **Recruiter View** (`/cv`): Traditional CV layout with clear skills, experience timeline, and downloadable PDF
+2. **Developer View** (`/`): Technical portfolio showcasing projects, architecture decisions, and engineering practices
 
-## 🏛️ Architecture Principles
+### Initial Disclaimer
 
-### SOLID Principles
+A prominent disclaimer explains the dual-purpose nature, setting expectations for both audiences and demonstrating transparency in communication.
 
-1. **Single Responsibility Principle (SRP)**: Each component has one reason to change
-2. **Open/Closed Principle (OCP)**: Components are open for extension, closed for modification
-3. **Liskov Substitution Principle (LSP)**: Components can be replaced with their subtypes
-4. **Interface Segregation Principle (ISP)**: Components depend only on interfaces they use
-5. **Dependency Inversion Principle (DIP)**: High-level modules don't depend on low-level modules
+### PDF Export
 
-### Domain-Driven Design (DDD)
+Professional PDF generation for traditional CV distribution, maintaining consistency across digital and print formats.
 
-- **Entities**: Core business objects with identity
-- **Value Objects**: Immutable objects without identity
-- **Services**: Business logic that doesn't belong to entities
-- **Repositories**: Data access abstraction
-- **Aggregates**: Clusters of related entities
+## Key Decisions
 
-### Hexagonal Architecture
+### MDX as Technical Differentiator
 
-- **Ports**: Interfaces defining contracts
-- **Adapters**: Implementations of ports
-- **Domain**: Core business logic isolated from external concerns
+**MDX is intentionally maintained** despite adding complexity. This decision serves as a cultural and technical differentiator, demonstrating:
 
-## 🛠️ Installation
+- Content management expertise
+- Developer experience (DX) considerations
+- Integration capabilities with modern tooling
 
-1. Clone the repository:
+### Architecture Over-Engineering
+
+The project implements **Domain-Driven Design (DDD), Hexagonal Architecture, and SOLID principles** as a deliberate showcase of engineering excellence. While this level of architecture might be overkill for a simple CV, it demonstrates:
+
+- Understanding of enterprise patterns
+- Commitment to maintainable code
+- Ability to scale technical decisions
+
+### Content Strategy
+
+- **Structured data** (skills, timelines, metrics) remains in TypeScript/JSON for programmatic access
+- **Narrative content** (project descriptions, personal statements) uses MDX for rich formatting
+- This separation ensures both human readability and machine processability
+
+### Creative Theme System
+
+The theme switcher goes beyond standard light/dark modes, featuring creative themes like:
+
+- Death Metal
+- Unicorns
+- Horror Movies
+- Musical
+
+This demonstrates both technical capability and personality, making the portfolio memorable.
+
+## Target Audiences
+
+### Recruiters & HR Professionals
+
+**What they care about:**
+
+- Clear presentation of skills and experience
+- Quantifiable achievements and metrics
+- Professional appearance and accessibility
+- Traditional CV format availability
+- Contact information and availability
+
+**How this CV serves them:**
+
+- Clean, professional layout
+- Downloadable PDF format
+- Clear skill categorization
+- Experience timeline
+- Contact details prominently displayed
+
+### Developers & CTOs
+
+**What they care about:**
+
+- Code quality and architecture
+- Engineering practices and principles
+- Technical decision-making
+- Scalability and maintainability
+- Problem-solving approach
+
+**How this CV serves them:**
+
+- Public repository with clean architecture
+- SOLID principles implementation
+- Domain-driven design patterns
+- Comprehensive testing strategy
+- Modern tech stack demonstration
+
+## Philosophy
+
+This CV operates on the principle that **a developer's portfolio should be both a résumé and a demonstration of engineering culture**. The complexity introduced by MDX and architectural patterns is a conscious decision to showcase technical depth, not a necessity for the core functionality.
+
+The project demonstrates:
+
+- **Technical Excellence**: Clean code, proper architecture, comprehensive testing
+- **User Experience**: Intuitive navigation, responsive design, accessibility
+- **Professional Communication**: Clear messaging for different audiences
+- **Continuous Improvement**: Living repository that evolves with skills
+
+## Future Work
+
+### Planned Enhancements
+
+- **Expanded Creative Themes**: More personality-driven theme options
+- **Project Case Studies**: Transform project descriptions into detailed case studies (Problem → Solution → Outcome)
+- **Living Portfolio**: Continuous evolution of the repository as a demonstration of ongoing learning and improvement
+
+### Technical Roadmap
+
+- Enhanced PDF generation with better styling
+- Improved content management system
+- Advanced analytics and performance monitoring
+- Integration with professional networks and APIs
+
+## Technology Stack
+
+- **Frontend**: Next.js 15, React 18, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui components
+- **Content**: MDX with custom parsing
+- **Architecture**: Domain-Driven Design, Hexagonal Architecture
+- **Testing**: Jest, Playwright
+- **Deployment**: Vercel
+- **PDF Generation**: Puppeteer (planned migration to @react-pdf/renderer)
+
+## Getting Started
+
 ```bash
 git clone <repository-url>
 cd cv-rga
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
-
-3. Start development server:
-```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3000](http://localhost:3000) to see the developer view or [http://localhost:3000/cv](http://localhost:3000/cv) for the recruiter view.
 
-## 📝 Content Management
-
-### Blog Posts
-
-Create `.mdx` files in `content/posts/` with the following frontmatter:
-
-```mdx
----
-title: "Post Title"
-date: "2024-01-15"
-description: "Post description"
-tags: ["tag1", "tag2"]
-published: true
----
-
-# Post content
-```
-
-### Static Pages
-
-Create `.mdx` files in `content/pages/` with the following frontmatter:
-
-```mdx
----
-title: "Page Title"
-description: "Page description"
----
-
-# Page content
-```
-
-## 🎨 Theming System
-
-The application supports light, dark, and system themes through CSS custom properties:
-
-- **CSS Variables**: Defined in `globals.css` for consistent theming
-- **Theme Provider**: React context for theme management
-- **Theme Toggle**: Component for switching between themes
-
-## 🔧 Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run type-check` - Check TypeScript types
-- `npm test` - Run all tests (Jest + Playwright)
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. **Connect your repository to Vercel**
-2. **Configure project settings:**
-   - **Node.js Version**: 20
-   - **Framework Preset**: Next.js
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `.next`
-3. **Deploy with zero configuration**
-4. **If you encounter "Function Runtimes" errors:**
-   - Go to Project Settings → Functions
-   - Redeploy with "Clear Build Cache" option
-
-### Domain Configuration
-
-To configure the custom domain `rubengonzalez.dev`:
-
-1. **In Vercel Dashboard:**
-   - Go to your project settings
-   - Navigate to "Domains" section
-   - Add `rubengonzalez.dev` and `www.rubengonzalez.dev`
-
-2. **DNS Configuration:**
-   - **A Record** for apex domain:
-     - Name: `@`
-     - Value: `76.76.21.21`
-   - **CNAME Record** for www subdomain:
-     - Name: `www`
-     - Value: `cname.vercel-dns.com`
-
-3. **SSL Certificate:**
-   - Vercel automatically provisions SSL certificates
-   - Wait for DNS propagation (up to 48 hours)
-
-### Manual Deployment
-
-1. Build the application:
-```bash
-npm run build
-```
-
-2. Start the production server:
-```bash
-npm run start
-```
-
-## 🧪 Testing Strategy
-
-- **Unit Tests**: Jest for testing individual components and functions
-- **E2E Tests**: Playwright for testing complete user workflows
-- **Type Safety**: TypeScript provides compile-time error checking
-
-### Running Tests
-
-```bash
-# Run all tests
-npm test
-
-# Run only Jest tests
-npm run test:watch
-
-# Run only Playwright tests
-npx playwright test
-
-# Run tests with coverage
-npm run test:coverage
-```
-
-## 📊 Performance Optimization
-
-- **Next.js 15**: Latest performance optimizations
-- **Image Optimization**: Automatic image optimization
-- **Code Splitting**: Automatic code splitting
-- **Static Generation**: Pre-rendered pages for better performance
-- **Incremental Static Regeneration**: Dynamic content with static benefits
-
-## 🔒 Security Considerations
-
-- **Content Security Policy**: Configured for XSS protection
-- **Type Safety**: TypeScript prevents runtime errors
-- **Input Validation**: Proper validation of user inputs
-- **Secure Headers**: Security headers configured
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes following the established patterns
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
+## License
 
 MIT License - see LICENSE file for details
-
-## 🏆 Best Practices Implemented
-
-- **Clean Code**: Self-documenting code without comments
-- **SOLID Principles**: Maintainable and extensible architecture
-- **DDD**: Clear domain boundaries and business logic separation
-- **Hexagonal Architecture**: Loose coupling between layers
-- **Type Safety**: Full TypeScript coverage
-- **Performance**: Optimized for speed and user experience
-- **Accessibility**: WCAG compliant components
-- **SEO**: Optimized for search engines
-
-## 📋 General Instructions
-
-### Code Quality Standards
-
-- **No Comments**: Code should be self-documenting through clear naming and structure
-- **Clean Code**: Follow Uncle Bob's Clean Code principles
-- **SOLID Principles**: Apply all five SOLID principles consistently
-- **Hexagonal Architecture**: Clear separation between domain, application, and infrastructure layers
-- **Consistent Naming**: Use clear, descriptive names in English
-- **Complete Code**: Provide complete implementations, no code fragments
-
-### Development Guidelines
-
-- **Domain Layer**: Contains business logic and entities
-- **Application Layer**: Contains use cases and orchestration
-- **Infrastructure Layer**: Contains external concerns and implementations
-- **Presentation Layer**: Contains UI components and pages
