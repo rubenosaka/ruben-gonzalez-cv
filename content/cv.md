@@ -1,92 +1,84 @@
-# Rubén González Aranda
+## Career Highlights
 
-**Engineering Manager / Full-Stack Tech Lead**  
-Madrid, Spain · rubenosaka@gmail.com · +34 639 176 921 · Spanish / English
-
----
-
-## Profile
-
-Engineering Manager with over 18 years of experience leading teams and building digital products in fintech, healthcare, education, and startups. Expert in architecture, developer experience (DX), TDD, CI/CD, and cloud deployments. Proven ability to balance technical leadership with hands-on full-stack development. Experienced in leveraging AI tools including OpenAI, Langfuse, prompt engineering, and automation with Cursor.
-
----
+- **Led engineering teams of 3–10 developers**, balancing delivery with mentoring, onboarding and career development.
+- **Owned roadmap sizing and prioritization**, estimating cost and timing, and aligning with business stakeholders.
+- **Saved ~4 hours/week by reducing production issues and accelerated release cadence** (e.g. from bi-weekly to weekly) by introducing structured reviews, CI/CD and mentoring practices.
+- **Introduced AI and automation** to optimize user lifecycle management and content generation workflows, saving [~N hours/week] and reducing operational risk.
+- **Built observability and analytics dashboards** with PostHog and Mixpanel, enabling business and product teams to make data-driven decisions.
+- **Cross-team impact:** Collaborated with Product, Marketing, Sales and QA to ensure engineering work had measurable company outcomes.
+- **Product-driven mindset:** Partnered with business and product managers to translate technical solutions into growth and customer impact.
 
 ## Experience
 
-### **Engineering Manager · Frenetic.ai · 02/2021–Present**
+### **Engineering Manager — Frenetic.ai (02/2021–Present)**
 
-Leading engineering team in the development of a SaaS platform for magnet design.
+Leading engineering for a SaaS platform for magnet design and simulation.  
+**Stack:** PHP 8 (Laravel 9), Vue 3, TypeScript, Pinia, MySQL, Python (REST), AWS (serverless), Puppeteer (PDF).
 
-- Responsible for **team leadership**, **architectural strategy**, and implementation of best practices (**SOLID**, **TDD**, **CI/CD**).
-- Tech stack includes **PHP 8 (Laravel 9)**, **Vue 3**, **TypeScript**, **Pinia**, **MySQL**, **Python (REST API)**, **AWS**, **serverless deployment**, and **PDF generation with Puppeteer**.
-- Integrated AI capabilities: **OpenAI** for content generation, **Langfuse** for prompt tracking, **advanced prompt engineering**, and **automation workflows via Cursor**.
-- Reduced production bugs and accelerated delivery cycles.
-- **Project highlight:** app.frenetic.ai
-
-### **Team Lead / Full-Stack Developer · Isobar Spain (Dentsu Group) · 04/2019–02/2021**
-
-Technical lead on web and application projects using **Python**, **PHP**, **Node.js/Express**, **React**, and **Material UI**. Integrated CMS and e-commerce solutions including **Salesforce**, **WordPress**, **Prestashop**, **Drupal**, and **Magento**. Deployed infrastructure on **AWS**, **Google App Engine**, and **DigitalOcean**.
-
-### **Full-Stack Developer · Product School · 06/2018–04/2019**
-
-Developed components and apps, including an **LMS** using **Node.js** and **React**. Improved performance and SEO with advanced **AWS deployment strategies**, **Git workflows**, and **Twig/Timber** templating.
-
-### **Team Lead / Full-Stack Developer · Quodem (Healthcare) · 12/2015–06/2018**
-
-Led projects using **Umbraco** and **Drupal** for clients such as **MSD**, **Pfizer**, **Bayer**, and **GSK**. Developed full-stack features in **C#/.NET** and **WordPress**.
-
-### **CTO / Full-Stack Developer · PSD · 07/2012–07/2018**
-
-Technology director for clients including **Santander**, **BBVA**, **Ferrovial**, **BNP**, and **CECA/CECABANK**. Led development using **PHP**, **jQuery**, and **WordPress**.
-
-### **Front-End Developer · McCann Erickson · 10/2011–07/2012**
-
-Built web solutions for **Coca-Cola**, **Disney**, **Opel**, **Madrid regional government**, and **Ikea** using **HTML5**, **CSS3**, **jQuery**, and **PHP**.
-
-### **Webmaster / Web Developer · Guía del Ocio · 03/2008–10/2011**
-
-Oversaw maintenance and development of **guiadelocio.com** using **HTML**, **CSS**, **JavaScript**, **ColdFusion**, and **PHP**.
+- **Team leadership:** Managed a team of 3–10 engineers, balancing delivery with mentoring and growth.
+- **Hiring & interviewing:** Conducted interviews for frontend, backend, QA and DevOps roles, focusing on problem-solving approach rather than recall of specific answers.
+- **Mentoring & reviews:** Mentored juniors and peers, collaborating on merge requests through pair programming when needed. Introduced checklists and context-specific guidelines to validate that tasks were fully solved.
+- **Process definition:** Worked with QA and PM/POs to evolve processes: Jira validation columns, dedicated testing branches, conventional commits and semantic versioning.
+- **Cross-team collaboration:** Partnered with Product, Business, Marketing and Sales to ensure engineering output had measurable business impact.
+- **AI & automation:** Optimized user lifecycle (sign-up/deactivation), eliminating manual DB queries. Introduced OpenAI and Cursor automation for repetitive workflows.
+- **Observability & analytics:** Built dashboards and event-driven tracking with PostHog and Mixpanel, enabling analysts and business teams to drive product decisions.
+- **Project highlights:** [app.frenetic.ai](https://app.frenetic.ai) · [simulator.frenetic.ai](https://simulator.frenetic.ai)
 
 ---
 
-## Skills
+### **Team Lead / Full-Stack Developer — Isobar (Dentsu Group) (04/2019–02/2021)**
 
-- **Frontend:** JavaScript (ES6+), Vue 3, React, Tailwind
-- **Backend:** Node.js/Express, PHP (Laravel, Symfony), Python, C#/.NET
-- **AI & Automation:** OpenAI APIs, Langfuse, prompt engineering, Cursor automation workflows
-- **Cloud & DevOps:** AWS, Docker, GitLab CI/CD, Jenkins, Vercel, Google App Engine
-- **Management:** Agile/Scrum methodologies, team leadership, mentoring, Jira, Trello
-- **CRM / Analytics:** Salesforce, HubSpot, Posthog, GTM, Mixpanel, KPI tracking
-- **Others:** WordPress, Drupal, Umbraco, Prestashop, traditional SEO/SEM
+Technical lead across multiple web and app projects.  
+**Tech:** Python, PHP, Node.js/Express, React/Material UI.  
+**Platforms:** Salesforce, WordPress, Prestashop, Drupal, Magento.  
+**Cloud:** AWS, Google App Engine, DigitalOcean.
 
----
-
-## Education
-
-- **Master’s in Big Data & Business Analytics (2017–2020)**
-- **Higher Technical Diploma in Graphic Design 2D/3D (2005–2007)**
-- **Technical training highlights:**
-  - MEVN stack (2025)
-  - Python & Machine Learning (2020-2025)
-  - MERN stack (2019-2022)
-  - Node.js (2017-2025)
-  - PHP Development (2010-)
-  - Web SEO/SEM (2010-2025)
-  - Web Design/Animation (2006-2025)
+- Led development squads delivering multi-brand websites and e-commerce integrations.
+- Defined technical standards and collaborated with QA, product and design teams.
+- Standardized deployment workflows across heterogeneous stacks, improving delivery predictability.
+- Interviewed and mentored developers across frontend and backend roles.
 
 ---
 
-## Portfolio
+### **Full-Stack Developer — Product School (06/2018–04/2019)**
 
-- **simulator.frenetic.ai** – SaaS magnet simulator
-- **app.frenetic.ai** – SaaS magnet design platform
-- **Cartesio Investment Funds** – cartesio.com
-- **Product School** – productschool.com
-- **Altamar Capital** – altamarcapital.com
-- Additional: **Guía del Ocio (guiadelocio.es)**, **Cecabank reports**, **Otras Políticas**
+Built components and an LMS with Node.js and React.
+
+- Improved performance and SEO with caching and deployment strategies.
+- Collaborated with product and marketing to align features with business impact.
 
 ---
 
-## Languages
+### **Team Lead / Full-Stack Developer — Quodem (Healthcare) (12/2015–06/2018)**
 
-Spanish (Native) · English (Professional)
+Projects for pharma clients such as MSD, Pfizer, Bayer, GSK.
+
+- Led teams developing secure, compliant sites with Umbraco and Drupal.
+- Established CI practices and code review culture.
+- Coordinated with medical and business stakeholders to ensure compliance and usability.
+
+---
+
+### **CTO / Full-Stack Developer — PSD (07/2012–07/2018)**
+
+Technology director for clients including Santander, BBVA, Ferrovial, BNP, CECABANK.
+
+- Directed projects from estimation to delivery with PHP, jQuery and WordPress.
+- Owned roadmap sizing and cost estimation; balanced priorities with clients.
+
+---
+
+### **Front-End Developer — McCann Erickson (10/2011–07/2012)**
+
+Projects for Coca-Cola, Disney, Opel, Madrid regional government, Ikea.
+
+- Delivered responsive web experiences using HTML5, CSS3, jQuery and PHP.
+
+---
+
+### **Webmaster / Web Developer — Guía del Ocio (03/2008–10/2011)**
+
+Oversaw maintenance and development of **guiadelocio.com**.
+
+- Modernized site architecture with HTML, CSS, JavaScript, ColdFusion and PHP.
+- Ensured stability and improved content workflows for editors.

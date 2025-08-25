@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Download, Printer } from 'lucide-react'
+import { Download } from 'lucide-react'
 import { useState } from 'react'
 
 export const DownloadCVButton = () => {
