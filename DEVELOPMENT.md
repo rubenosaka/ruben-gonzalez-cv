@@ -28,8 +28,8 @@
 ### 2. Code Review Process
 
 - All code must be reviewed before merging
-- Ensure SOLID principles are followed
-- Verify clean code practices
+- Ensure clean code practices are followed
+- Verify type safety and validation
 - Check test coverage
 
 ### 3. Testing Strategy
@@ -49,23 +49,17 @@ npm test:coverage
 
 ### 1. Adding New Features
 
-#### Domain Layer
+#### Content Layer
 
-1. **Entities**: Define business objects with identity
-2. **Value Objects**: Create immutable objects for validation
-3. **Domain Services**: Add business logic that doesn't belong to entities
+1. **Data Modules**: Add TypeScript modules in `src/content/`
+2. **Zod Schemas**: Define validation schemas for data integrity
+3. **HTML Content**: Use HTML for rich content rendering
 
 #### Application Layer
 
-1. **Services**: Implement application use cases
-2. **Interfaces**: Define contracts for infrastructure
-3. **Hooks**: Create custom React hooks for state management
-
-#### Infrastructure Layer
-
-1. **Repositories**: Implement data access
-2. **Adapters**: Connect external services
-3. **Configuration**: Manage external dependencies
+1. **Services**: Implement application logic with direct data access
+2. **Validation**: Ensure all data is validated with Zod
+3. **Type Safety**: Maintain full TypeScript coverage
 
 #### Presentation Layer
 
@@ -98,137 +92,155 @@ export const Component = ({ prop1, prop2, className, ...props }: ComponentProps)
       onClick={handleClick}
       {...props}
     >
+      <span>{prop1}</span>
+      <span>{prop2}</span>
+    </div>
+  )
+}
 ```
 
-### 3. CV Content Components
+### 3. Content Management
 
-The CV supports both Markdown and MDX formats with custom components for enhanced presentation.
-
-#### Available MDX Components
-
-**SectionTitle**
-
-```mdx
-<SectionTitle>Career Highlights</SectionTitle>
-```
-
-Renders a section title with subtle underline decoration.
-
-**Highlights**
-
-```mdx
-<Highlights>
-  <HighlightItem>First highlight item</HighlightItem>
-  <HighlightItem>Second highlight item</HighlightItem>
-</Highlights>
-```
-
-Renders a list with custom bullet styling and spacing.
-
-**Callout**
-
-```mdx
-<Callout variant="info">This is an informational callout box.</Callout>
-```
-
-Renders a highlighted box with variants: `info`, `warning`, `success`.
-
-#### Markdown Support
-
-For `.md` files, standard markdown syntax is supported with enhanced styling:
-
-- Headings (h1, h2, h3) with proper hierarchy
-- Lists with custom bullet styling
-- Links with hover effects and focus states
-- Code blocks with syntax highlighting
-- Blockquotes with left border
+The CV uses TypeScript modules with Zod validation for content management, ensuring type safety and data integrity.
 
 #### Content Structure
 
-The CV content should follow this structure:
+**CV Data** (`src/content/cv.data.ts`):
 
-1. **Career Highlights** - Key achievements and skills
-2. **Experience** - Work history with detailed descriptions
-3. **Skills** - Technical and soft skills
-4. **Education** - Academic background
-5. **Languages** - Language proficiency
+```typescript
+import { z } from 'zod'
 
-#### Styling Classes
+const CVSchema = z.object({
+  metadata: z.object({
+    name: z.string(),
+    title: z.string(),
+    email: z.string().email(),
+    location: z.string(),
+    summary: z.string(),
+  }),
+  content: z.object({
+    highlights: z.array(z.object({ text: z.string() })),
+    experience: z.array(z.object({
+      title: z.string(),
+      company: z.string(),
+      period: z.string(),
+      description: z.string(),
+    })),
+  }),
+})
 
-- `.cv-prose` - Main content container with typography styles
-- `.cv-prose h1` - Page titles (text-4xl, font-semibold)
-- `.cv-prose h2` - Section titles (text-2xl, font-semibold)
-- `.cv-prose h3` - Subsection titles (text-xl, font-medium)
-- `.cv-prose ul` - Lists with custom spacing
-- `.cv-prose a` - Links with hover and focus states
-  <span>{prop1}</span>
-  <span>{prop2}</span>
-  </div>
-  )
+const cvData = { /* ... */ }
+export const cv = CVSchema.parse(cvData)
+```
+
+**Pages Data** (`src/content/pages.data.ts`):
+
+```typescript
+const PageSchema = z.object({
+  slug: z.string(),
+  title: z.string(),
+  excerpt: z.string().optional(),
+  bodyHtml: z.string(),
+})
+
+const pagesData = [ /* ... */ ]
+export const pages = pagesData.map(page => PageSchema.parse(page))
+```
+
+**Projects Data** (`src/content/projects.data.ts`):
+
+```typescript
+const ProjectSchema = z.object({
+  slug: z.string(),
+  title: z.string(),
+  summary: z.string(),
+  tags: z.array(z.string()),
+  bodyHtml: z.string(),
+  links: z.array(z.object({ label: z.string(), url: z.string().url() })).optional(),
+})
+
+const projectsData = [ /* ... */ ]
+export const projects = projectsData.map(project => ProjectSchema.parse(project))
+```
+
+#### Service Access
+
+Services directly import and expose data:
+
+```typescript
+// src/application/services/CVService.ts
+import { cv } from '@/content/cv.data'
+
+export class CVService {
+  getCV() {
+    return cv
   }
+}
+```
 
-````
+#### Component Usage
 
-#### Component Guidelines
+Components use services to access data:
 
-- **Single Responsibility**: Each component has one purpose
-- **Composition**: Use composition over inheritance
-- **Props Interface**: Define clear prop interfaces
-- **Default Props**: Provide sensible defaults
-- **Error Boundaries**: Handle errors gracefully
-- **Self-Documenting**: No comments, code explains itself
-- **Complete Implementation**: Full component code, no fragments
+```typescript
+// src/app/cv/page.tsx
+export default function CVPage() {
+  const cvService = new CVService()
+  const cv = cvService.getCV()
+  
+  return (
+    <PageLayout>
+      <CVHeader
+        name={cv.metadata.name}
+        title={cv.metadata.title}
+        location={cv.metadata.location}
+        email={cv.metadata.email}
+        summary={cv.metadata.summary}
+      />
+    </PageLayout>
+  )
+}
+```
 
-### 3. State Management
+#### HTML Content Rendering
+
+Rich content is rendered using `dangerouslySetInnerHTML`:
+
+```typescript
+// For pages and projects with HTML content
+<div dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />
+```
+
+### 4. State Management
 
 #### Local State
 
 ```typescript
 const [state, setState] = useState(initialState)
-````
-
-#### Global State
-
-```typescript
-// Use React Context for global state
-const GlobalStateContext = createContext<GlobalState | undefined>(undefined)
 ```
 
 #### Server State
 
 ```typescript
-// Use custom hooks for server state
-const { data, loading, error } = usePosts()
+// Direct data access through services
+const cvService = new CVService()
+const cv = cvService.getCV()
 ```
 
-### 4. Error Handling
+### 5. Error Handling
 
-#### Domain Errors
+#### Validation Errors
 
 ```typescript
-export class DomainError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'DomainError'
-  }
+try {
+  export const cv = CVSchema.parse(cvData)
+} catch (error) {
+  console.error('CV data validation failed:', error)
+  process.exit(1)
 }
 ```
 
-#### Application Errors
-
-```typescript
-export class ApplicationError extends Error {
-  constructor(
-    message: string,
-    public readonly code: string
-  ) {
-    super(message)
-    this.name = 'ApplicationError'
-  }
-}
-```
-
-#### Error Boundaries
+#### Component Errors
 
 ```typescript
 export class ErrorBoundary extends Component {
@@ -242,8 +254,8 @@ export class ErrorBoundary extends Component {
 
 - **No Comments**: Write self-documenting code that explains itself
 - **Clean Code**: Follow Uncle Bob's Clean Code principles
-- **SOLID Principles**: Apply all five SOLID principles consistently
-- **Hexagonal Architecture**: Maintain clear separation between layers
+- **Type Safety**: Maintain full TypeScript coverage
+- **Validation**: Use Zod for runtime validation
 - **Consistent Naming**: Use clear, descriptive English names
 - **Complete Code**: Provide full implementations, no code fragments
 
@@ -254,7 +266,7 @@ export class ErrorBoundary extends Component {
 - **Interface First**: Define interfaces before implementation
 - **Generic Types**: Use generics for reusable components
 
-### 2. ESLint Configuration
+### 3. ESLint Configuration
 
 ```json
 {
@@ -268,7 +280,7 @@ export class ErrorBoundary extends Component {
 }
 ```
 
-### 3. Prettier Configuration
+### 4. Prettier Configuration
 
 ```json
 {
@@ -281,22 +293,21 @@ export class ErrorBoundary extends Component {
 }
 ```
 
-### 4. Naming Conventions
+### 5. Naming Conventions
 
 #### Files and Directories
 
 - **Components**: PascalCase (`PostCard.tsx`)
-- **Hooks**: camelCase with `use` prefix (`usePosts.ts`)
-- **Services**: PascalCase (`PostService.ts`)
-- **Interfaces**: PascalCase with `I` prefix (`IPostRepository.ts`)
-- **Types**: PascalCase (`PostMetadata.ts`)
+- **Services**: PascalCase (`CVService.ts`)
+- **Data Modules**: camelCase with `.data.ts` suffix (`cv.data.ts`)
+- **Types**: PascalCase (`CVMetadata.ts`)
 
 #### Variables and Functions
 
-- **Variables**: camelCase (`postTitle`)
-- **Functions**: camelCase (`getPostById`)
-- **Constants**: UPPER_SNAKE_CASE (`MAX_POST_LENGTH`)
-- **Classes**: PascalCase (`PostService`)
+- **Variables**: camelCase (`cvData`)
+- **Functions**: camelCase (`getCV`)
+- **Constants**: UPPER_SNAKE_CASE (`MAX_LENGTH`)
+- **Classes**: PascalCase (`CVService`)
 
 ## Testing Guidelines
 
@@ -305,16 +316,13 @@ export class ErrorBoundary extends Component {
 #### Test Structure
 
 ```typescript
-describe('Component', () => {
-  it('should render correctly', () => {
-    render(<Component prop1="test" prop2={42} />)
-    expect(screen.getByText('test')).toBeInTheDocument()
-  })
-
-  it('should handle user interactions', () => {
-    render(<Component prop1="test" prop2={42} />)
-    fireEvent.click(screen.getByText('test'))
-    expect(console.log).toHaveBeenCalledWith('Component clicked')
+describe('CVService', () => {
+  it('should return CV data', () => {
+    const cvService = new CVService()
+    const cv = cvService.getCV()
+    
+    expect(cv.metadata.name).toBe('Rubén González Aranda')
+    expect(cv.content.highlights).toHaveLength(7)
   })
 })
 ```
@@ -330,17 +338,13 @@ describe('Component', () => {
 ### 2. Integration Tests
 
 ```typescript
-describe('PostService Integration', () => {
-  it('should fetch posts from repository', async () => {
-    const mockRepository = {
-      findPublished: jest.fn().mockResolvedValue([mockPost]),
-    }
-    const service = new PostService(mockRepository)
-
-    const result = await service.getPublishedPosts()
-
-    expect(result).toEqual([mockPost])
-    expect(mockRepository.findPublished).toHaveBeenCalled()
+describe('CV Page Integration', () => {
+  it('should render CV with all sections', () => {
+    render(<CVPage />)
+    
+    expect(screen.getByText('Rubén González Aranda')).toBeInTheDocument()
+    expect(screen.getByText('Career Highlights')).toBeInTheDocument()
+    expect(screen.getByText('Experience')).toBeInTheDocument()
   })
 })
 ```
@@ -348,23 +352,22 @@ describe('PostService Integration', () => {
 ### 3. Component Tests
 
 ```typescript
-describe('PostCard Component', () => {
-  it('should display post information', () => {
-    const mockPost = {
-      id: '1',
-      title: 'Test Post',
-      description: 'Test Description',
-      date: new Date(),
-      tags: ['test'],
-      published: true,
-      content: 'Test content',
-      url: '/test-post'
+describe('CVHeader Component', () => {
+  it('should display CV metadata', () => {
+    const mockCV = {
+      metadata: {
+        name: 'Test Name',
+        title: 'Test Title',
+        location: 'Test Location',
+        email: 'test@example.com',
+        summary: 'Test Summary'
+      }
     }
 
-    render(<PostCard post={mockPost} />)
+    render(<CVHeader {...mockCV.metadata} />)
 
-    expect(screen.getByText('Test Post')).toBeInTheDocument()
-    expect(screen.getByText('Test Description')).toBeInTheDocument()
+    expect(screen.getByText('Test Name')).toBeInTheDocument()
+    expect(screen.getByText('Test Title')).toBeInTheDocument()
   })
 })
 ```
@@ -416,34 +419,25 @@ export const ExpensiveComponent = React.memo(({ data }) => {
 ### 1. Input Validation
 
 ```typescript
-export class Tag {
-  static create(value: string): Tag {
-    if (!value || value.trim().length === 0) {
-      throw new Error('Tag cannot be empty')
-    }
-
-    const normalizedValue = value.trim().toLowerCase()
-
-    if (normalizedValue.length > 50) {
-      throw new Error('Tag cannot be longer than 50 characters')
-    }
-
-    return new Tag(normalizedValue)
-  }
-}
+const CVSchema = z.object({
+  metadata: z.object({
+    email: z.string().email(),
+    name: z.string().min(1).max(100),
+  })
+})
 ```
 
 ### 2. XSS Prevention
 
 - Use React's built-in XSS protection
-- Sanitize user input
+- Validate HTML content
 - Use Content Security Policy
 
-### 3. Authentication
+### 3. Type Safety
 
-- Implement proper authentication
-- Use secure session management
-- Validate user permissions
+- Full TypeScript coverage
+- Runtime validation with Zod
+- Compile-time error detection
 
 ## Deployment Guidelines
 
@@ -483,7 +477,7 @@ try {
   return result
 } catch (error) {
   logger.error('Operation failed', { error, context })
-  throw new ApplicationError('Operation failed', 'OPERATION_ERROR')
+  throw new Error('Operation failed')
 }
 ```
 
@@ -513,17 +507,40 @@ const Component = () => {
 
 ### Common Issues
 
-1. **TypeScript Errors**: Check type definitions
-2. **Build Failures**: Verify dependencies
-3. **Runtime Errors**: Check error boundaries
+1. **TypeScript Errors**: Check type definitions and Zod schemas
+2. **Build Failures**: Verify dependencies and validation
+3. **Runtime Errors**: Check error boundaries and validation
 4. **Performance Issues**: Use React DevTools
 
 ### Debug Tools
 
 - **React DevTools**: Component inspection
-- **Redux DevTools**: State management
+- **TypeScript**: Type checking and IntelliSense
 - **Network Tab**: API calls
 - **Console**: Error logging
+
+## Migration Benefits
+
+### 1. Simplified Architecture
+
+- **Removed Complexity**: No DI, repositories, or domain entities
+- **Direct Access**: Services directly import data
+- **Faster Development**: Reduced boilerplate and complexity
+- **Easier Maintenance**: Simpler codebase to understand and modify
+
+### 2. Improved Type Safety
+
+- **Zod Validation**: Runtime validation ensures data integrity
+- **TypeScript**: Compile-time type checking
+- **Fail Fast**: Errors caught early in development
+- **Better DX**: Improved developer experience
+
+### 3. Reduced Dependencies
+
+- **Fewer Packages**: Removed MDX, remark, rehype dependencies
+- **Smaller Bundle**: Reduced bundle size
+- **Faster Builds**: Simplified build process
+- **Better Performance**: Improved runtime performance
 
 ## Resources
 
@@ -533,6 +550,7 @@ const Component = () => {
 - [TypeScript Handbook](https://www.typescriptlang.org/docs)
 - [React Documentation](https://react.dev)
 - [Tailwind CSS](https://tailwindcss.com/docs)
+- [Zod Documentation](https://zod.dev)
 
 ### Tools
 
@@ -543,6 +561,6 @@ const Component = () => {
 
 ### Architecture
 
-- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-- [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
-- [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)
+- [Clean Code](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [TypeScript Best Practices](https://www.typescriptlang.org/docs/handbook/intro.html)
+- [Zod Validation](https://zod.dev)

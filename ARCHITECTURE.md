@@ -2,9 +2,9 @@
 
 ## Overview
 
-This project implements a **Clean Architecture** approach with **Domain-Driven Design (DDD)** and **Hexagonal Architecture** principles. The architecture is designed to be maintainable, testable, and scalable.
+This project implements a **simplified, lightweight architecture** focused on practical solutions and maintainable code. The architecture prioritizes type safety, validation, and direct data access over complex patterns.
 
-> **Note**: This project is intentionally over-engineered (DDD, Hexagonal, SOLID) as part of a developer CV. It demonstrates architectural thinking rather than being optimized for minimalism.
+> **Note**: This project intentionally uses a simplified architecture as part of a developer CV. It demonstrates practical engineering thinking rather than over-engineering.
 
 ## Architecture Layers
 
@@ -21,21 +21,27 @@ This project implements a **Clean Architecture** approach with **Domain-Driven D
 **Principles Applied**:
 
 - **Single Responsibility**: Each component has one clear purpose
-- **Open/Closed**: Components are extensible without modification
-- **Dependency Inversion**: Components depend on abstractions, not concretions
+- **Direct Data Access**: Components directly import and use data services
+- **Type Safety**: Full TypeScript coverage with proper typing
 
 **Example**:
 
 ```typescript
-// Clean component with single responsibility
-export const PostCard = ({ post }: { post: Post }) => {
+// Clean component with direct data access
+export default function CVPage() {
+  const cvService = new CVService()
+  const cv = cvService.getCV()
+  
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{post.title}</CardTitle>
-        <CardDescription>{post.description}</CardDescription>
-      </CardHeader>
-    </Card>
+    <PageLayout>
+      <CVHeader
+        name={cv.metadata.name}
+        title={cv.metadata.title}
+        location={cv.metadata.location}
+        email={cv.metadata.email}
+        summary={cv.metadata.summary}
+      />
+    </PageLayout>
   )
 }
 ```
@@ -46,330 +52,336 @@ export const PostCard = ({ post }: { post: Post }) => {
 
 **Components**:
 
-- **Services**: Application business logic
-- **Hooks**: Custom React hooks for state management
-- **Interfaces**: Contracts for infrastructure layer
+- **Services**: Application business logic with direct data access
+- **Data Validation**: Zod schemas for runtime validation
 
 **Principles Applied**:
 
-- **Interface Segregation**: Services depend only on interfaces they use
-- **Dependency Inversion**: High-level modules don't depend on low-level modules
+- **Direct Imports**: Services directly import data modules
+- **Validation**: Zod schemas ensure data integrity
+- **Simplicity**: No dependency injection or complex abstractions
 
 **Example**:
 
 ```typescript
-// Application service following SOLID principles
-export class PostService {
-  constructor(private readonly postRepository: PostRepository) {}
+// Simple service with direct data access
+import { cv } from '@/content/cv.data'
 
-  async getPublishedPosts(): Promise<Post[]> {
-    return this.postRepository.findPublished()
+export class CVService {
+  getCV() {
+    return cv
   }
 }
 ```
 
-### 3. Domain Layer (`src/domain/`)
+### 3. Content Layer (`src/content/`)
 
-**Responsibility**: Core business logic and domain rules.
+**Responsibility**: Data storage and validation.
 
 **Components**:
 
-- **Entities**: Business objects with identity
-- **Value Objects**: Immutable objects without identity
-- **Domain Services**: Business logic that doesn't belong to entities
+- **Data Modules**: TypeScript modules with structured data
+- **Zod Schemas**: Validation schemas for type safety
+- **HTML Content**: Rich content for direct rendering
 
 **Principles Applied**:
 
-- **Encapsulation**: Business rules are encapsulated within entities
-- **Immutability**: Value objects are immutable
-- **Rich Domain Model**: Entities contain business logic
+- **Type Safety**: Zod validation at runtime
+- **Fail Fast**: Validation errors caught early
+- **Direct Access**: No repositories or abstractions
 
 **Example**:
 
 ```typescript
-// Rich domain entity with business logic
-export class Post {
-  private constructor(
-    private readonly _id: string,
-    private readonly _metadata: PostMetadata,
-    private readonly _content: string,
-    private readonly _url: string
-  ) {}
+import { z } from 'zod'
 
-  isPublished(): boolean {
-    return this._metadata.published
-  }
+const CVSchema = z.object({
+  metadata: z.object({
+    name: z.string(),
+    title: z.string(),
+    email: z.string().email(),
+    location: z.string(),
+    summary: z.string(),
+  }),
+  content: z.object({
+    highlights: z.array(z.object({ text: z.string() })),
+    experience: z.array(z.object({
+      title: z.string(),
+      company: z.string(),
+      period: z.string(),
+      description: z.string(),
+    })),
+  }),
+})
 
-  hasTag(tag: string): boolean {
-    return this._metadata.tags.includes(tag)
+const cvData = { /* ... */ }
+export const cv = CVSchema.parse(cvData)
+```
+
+## Data Flow
+
+### 1. Content Definition
+
+```typescript
+// src/content/cv.data.ts
+const cvData = {
+  metadata: { /* ... */ },
+  content: { /* ... */ }
+}
+export const cv = CVSchema.parse(cvData)
+```
+
+### 2. Service Access
+
+```typescript
+// src/application/services/CVService.ts
+import { cv } from '@/content/cv.data'
+
+export class CVService {
+  getCV() {
+    return cv
   }
 }
 ```
 
-### 4. Infrastructure Layer (`src/infrastructure/`)
-
-**Responsibility**: External concerns and technical implementations.
-
-**Components**:
-
-- **Content Management**: Contentlayer integration
-- **Configuration**: External service configurations
-- **Adapters**: Implementations of application interfaces
-
-**Principles Applied**:
-
-- **Dependency Inversion**: Implements interfaces defined in application layer
-- **Adapter Pattern**: Adapts external services to internal interfaces
-
-**Example**:
+### 3. Component Usage
 
 ```typescript
-// Infrastructure adapter implementing application interface
-export class ContentlayerPostRepository implements PostRepository {
-  async findPublished(): Promise<Post[]> {
-    return allPosts.filter((post) => post.published).map(this.mapToPost)
+// src/app/cv/page.tsx
+const cvService = new CVService()
+const cv = cvService.getCV()
+```
+
+## Validation Strategy
+
+### 1. Zod Schemas
+
+**Runtime Validation**: All data is validated at import time using Zod schemas.
+
+```typescript
+const PageSchema = z.object({
+  slug: z.string(),
+  title: z.string(),
+  excerpt: z.string().optional(),
+  bodyHtml: z.string(),
+})
+```
+
+### 2. Type Safety
+
+**Compile-time Safety**: TypeScript ensures type correctness during development.
+
+```typescript
+interface CV {
+  metadata: {
+    name: string
+    title: string
+    email: string
+    location: string
+    summary: string
+  }
+  content: {
+    highlights: Array<{ text: string }>
+    experience: Array<{
+      title: string
+      company: string
+      period: string
+      description: string
+    }>
   }
 }
 ```
 
-## SOLID Principles Implementation
+### 3. Error Handling
 
-### 1. Single Responsibility Principle (SRP)
-
-Each class and component has one reason to change:
-
-- **Post Entity**: Manages post business logic
-- **PostService**: Handles post application workflows
-- **ContentlayerPostRepository**: Manages post data access
-
-### 2. Open/Closed Principle (OCP)
-
-Components are open for extension, closed for modification:
-
-- **Repository Pattern**: New data sources can be added without changing services
-- **Component Composition**: UI components can be extended through props
-
-### 3. Liskov Substitution Principle (LSP)
-
-Subtypes can be substituted for their base types:
-
-- **Repository Interfaces**: Any implementation can be substituted
-- **Value Objects**: Immutable and substitutable
-
-### 4. Interface Segregation Principle (ISP)
-
-Clients depend only on interfaces they use:
-
-- **PostRepository**: Contains only post-related methods
-- **PageRepository**: Contains only page-related methods
-
-### 5. Dependency Inversion Principle (DIP)
-
-High-level modules don't depend on low-level modules:
-
-- **Services depend on interfaces**: Not concrete implementations
-- **Dependency Injection**: Dependencies are injected, not created
-
-## Domain-Driven Design (DDD) Implementation
-
-### 1. Entities
-
-**Post Entity**:
-
-- Has identity (id)
-- Contains business logic
-- Manages its own state
-
-**Page Entity**:
-
-- Has identity (id)
-- Represents static content
-- Encapsulates page-specific logic
-
-### 2. Value Objects
-
-**Tag Value Object**:
-
-- Immutable
-- Self-validating
-- No identity
-
-**Url Value Object**:
-
-- Immutable
-- Validates URL format
-- Provides utility methods
-
-### 3. Domain Services
-
-Business logic that doesn't belong to entities is placed in domain services.
-
-### 4. Repositories
-
-Data access abstraction following repository pattern.
-
-## Hexagonal Architecture Implementation
-
-### 1. Ports (Interfaces)
-
-**Input Ports**:
-
-- `PostRepository` interface
-- `PageRepository` interface
-
-**Output Ports**:
-
-- Service interfaces for external integrations
-
-### 2. Adapters
-
-**Primary Adapters**:
-
-- React components
-- Next.js pages
-
-**Secondary Adapters**:
-
-- `ContentlayerPostRepository`
-- `ContentlayerPageRepository`
-
-### 3. Domain
-
-Core business logic isolated from external concerns.
-
-## Dependency Injection
-
-### Dependency Container
+**Fail Fast**: Validation errors are caught immediately at startup.
 
 ```typescript
-export class DependencyContainer {
-  private static instance: DependencyContainer
-
-  static getInstance(): DependencyContainer {
-    if (!DependencyContainer.instance) {
-      DependencyContainer.instance = new DependencyContainer()
-    }
-    return DependencyContainer.instance
-  }
+try {
+  export const cv = CVSchema.parse(cvData)
+} catch (error) {
+  console.error('CV data validation failed:', error)
+  process.exit(1)
 }
 ```
 
-### Usage
+## Content Management
+
+### 1. Data Structure
+
+**TypeScript Modules**: Content is stored in TypeScript modules for type safety.
+
+- `src/content/cv.data.ts` - CV data with validation
+- `src/content/pages.data.ts` - Static pages data
+- `src/content/projects.data.ts` - Projects data
+
+### 2. HTML Content
+
+**Direct Rendering**: Rich content uses HTML for direct rendering with `dangerouslySetInnerHTML`.
 
 ```typescript
-const container = DependencyContainer.getInstance()
-const postService = container.getPostService()
+const pageData = {
+  slug: 'about-me',
+  title: 'About Me',
+  bodyHtml: '<p>This is <strong>rich</strong> content.</p>'
+}
+```
+
+### 3. Structured Data
+
+**Programmatic Access**: Structured data is easily accessible for components.
+
+```typescript
+const highlights = cv.content.highlights.map(h => h.text)
+const experience = cv.content.experience.map(exp => ({
+  title: exp.title,
+  company: exp.company,
+  period: exp.period
+}))
 ```
 
 ## Testing Strategy
 
 ### 1. Unit Tests
 
-- **Domain Entities**: Test business logic
-- **Value Objects**: Test validation and behavior
-- **Services**: Test application logic
+- **Services**: Test data access and business logic
+- **Components**: Test UI behavior and rendering
+- **Validation**: Test Zod schemas and data integrity
 
 ### 2. Integration Tests
 
-- **Repository Implementations**: Test data access
-- **Service Integration**: Test service interactions
+- **Data Flow**: Test complete data flow from content to components
+- **PDF Generation**: Test PDF export functionality
 
-### 3. Component Tests
+### 3. E2E Tests
 
-- **React Components**: Test UI behavior
-- **Custom Hooks**: Test state management
+- **Navigation**: Test user navigation and interactions
+- **Content Display**: Test content rendering across pages
 
 ## Performance Considerations
 
-### 1. Code Splitting
+### 1. Bundle Size
 
-- Next.js automatic code splitting
-- Dynamic imports for heavy components
+- **Tree Shaking**: ES6 modules enable effective tree shaking
+- **Code Splitting**: Next.js automatic code splitting
+- **Minimal Dependencies**: Reduced bundle size through simplified architecture
 
-### 2. Caching
+### 2. Build Performance
 
-- Contentlayer caching
-- React query for data caching
+- **Fast Builds**: Simplified architecture enables faster builds
+- **Type Checking**: Efficient TypeScript compilation
+- **Validation**: Runtime validation only at startup
 
-### 3. Optimization
+### 3. Runtime Performance
 
-- Static generation where possible
-- Image optimization
-- Bundle analysis
+- **Direct Access**: No abstraction layers for data access
+- **Static Generation**: Next.js static generation where possible
+- **Optimized Rendering**: Efficient React rendering
 
 ## Security Considerations
 
 ### 1. Input Validation
 
-- Value objects validate input
-- TypeScript provides compile-time safety
+- **Zod Validation**: All data validated at runtime
+- **Type Safety**: TypeScript prevents type-related errors
+- **HTML Sanitization**: Content rendered safely with proper HTML
 
 ### 2. Content Security
 
-- Contentlayer sanitizes content
-- XSS protection through React
+- **Static Content**: All content is static and validated
+- **No User Input**: No dynamic content from user input
+- **XSS Protection**: React's built-in XSS protection
 
 ### 3. Type Safety
 
-- Full TypeScript coverage
-- Compile-time error detection
+- **Full TypeScript**: Complete TypeScript coverage
+- **Compile-time Errors**: Errors caught during development
+- **Runtime Validation**: Additional validation at runtime
 
 ## Scalability
 
-### 1. Modular Architecture
+### 1. Content Management
 
-- Clear separation of concerns
-- Easy to add new features
+- **Modular Data**: Easy to add new content types
+- **Validation**: Consistent validation across all content
+- **Type Safety**: Safe refactoring and changes
 
-### 2. Extensibility
+### 2. Component Architecture
 
-- Repository pattern allows new data sources
-- Component composition for UI flexibility
+- **Reusable Components**: Components can be easily reused
+- **Composition**: Flexible component composition
+- **Maintainability**: Clean, readable code
 
-### 3. Maintainability
+### 3. Development Experience
 
-- Clean code principles
-- Self-documenting code
-- Consistent patterns
+- **Fast Development**: Simplified architecture enables rapid development
+- **Clear Data Flow**: Easy to understand and modify
+- **Strong Tooling**: Excellent TypeScript and IDE support
 
 ## Best Practices
 
 ### 1. Clean Code
 
-- **Self-documenting code**: Code should explain itself through clear naming and structure
+- **Self-documenting code**: Code explains itself through clear naming
 - **No comments**: Avoid comments by writing expressive code
-- **Meaningful names**: Use descriptive names for variables, functions, and classes
+- **Meaningful names**: Use descriptive names for variables and functions
 - **Small functions**: Keep functions focused and concise
-- **Complete implementations**: Provide full code implementations, not fragments
-- **Consistent naming**: Use English naming conventions throughout the codebase
+- **Complete implementations**: Provide full code implementations
+- **Consistent naming**: Use English naming conventions
 
-### 2. Error Handling
+### 2. Data Management
 
-- Domain-specific exceptions
-- Graceful error handling
-- User-friendly error messages
+- **Single Source of Truth**: Each data type has one source
+- **Validation**: All data validated with Zod
+- **Type Safety**: Full TypeScript coverage
+- **Direct Access**: No unnecessary abstraction layers
 
-### 3. Logging
+### 3. Component Design
 
-- Structured logging
-- Error tracking
-- Performance monitoring
+- **Single Responsibility**: Each component has one purpose
+- **Composition**: Use composition over inheritance
+- **Props Interface**: Define clear prop interfaces
+- **Default Props**: Provide sensible defaults
+
+## Migration Benefits
+
+### 1. Simplified Architecture
+
+- **Removed Complexity**: No DI, repositories, or domain entities
+- **Direct Access**: Services directly import data
+- **Faster Development**: Reduced boilerplate and complexity
+- **Easier Maintenance**: Simpler codebase to understand and modify
+
+### 2. Improved Type Safety
+
+- **Zod Validation**: Runtime validation ensures data integrity
+- **TypeScript**: Compile-time type checking
+- **Fail Fast**: Errors caught early in development
+- **Better DX**: Improved developer experience
+
+### 3. Reduced Dependencies
+
+- **Fewer Packages**: Removed MDX, remark, rehype dependencies
+- **Smaller Bundle**: Reduced bundle size
+- **Faster Builds**: Simplified build process
+- **Better Performance**: Improved runtime performance
 
 ## Future Enhancements
 
-### 1. CQRS Pattern
+### 1. Content Management
 
-- Separate read and write models
-- Optimized for different use cases
+- **Dynamic Content**: Add CMS integration if needed
+- **Content Versioning**: Track content changes
+- **Rich Text Editor**: Add visual content editing
 
-### 2. Event Sourcing
+### 2. Performance
 
-- Audit trail
-- Temporal queries
-- Event-driven architecture
+- **Caching**: Add content caching strategies
+- **Optimization**: Further performance optimizations
+- **Monitoring**: Add performance monitoring
 
-### 3. Microservices
+### 3. Features
 
-- Service decomposition
-- Independent deployment
-- Technology diversity
+- **Internationalization**: Add multi-language support
+- **Analytics**: Add user analytics
+- **SEO**: Enhanced SEO features

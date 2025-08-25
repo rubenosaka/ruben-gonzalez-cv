@@ -30,27 +30,30 @@ Professional PDF generation for traditional CV distribution, maintaining consist
 
 ## Key Decisions
 
-### MDX as Technical Differentiator
+### TypeScript Data with Zod Validation
 
-**MDX is intentionally maintained** despite adding complexity. This decision serves as a cultural and technical differentiator, demonstrating:
+**Content is managed through TypeScript modules with Zod validation** for type safety and runtime validation. This approach demonstrates:
 
-- Content management expertise
-- Developer experience (DX) considerations
-- Integration capabilities with modern tooling
+- Strong typing and validation practices
+- "Fail fast" validation with Zod schemas
+- Simplified architecture without external content processing
+- Direct data access without repositories or DI
 
-### Architecture Over-Engineering
+### Lightweight Architecture
 
-The project implements **Domain-Driven Design (DDD), Hexagonal Architecture, and SOLID principles** as a deliberate showcase of engineering excellence. While this level of architecture might be overkill for a simple CV, it demonstrates:
+The project implements a **simplified, lightweight architecture** that demonstrates:
 
-- Understanding of enterprise patterns
-- Commitment to maintainable code
-- Ability to scale technical decisions
+- Clean, maintainable code without over-engineering
+- Direct data imports and service instantiation
+- Removal of unnecessary complexity (DI, repositories, domain entities)
+- Focus on practical, working solutions
 
 ### Content Strategy
 
-- **Structured data** (skills, timelines, metrics) remains in TypeScript/JSON for programmatic access
-- **Narrative content** (project descriptions, personal statements) uses MDX for rich formatting
-- This separation ensures both human readability and machine processability
+- **Structured data** (CV, pages, projects) stored in TypeScript modules with Zod validation
+- **HTML content** for rich formatting and direct rendering
+- **Type safety** ensured at both compile-time and runtime
+- **Simplified data flow** from content modules to components
 
 ### Creative Theme System
 
@@ -95,19 +98,19 @@ This demonstrates both technical capability and personality, making the portfoli
 
 **How this CV serves them:**
 
-- Public repository with clean architecture
-- SOLID principles implementation
-- Domain-driven design patterns
+- Public repository with clean, practical architecture
+- TypeScript with Zod validation
+- Simplified, maintainable codebase
 - Comprehensive testing strategy
 - Modern tech stack demonstration
 
 ## Philosophy
 
-This CV operates on the principle that **a developer's portfolio should be both a résumé and a demonstration of engineering culture**. The complexity introduced by MDX and architectural patterns is a conscious decision to showcase technical depth, not a necessity for the core functionality.
+This CV operates on the principle that **a developer's portfolio should be both a résumé and a demonstration of engineering culture**. The architecture focuses on practical solutions that work well and are easy to maintain, demonstrating real-world engineering skills.
 
 The project demonstrates:
 
-- **Technical Excellence**: Clean code, proper architecture, comprehensive testing
+- **Technical Excellence**: Clean code, proper validation, comprehensive testing
 - **User Experience**: Intuitive navigation, responsive design, accessibility
 - **Professional Communication**: Clear messaging for different audiences
 - **Continuous Improvement**: Living repository that evolves with skills
@@ -131,11 +134,11 @@ The project demonstrates:
 
 - **Frontend**: Next.js 15, React 18, TypeScript
 - **Styling**: Tailwind CSS, shadcn/ui components
-- **Content**: MDX with custom parsing
-- **Architecture**: Domain-Driven Design, Hexagonal Architecture
+- **Content**: TypeScript modules with Zod validation
+- **Architecture**: Simplified, lightweight architecture
 - **Testing**: Jest, Playwright
 - **Deployment**: Vercel
-- **PDF Generation**: Puppeteer (planned migration to @react-pdf/renderer)
+- **PDF Generation**: @react-pdf/renderer
 
 ## Getting Started
 

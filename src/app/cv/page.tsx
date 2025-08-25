@@ -3,11 +3,20 @@ import { CVService } from '@/application/services/CVService'
 import { PageLayout } from '@/components/PageLayout'
 import { Timeline } from '@/components/Timeline'
 import { CVHeader } from '@/components/cv/CVHeader'
-import { Highlights } from '@/components/cv/Highlights'
+import { Highlights, HighlightItem } from '@/components/cv/Highlights'
 
 export default function CVPage() {
   const cvService = new CVService()
   const cv = cvService.getCV()
+
+  const parseHighlight = (html: string): { title: string; meta: string } => {
+    const m = html
+      .replace(/\n/g, ' ')
+      .match(/^\s*<strong>(.*?)<\/strong>\s*[,–-]?\s*(.*)$/i)
+    if (m) return { title: m[1].trim(), meta: m[2].trim() }
+    const plain = html.replace(/<\/?[^>]+>/g, '').trim()
+    return { title: plain, meta: '' }
+  }
 
   const timelineItems = [
     {
@@ -37,6 +46,8 @@ export default function CVPage() {
     },
   ]
 
+  const accents: Array<'pink' | 'blue' | 'orange'> = ['pink', 'blue', 'orange']
+
   return (
     <PageLayout>
       <CVHeader
@@ -53,14 +64,7 @@ export default function CVPage() {
         <h2 className="mb-4 mt-8 text-2xl font-semibold text-foreground first:mt-0">
           Career Highlights
         </h2>
-        <Highlights>
-          {cv.content.highlights.map((highlight: any, index: number) => (
-            <div key={index} className="flex items-start gap-3 text-muted-foreground">
-              <span className="mt-2.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/70" />
-              <span className="flex-1 text-foreground/90" dangerouslySetInnerHTML={{ __html: highlight.text }} />
-            </div>
-          ))}
-        </Highlights>
+        <Highlights items={cv.content.highlights.map((h: any) => h.text)} />
 
         <h2 className="mb-4 mt-8 text-2xl font-semibold text-foreground first:mt-0">
           Experience
@@ -81,13 +85,18 @@ export default function CVPage() {
             {exp.highlights && (
               <ul className="mb-6 space-y-2">
                 {exp.highlights.map((highlight: any, hIndex: number) => (
-                  <li key={hIndex} className="leading-relaxed text-muted-foreground">
+                  <li
+                    key={hIndex}
+                    className="leading-relaxed text-muted-foreground"
+                  >
                     {highlight}
                   </li>
                 ))}
               </ul>
             )}
-            {index < cv.content.experience.length - 1 && <hr className="my-8 border-border" />}
+            {index < cv.content.experience.length - 1 && (
+              <hr className="my-8 border-border" />
+            )}
           </div>
         ))}
       </div>

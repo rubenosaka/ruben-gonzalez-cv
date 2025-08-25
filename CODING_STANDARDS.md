@@ -6,8 +6,8 @@
 
 1. **No Comments**: Code should be self-documenting through clear naming and structure
 2. **Clean Code**: Follow Uncle Bob's Clean Code principles
-3. **SOLID Principles**: Apply all five SOLID principles consistently
-4. **Hexagonal Architecture**: Clear separation between domain, application, and infrastructure layers
+3. **Type Safety**: Maintain full TypeScript coverage with Zod validation
+4. **Simplified Architecture**: Direct data access without unnecessary abstractions
 5. **Consistent Naming**: Use clear, descriptive names in English
 6. **Complete Code**: Provide complete implementations, no code fragments
 
@@ -71,307 +71,413 @@ function processUserData(user: User): ProcessedUser {
 }
 ```
 
-### 3. SOLID Principles
+### 3. Type Safety and Validation
 
-#### Single Responsibility Principle (SRP)
+#### Zod Schemas
 ```typescript
-// ❌ Multiple responsibilities
-class UserManager {
-  saveUser(user: User) { /* database logic */ }
-  sendEmail(user: User) { /* email logic */ }
-  validateUser(user: User) { /* validation logic */ }
+// ❌ No validation
+const userData = {
+  name: 'John',
+  email: 'invalid-email',
+  age: 'not-a-number'
 }
 
-// ✅ Single responsibility
+// ✅ Zod validation
+const UserSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  age: z.number().min(0).max(120)
+})
+
+const userData = UserSchema.parse({
+  name: 'John',
+  email: 'john@example.com',
+  age: 30
+})
+```
+
+#### Type Safety
+```typescript
+// ❌ Any types
+function processData(data: any): any {
+  return data.map(item => item.value)
+}
+
+// ✅ Proper typing
+interface DataItem {
+  id: string
+  value: string
+}
+
+function processData(data: DataItem[]): string[] {
+  return data.map(item => item.value)
+}
+```
+
+### 4. Simplified Architecture
+
+#### Direct Data Access
+```typescript
+// ❌ Complex repository pattern
 class UserRepository {
-  save(user: User): Promise<void> { /* only database logic */ }
-}
-
-class EmailService {
-  sendEmail(user: User): Promise<void> { /* only email logic */ }
-}
-
-class UserValidator {
-  validate(user: User): ValidationResult { /* only validation logic */ }
-}
-```
-
-#### Open/Closed Principle (OCP)
-```typescript
-// ❌ Closed for extension
-class PaymentProcessor {
-  processPayment(payment: Payment) {
-    if (payment.type === 'credit') {
-      // Credit card logic
-    } else if (payment.type === 'debit') {
-      // Debit card logic
-    }
+  async findById(id: string): Promise<User> {
+    // Complex database logic
   }
 }
 
-// ✅ Open for extension
-interface PaymentMethod {
-  process(payment: Payment): Promise<void>
-}
-
-class CreditCardPayment implements PaymentMethod {
-  async process(payment: Payment): Promise<void> {
-    // Credit card logic
-  }
-}
-
-class DebitCardPayment implements PaymentMethod {
-  async process(payment: Payment): Promise<void> {
-    // Debit card logic
-  }
-}
-
-class PaymentProcessor {
-  constructor(private paymentMethods: PaymentMethod[]) {}
+class UserService {
+  constructor(private userRepository: UserRepository) {}
   
-  async processPayment(payment: Payment): Promise<void> {
-    const method = this.paymentMethods.find(m => m.canProcess(payment))
-    await method.process(payment)
+  async getUser(id: string): Promise<User> {
+    return this.userRepository.findById(id)
+  }
+}
+
+// ✅ Direct data access
+import { users } from '@/content/users.data'
+
+class UserService {
+  getUser(id: string): User | undefined {
+    return users.find(user => user.id === id)
   }
 }
 ```
 
-### 4. Hexagonal Architecture
-
-#### Domain Layer
+#### Service Implementation
 ```typescript
-// Pure business logic, no external dependencies
-export class Post {
-  private constructor(
-    private readonly _id: string,
-    private readonly _metadata: PostMetadata,
-    private readonly _content: string,
-    private readonly _url: string
-  ) {}
-
-  isPublished(): boolean {
-    return this._metadata.published
+// ❌ Dependency injection complexity
+class CVService {
+  constructor(private cvRepository: CVRepository) {}
+  
+  async getCV(): Promise<CV> {
+    return this.cvRepository.getCV()
   }
+}
 
-  hasTag(tag: string): boolean {
-    return this._metadata.tags.includes(tag)
+// ✅ Simple service
+import { cv } from '@/content/cv.data'
+
+export class CVService {
+  getCV() {
+    return cv
   }
 }
 ```
 
-#### Application Layer
-```typescript
-// Use cases and orchestration
-export class PostService {
-  constructor(private readonly postRepository: PostRepository) {}
+## Data Management Standards
 
-  async getPublishedPosts(): Promise<Post[]> {
-    return this.postRepository.findPublished()
-  }
+### 1. Content Structure
+
+#### Data Modules
+```typescript
+// src/content/cv.data.ts
+import { z } from 'zod'
+
+const CVSchema = z.object({
+  metadata: z.object({
+    name: z.string(),
+    title: z.string(),
+    email: z.string().email(),
+    location: z.string(),
+    summary: z.string(),
+  }),
+  content: z.object({
+    highlights: z.array(z.object({ text: z.string() })),
+    experience: z.array(z.object({
+      title: z.string(),
+      company: z.string(),
+      period: z.string(),
+      description: z.string(),
+    })),
+  }),
+})
+
+const cvData = {
+  metadata: {
+    name: 'Rubén González Aranda',
+    title: 'Engineering Manager',
+    email: 'rubenosaka@gmail.com',
+    location: 'Madrid, Spain',
+    summary: 'Experienced engineering manager...',
+  },
+  content: {
+    highlights: [
+      { text: '<strong>Led engineering teams</strong> of 3–10 developers...' },
+    ],
+    experience: [
+      {
+        title: 'Engineering Manager',
+        company: 'Frenetic.ai',
+        period: '2021-Present',
+        description: 'Leading engineering for SaaS platform...',
+      },
+    ],
+  },
 }
+
+export const cv = CVSchema.parse(cvData)
 ```
 
-#### Infrastructure Layer
+#### HTML Content
 ```typescript
-// External concerns and implementations
-export class ContentlayerPostRepository implements PostRepository {
-  async findPublished(): Promise<Post[]> {
-    return allPosts
-      .filter(post => post.published)
-      .map(this.mapToPost)
-  }
-}
+// ❌ MDX processing
+<MDXContent source={content} format="mdx" />
+
+// ✅ Direct HTML rendering
+<div dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />
 ```
 
-### 5. Consistent Naming
+### 2. Component Standards
 
-#### Files and Directories
-```
-src/
-├── domain/           # Business logic
-│   ├── entities/     # Business objects
-│   ├── value-objects/ # Immutable objects
-│   └── services/     # Domain services
-├── application/      # Use cases
-│   ├── services/     # Application services
-│   ├── interfaces/   # Contracts
-│   └── hooks/        # Custom hooks
-├── infrastructure/   # External concerns
-│   ├── content/      # Content management
-│   └── config/       # Configuration
-└── components/       # UI components
-    └── ui/           # Base components
-```
-
-#### Naming Conventions
+#### Component Structure
 ```typescript
-// Classes: PascalCase
-class PostService {}
-class UserRepository {}
-
-// Interfaces: PascalCase with I prefix
-interface IPostRepository {}
-interface IUserService {}
-
-// Functions: camelCase
-function getPostById() {}
-function validateUser() {}
-
-// Variables: camelCase
-const postTitle = 'My Post'
-const userEmail = 'user@example.com'
-
-// Constants: UPPER_SNAKE_CASE
-const MAX_POST_LENGTH = 1000
-const DEFAULT_PAGE_SIZE = 10
-
-// Types: PascalCase
-type PostMetadata = {
+// ✅ Clean component with proper typing
+interface CVHeaderProps {
+  name: string
   title: string
-  date: Date
-}
-```
-
-### 6. Complete Implementations
-
-#### ❌ Code Fragments
-```typescript
-// Missing implementation details
-function processData(data: any) {
-  // TODO: implement data processing
-  return data
-}
-```
-
-#### ✅ Complete Code
-```typescript
-function processUserData(userData: UserData): ProcessedUserData {
-  const validatedData = userValidator.validate(userData)
-  
-  if (!validatedData.isValid) {
-    throw new ValidationError(validatedData.errors)
-  }
-  
-  const enrichedData = userEnricher.enrich(validatedData.data)
-  const processedData = userProcessor.process(enrichedData)
-  
-  return processedData
-}
-```
-
-## Examples
-
-### Component Implementation
-```typescript
-interface PostCardProps {
-  post: Post
-  onPostClick?: (post: Post) => void
-  className?: string
+  location: string
+  email: string
+  summary: string
 }
 
-export const PostCard = ({ post, onPostClick, className }: PostCardProps) => {
-  const handleClick = () => {
-    onPostClick?.(post)
-  }
-
+export function CVHeader({ name, title, location, email, summary }: CVHeaderProps) {
   return (
-    <Card className={cn('cursor-pointer hover:shadow-lg', className)} onClick={handleClick}>
-      <CardHeader>
-        <CardTitle>{post.title}</CardTitle>
-        <CardDescription>{post.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">
-            {post.getFormattedDate()}
-          </span>
-          <div className="flex gap-1">
-            {post.tags.map(tag => (
-              <Badge key={tag} variant="secondary" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <header className="mb-8">
+      <h1 className="text-4xl font-bold">{name}</h1>
+      <p className="text-xl text-muted-foreground">{title}</p>
+      <p className="text-muted-foreground">{location} • {email}</p>
+      <p className="mt-4 leading-relaxed">{summary}</p>
+    </header>
   )
 }
 ```
 
-### Service Implementation
+#### Page Components
 ```typescript
-export class PostService {
-  constructor(private readonly postRepository: PostRepository) {}
+// ✅ Simple page with direct data access
+export default function CVPage() {
+  const cvService = new CVService()
+  const cv = cvService.getCV()
 
-  async getPublishedPosts(): Promise<Post[]> {
-    const posts = await this.postRepository.findPublished()
-    return this.sortPostsByDate(posts)
-  }
-
-  async getPostsByTag(tagValue: string): Promise<Post[]> {
-    const tag = Tag.create(tagValue)
-    const posts = await this.postRepository.findByTag(tag)
-    return this.sortPostsByDate(posts)
-  }
-
-  private sortPostsByDate(posts: Post[]): Post[] {
-    return posts.sort((a, b) => b.date.getTime() - a.date.getTime())
-  }
+  return (
+    <PageLayout>
+      <CVHeader
+        name={cv.metadata.name}
+        title={cv.metadata.title}
+        location={cv.metadata.location}
+        email={cv.metadata.email}
+        summary={cv.metadata.summary}
+      />
+      <Timeline items={timelineItems} />
+      <Highlights>
+        {cv.content.highlights.map((highlight, index) => (
+          <HighlightItem key={index} text={highlight.text} />
+        ))}
+      </Highlights>
+    </PageLayout>
+  )
 }
 ```
 
-### Hook Implementation
-```typescript
-export const usePosts = (postService: PostService) => {
-  const [posts, setPosts] = useState<Post[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+## Testing Standards
 
-  const fetchPublishedPosts = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      const publishedPosts = await postService.getPublishedPosts()
-      setPosts(publishedPosts)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch posts')
-    } finally {
-      setLoading(false)
+### 1. Unit Tests
+
+#### Service Tests
+```typescript
+// ✅ Simple service tests
+describe('CVService', () => {
+  it('should return CV data', () => {
+    const cvService = new CVService()
+    const cv = cvService.getCV()
+    
+    expect(cv.metadata.name).toBe('Rubén González Aranda')
+    expect(cv.content.highlights).toHaveLength(7)
+  })
+})
+```
+
+#### Component Tests
+```typescript
+// ✅ Component tests with proper mocking
+describe('CVHeader', () => {
+  it('should display CV metadata', () => {
+    const props = {
+      name: 'Test Name',
+      title: 'Test Title',
+      location: 'Test Location',
+      email: 'test@example.com',
+      summary: 'Test Summary'
     }
+
+    render(<CVHeader {...props} />)
+
+    expect(screen.getByText('Test Name')).toBeInTheDocument()
+    expect(screen.getByText('Test Title')).toBeInTheDocument()
+  })
+})
+```
+
+### 2. Integration Tests
+
+#### Page Tests
+```typescript
+// ✅ Integration tests
+describe('CV Page', () => {
+  it('should render all sections', () => {
+    render(<CVPage />)
+    
+    expect(screen.getByText('Rubén González Aranda')).toBeInTheDocument()
+    expect(screen.getByText('Career Highlights')).toBeInTheDocument()
+    expect(screen.getByText('Experience')).toBeInTheDocument()
+  })
+})
+```
+
+## File Organization
+
+### 1. Directory Structure
+```
+src/
+├── app/                    # Next.js pages
+├── components/             # Reusable UI components
+├── content/                # Data modules with Zod validation
+│   ├── cv.data.ts
+│   ├── pages.data.ts
+│   └── projects.data.ts
+├── application/            # Application services
+│   └── services/
+└── infrastructure/         # External integrations
+    └── pdf/
+```
+
+### 2. Naming Conventions
+
+#### Files
+- **Components**: PascalCase (`CVHeader.tsx`)
+- **Services**: PascalCase (`CVService.ts`)
+- **Data Modules**: camelCase with `.data.ts` suffix (`cv.data.ts`)
+- **Pages**: kebab-case (`cv/page.tsx`)
+
+#### Variables and Functions
+- **Variables**: camelCase (`cvData`)
+- **Functions**: camelCase (`getCV`)
+- **Constants**: UPPER_SNAKE_CASE (`MAX_LENGTH`)
+- **Classes**: PascalCase (`CVService`)
+
+## Performance Standards
+
+### 1. Bundle Optimization
+```typescript
+// ✅ Dynamic imports for heavy components
+const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <LoadingSpinner />,
+  ssr: false
+})
+```
+
+### 2. Memoization
+```typescript
+// ✅ Proper memoization
+export const ExpensiveComponent = React.memo(({ data }) => {
+  const processedData = useMemo(() => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }))
+  }, [data])
+
+  return (
+    <div>
+      {processedData.map(item => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </div>
+  )
+})
+```
+
+## Error Handling
+
+### 1. Validation Errors
+```typescript
+// ✅ Fail fast validation
+try {
+  export const cv = CVSchema.parse(cvData)
+} catch (error) {
+  console.error('CV data validation failed:', error)
+  process.exit(1)
+}
+```
+
+### 2. Component Errors
+```typescript
+// ✅ Error boundaries
+export class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
   }
 
-  useEffect(() => {
-    fetchPublishedPosts()
-  }, [])
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
 
-  return {
-    posts,
-    loading,
-    error,
-    refetch: fetchPublishedPosts
+  componentDidCatch(error, errorInfo) {
+    console.error('Component error:', error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>
+    }
+
+    return this.props.children
   }
 }
 ```
 
-## Enforcement
+## Security Standards
 
-### Code Review Checklist
+### 1. Input Validation
+```typescript
+// ✅ Zod validation for all inputs
+const UserSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1).max(100),
+  age: z.number().min(0).max(120)
+})
+```
 
-- [ ] No comments in code
-- [ ] Self-documenting variable and function names
-- [ ] Single responsibility principle followed
-- [ ] SOLID principles applied
-- [ ] Hexagonal architecture maintained
-- [ ] Complete implementations provided
-- [ ] Consistent naming conventions used
-- [ ] TypeScript types properly defined
-- [ ] Error handling implemented
-- [ ] Tests written for new functionality
+### 2. HTML Content
+```typescript
+// ✅ Safe HTML rendering
+<div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+```
 
-### Automated Checks
+## Documentation Standards
 
-- ESLint configuration enforces naming conventions
-- Prettier ensures consistent formatting
-- TypeScript strict mode catches type issues
-- Pre-commit hooks validate code quality
+### 1. Code Documentation
+- **No comments**: Code should be self-documenting
+- **Clear naming**: Use descriptive names
+- **Type definitions**: Comprehensive TypeScript interfaces
+- **Examples**: Include usage examples in tests
+
+### 2. Architecture Documentation
+- **README.md**: Project overview and setup
+- **ARCHITECTURE.md**: Technical architecture details
+- **DEVELOPMENT.md**: Development guidelines
+- **MIGRATION.md**: Migration documentation
+
+## Best Practices Summary
+
+1. **Write self-documenting code** without comments
+2. **Use Zod validation** for all data
+3. **Maintain type safety** with TypeScript
+4. **Keep architecture simple** with direct data access
+5. **Write comprehensive tests** for all functionality
+6. **Follow naming conventions** consistently
+7. **Optimize for performance** and bundle size
+8. **Handle errors gracefully** with proper validation
+9. **Document architecture** and decisions
+10. **Keep dependencies minimal** and focused

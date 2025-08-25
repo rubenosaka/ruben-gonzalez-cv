@@ -45,25 +45,25 @@ const cvData = {
   content: {
     highlights: [
       {
-        text: '**Led engineering teams of 3–10 developers**, balancing delivery with mentoring, onboarding and career development.',
+        text: '<strong>Led engineering teams of 3–10 developers</strong>, balancing delivery with mentoring, onboarding and career development.',
       },
       {
-        text: '**Owned roadmap sizing and prioritization**, estimating cost and timing, and aligning with business stakeholders.',
+        text: '<strong>Owned roadmap sizing and prioritization</strong>, estimating cost and timing, and aligning with business stakeholders.',
       },
       {
-        text: '**Saved ~4 hours/week by reducing production issues** and accelerated release cadence (bi-weekly → weekly) via structured reviews, CI/CD and mentoring practices.',
+        text: '<strong>Saved ~4 hours/week by reducing production issues</strong> and accelerated release cadence (bi-weekly → weekly) via structured reviews, CI/CD and mentoring practices.',
       },
       {
-        text: '**Introduced AI and automation** to optimize user lifecycle management and content generation workflows, saving ~8h/week and reducing operational risk.',
+        text: '<strong>Introduced AI and automation</strong> to optimize user lifecycle management and content generation workflows, saving ~8h/week and reducing operational risk.',
       },
       {
-        text: '**Built observability dashboards** with PostHog and Mixpanel, enabling business and product teams to make data-driven decisions.',
+        text: '<strong>Built observability dashboards</strong> with PostHog and Mixpanel, enabling business and product teams to make data-driven decisions.',
       },
       {
-        text: '**Cross-team impact:** Collaborated with Product, Marketing, Sales and QA to ensure measurable outcomes.',
+        text: '<strong>Cross-team impact:</strong> Collaborated with Product, Marketing, Sales and QA to ensure measurable outcomes.',
       },
       {
-        text: '**Product-driven mindset:** Partnered with business and product managers to translate technical solutions into growth and customer impact.',
+        text: '<strong>Product-driven mindset:</strong> Partnered with business and product managers to translate technical solutions into growth and customer impact.',
       },
     ],
     experience: [
@@ -167,7 +167,7 @@ const cvData = {
         company: 'Guía del Ocio',
         period: '03/2008–10/2011',
         description:
-          'Oversaw maintenance and development of **guiadelocio.com**.',
+          'Oversaw maintenance and development of <strong>guiadelocio.com</strong>.',
         highlights: [
           'Modernized site architecture with HTML, CSS, JavaScript, ColdFusion and PHP.',
           'Ensured stability and improved content workflows for editors.',
