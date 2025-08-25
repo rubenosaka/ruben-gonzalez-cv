@@ -63,19 +63,28 @@ export class MDXCVRepository implements CVRepository {
       }
     }
 
-    // Extraer el contenido después del header (después de la línea con ---)
-    const contentStartIndex = content.indexOf('---')
+    // Extraer el contenido después del header
+    // Buscar la primera línea que no sea metadata (después de las primeras líneas de contacto)
     let markdownContent = content
+    let contentStartLine = 0
 
-    if (contentStartIndex > 0) {
-      const afterHeader = content.substring(contentStartIndex + 3)
-      const nextHeaderIndex = afterHeader.indexOf('---')
-      if (nextHeaderIndex > 0) {
-        markdownContent = afterHeader.substring(nextHeaderIndex + 3).trim()
-      } else {
-        markdownContent = afterHeader.trim()
+    for (let i = 0; i < Math.min(15, lines.length); i++) {
+      const line = lines[i]?.trim() || ''
+      
+      // Si encontramos un heading ##, ese es el inicio del contenido real
+      if (line.startsWith('## ')) {
+        contentStartLine = i
+        break
+      }
+      
+      // Si encontramos una línea vacía seguida de contenido, también puede ser el inicio
+      if (line === '' && i + 1 < lines.length && lines[i + 1]?.trim().startsWith('## ')) {
+        contentStartLine = i + 1
+        break
       }
     }
+
+    markdownContent = lines.slice(contentStartLine).join('\n').trim()
 
     return {
       metadata: {
