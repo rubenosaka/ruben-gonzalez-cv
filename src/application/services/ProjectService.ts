@@ -1,16 +1,19 @@
-import { Project } from '@/domain/entities/Project'
-import { Slug } from '@/domain/value-objects/Slug'
-import { ProjectRepository } from '@/application/interfaces/ProjectRepository'
+import { projects } from '@/content/projects.data'
 
 export class ProjectService {
-  constructor(private readonly projectRepository: ProjectRepository) {}
-
-  async listProjects(): Promise<Project[]> {
-    return this.projectRepository.listProjects()
+  listProjects() {
+    return projects
   }
 
-  async getProjectBySlug(slugValue: string): Promise<Project | null> {
-    const slug = Slug.create(slugValue)
-    return this.projectRepository.getProjectBySlug(slug)
+  getProjectBySlug(slug: string) {
+    return projects.find(project => project.slug === slug) || null
+  }
+
+  searchProjects(query: string) {
+    return projects.filter(project => 
+      project.title.toLowerCase().includes(query.toLowerCase()) ||
+      project.summary.toLowerCase().includes(query.toLowerCase()) ||
+      project.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+    )
   }
 }

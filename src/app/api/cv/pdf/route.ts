@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server'
-import { DependencyContainer } from '@/infrastructure/container/di'
+import { CVService } from '@/application/services/CVService'
+import { ReactPdfCVGenerator } from '@/infrastructure/pdf/ReactPdfCVGenerator'
 
 export const runtime = 'nodejs'
 
 export async function GET() {
   try {
-    const container = DependencyContainer.getInstance()
-    const cvExportService = container.getCVExportService()
+    const cvService = new CVService()
+    const cv = cvService.getCV()
 
-    const pdfBuffer = await cvExportService.exportPdf()
+    const pdfGenerator = new ReactPdfCVGenerator()
+    const pdfBuffer = await pdfGenerator.generatePDF(cv)
 
     return new NextResponse(pdfBuffer as any, {
       status: 200,

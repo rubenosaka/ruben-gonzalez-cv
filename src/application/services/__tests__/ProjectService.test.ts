@@ -1,74 +1,59 @@
 import { ProjectService } from '../ProjectService'
-import type { ProjectRepository } from '@/application/interfaces/ProjectRepository'
-import { Project } from '@/domain/entities/Project'
-import { Title } from '@/domain/value-objects/Title'
-import { Summary } from '@/domain/value-objects/Summary'
-import { Slug } from '@/domain/value-objects/Slug'
-
-class MockProjectRepository implements ProjectRepository {
-  private projects: Project[] = []
-
-  constructor(projects: Project[] = []) {
-    this.projects = projects
-  }
-
-  async listProjects(): Promise<Project[]> {
-    return this.projects
-  }
-
-  async getProjectBySlug(slug: Slug): Promise<Project | null> {
-    return this.projects.find(p => p.slug.value === slug.value) ?? null
-  }
-}
 
 describe('ProjectService', () => {
-  const mockProject = Project.create(
-    {
-      title: Title.create('Test Project'),
-      slug: Slug.create('test-project'),
-      role: 'Lead Developer',
-      period: '2023-2024',
-      stack: ['React', 'TypeScript'],
-      links: [{ label: 'Demo', url: 'https://demo.com' }],
-      summary: Summary.create('A test project')
-    },
-    'Test content'
-  )
+  let projectService: ProjectService
 
-  it('should list all projects', async () => {
-    const mockRepo = new MockProjectRepository([mockProject])
-    const service = new ProjectService(mockRepo)
-
-    const result = await service.listProjects()
-
-    expect(result).toHaveLength(1)
-    expect(result[0]).toBe(mockProject)
+  beforeEach(() => {
+    projectService = new ProjectService()
   })
 
-  it('should get project by slug', async () => {
-    const mockRepo = new MockProjectRepository([mockProject])
-    const service = new ProjectService(mockRepo)
+  describe('listProjects', () => {
+    it('should return all projects', () => {
+      const result = projectService.listProjects()
 
-    const result = await service.getProjectBySlug('test-project')
-
-    expect(result).toBe(mockProject)
+      expect(result).toHaveLength(4)
+      expect(result[0].slug).toBe('frenetic')
+      expect(result[1].slug).toBe('msd-spain')
+      expect(result[2].slug).toBe('otras-politicas')
+      expect(result[3].slug).toBe('psd')
+    })
   })
 
-  it('should return null for non-existent project', async () => {
-    const mockRepo = new MockProjectRepository([mockProject])
-    const service = new ProjectService(mockRepo)
+  describe('getProjectBySlug', () => {
+    it('should return a project when found', () => {
+      const result = projectService.getProjectBySlug('frenetic')
 
-    const result = await service.getProjectBySlug('non-existent')
+      expect(result).toBeDefined()
+      expect(result?.slug).toBe('frenetic')
+      expect(result?.title).toBe('Frenetic.ai')
+    })
 
-    expect(result).toBeNull()
+    it('should return null when project not found', () => {
+      const result = projectService.getProjectBySlug('non-existent')
+
+      expect(result).toBeNull()
+    })
   })
 
-  it('should return empty array when no projects exist', async () => {
-    const mockRepo = new MockProjectRepository([])
-    const service = new ProjectService(mockRepo)
+  describe('searchProjects', () => {
+    it('should return projects matching title query', () => {
+      const result = projectService.searchProjects('Frenetic')
 
-    const result = await service.listProjects()
+      expect(result).toHaveLength(1)
+      expect(result[0].slug).toBe('frenetic')
+    })
 
-    expect(result).toHaveLength(0)
+    it('should return projects matching tag query', () => {
+      const result = projectService.searchProjects('Healthcare')
+
+      expect(result).toHaveLength(1)
+      expect(result[0].slug).toBe('msd-spain')
+    })
+
+    it('should return empty array when no matches', () => {
+      const result = projectService.searchProjects('non-existent')
+
+      expect(result).toHaveLength(0)
+    })
   })
 })

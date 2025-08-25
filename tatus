@@ -1,0 +1,16 @@
+[35mpackage-lock.json[m[36m:[m[32m25[m[36m:[m        "[1;31mremark[m-gfm": "^4.0.1",
+[35mpackage-lock.json[m[36m:[m[32m11163[m[36m:[m        "[1;31mremark[m-parse": "^11.0.0",
+[35mpackage-lock.json[m[36m:[m[32m11164[m[36m:[m        "[1;31mremark[m-[1;31mrehype[m": "^11.0.0",
+[35mpackage-lock.json[m[36m:[m[32m11326[m[36m:[m    "node_modules/[1;31mremark[m-gfm": {
+[35mpackage-lock.json[m[36m:[m[32m11328[m[36m:[m      "resolved": "https://registry.npmjs.org/[1;31mremark[m-gfm/-/[1;31mremark[m-gfm-4.0.1.tgz",
+[35mpackage-lock.json[m[36m:[m[32m11335[m[36m:[m        "[1;31mremark[m-parse": "^11.0.0",
+[35mpackage-lock.json[m[36m:[m[32m11336[m[36m:[m        "[1;31mremark[m-stringify": "^11.0.0",
+[35mpackage-lock.json[m[36m:[m[32m11344[m[36m:[m    "node_modules/[1;31mremark[m-parse": {
+[35mpackage-lock.json[m[36m:[m[32m11346[m[36m:[m      "resolved": "https://registry.npmjs.org/[1;31mremark[m-parse/-/[1;31mremark[m-parse-11.0.0.tgz",
+[35mpackage-lock.json[m[36m:[m[32m11360[m[36m:[m    "node_modules/[1;31mremark[m-[1;31mrehype[m": {
+[35mpackage-lock.json[m[36m:[m[32m11362[m[36m:[m      "resolved": "https://registry.npmjs.org/[1;31mremark[m-[1;31mrehype[m/-/[1;31mremark[m-[1;31mrehype[m-11.1.2.tgz",
+[35mpackage-lock.json[m[36m:[m[32m11377[m[36m:[m    "node_modules/[1;31mremark[m-stringify": {
+[35mpackage-lock.json[m[36m:[m[32m11379[m[36m:[m      "resolved": "https://registry.npmjs.org/[1;31mremark[m-stringify/-/[1;31mremark[m-stringify-11.0.0.tgz",
+[35mpackage.json[m[36m:[m[32m33[m[36m:[m    "[1;31mremark[m-gfm": "^4.0.1",
+[35msrc/components/cv/Highlights.tsx[m[36m:[m[32m4[m[36m:[mimport [1;31mremark[mGfm from '[1;31mremark[m-gfm'
+[35msrc/components/cv/Highlights.tsx[m[36m:[m[32m35[m[36m:[m            [1;31mremark[mPlugins={[[1;31mremark[mGfm]}

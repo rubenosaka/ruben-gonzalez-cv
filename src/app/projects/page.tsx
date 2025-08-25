@@ -1,12 +1,10 @@
-import { DependencyContainer } from '@/infrastructure/container/di'
+import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { ProjectsGrid } from '@/components/ProjectsGrid'
 
-export default async function ProjectsPage() {
-  const container = DependencyContainer.getInstance()
-  const projectService = container.getProjectService()
-
-  const projects = await projectService.listProjects()
+export default function ProjectsPage() {
+  const projectService = new ProjectService()
+  const projects = projectService.listProjects()
 
   return (
     <PageLayout>
@@ -19,14 +17,12 @@ export default async function ProjectsPage() {
       </header>
 
       <ProjectsGrid
-        projects={projects.map((project) => ({
-          slug: project.slug.value,
-          title: project.title.value,
-          summary: project.summary.value || '',
-          stack: [...project.stack],
-          role: project.role,
-          period: project.period,
-          links: project.links ? [...project.links] : [],
+        projects={projects.map((project: any) => ({
+          slug: project.slug,
+          title: project.title,
+          summary: project.summary,
+          stack: project.tags,
+          links: project.links || [],
         }))}
       />
     </PageLayout>

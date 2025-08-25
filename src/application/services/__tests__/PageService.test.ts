@@ -1,59 +1,50 @@
 import { PageService } from '../PageService'
-import type { PageRepository } from '@/application/interfaces/PageRepository'
-import { Page } from '@/domain/entities/Page'
-import { Title } from '@/domain/value-objects/Title'
-import { Slug } from '@/domain/value-objects/Slug'
-
-class MockPageRepository implements PageRepository {
-  private pages: Page[] = []
-
-  constructor(pages: Page[] = []) {
-    this.pages = pages
-  }
-
-  async getPageBySlug(slug: Slug): Promise<Page | null> {
-    return this.pages.find((p) => p.slug.value === slug.value) ?? null
-  }
-
-  async getAllPages(): Promise<Page[]> {
-    return this.pages
-  }
-}
 
 describe('PageService', () => {
-  const mockPage = Page.create(
-    {
-      title: Title.create('About Me'),
-      slug: Slug.create('about-me'),
-      description: 'About Me page',
-    },
-    'About Me page content'
-  )
+  let pageService: PageService
 
-  it('should get page by slug', async () => {
-    const mockRepo = new MockPageRepository([mockPage])
-    const service = new PageService(mockRepo)
-
-    const result = await service.getPageBySlug(Slug.create('about-me'))
-
-    expect(result).toBe(mockPage)
+  beforeEach(() => {
+    pageService = new PageService()
   })
 
-  it('should return null for non-existent page', async () => {
-    const mockRepo = new MockPageRepository([mockPage])
-    const service = new PageService(mockRepo)
+  describe('getPageBySlug', () => {
+    it('should return a page when found', () => {
+      const result = pageService.getPageBySlug('about-me')
 
-    const result = await service.getPageBySlug(Slug.create('non-existent'))
+      expect(result).toBeDefined()
+      expect(result?.slug).toBe('about-me')
+      expect(result?.title).toBe('About Me')
+    })
 
-    expect(result).toBeNull()
+    it('should return null when page not found', () => {
+      const result = pageService.getPageBySlug('non-existent')
+
+      expect(result).toBeNull()
+    })
   })
 
-  it('should get all pages', async () => {
-    const mockRepo = new MockPageRepository([mockPage])
-    const service = new PageService(mockRepo)
+  describe('getAllPages', () => {
+    it('should return all pages', () => {
+      const result = pageService.getAllPages()
 
-    const result = await service.getAllPages()
+      expect(result).toHaveLength(2)
+      expect(result[0].slug).toBe('about-me')
+      expect(result[1].slug).toBe('now')
+    })
+  })
 
-    expect(result).toEqual([mockPage])
+  describe('searchPages', () => {
+    it('should return pages matching query', () => {
+      const result = pageService.searchPages('About')
+
+      expect(result).toHaveLength(1)
+      expect(result[0].slug).toBe('about-me')
+    })
+
+    it('should return empty array when no matches', () => {
+      const result = pageService.searchPages('non-existent')
+
+      expect(result).toHaveLength(0)
+    })
   })
 })

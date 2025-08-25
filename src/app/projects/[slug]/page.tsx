@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
-import { DependencyContainer } from '@/infrastructure/container/di'
-import { MDXContent } from '@/components/MDXContent'
+import { ProjectService } from '@/application/services/ProjectService'
 import { Button } from '@/components/ui/button'
 import { PageLayout } from '@/components/PageLayout'
 
@@ -12,10 +11,8 @@ interface ProjectPageProps {
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params
-  const container = DependencyContainer.getInstance()
-  const projectService = container.getProjectService()
-
-  const project = await projectService.getProjectBySlug(slug)
+  const projectService = new ProjectService()
+  const project = projectService.getProjectBySlug(slug)
 
   if (!project) {
     notFound()
@@ -31,30 +28,24 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
 
         <h1 className="mb-2 text-4xl font-bold">
-          {project.title.value || 'Project'}
+          {project.title}
         </h1>
         <p className="mb-4 text-xl text-muted-foreground">
-          {project.summary.value || ''}
+          {project.summary}
         </p>
 
-        <div className="mb-6 flex items-center gap-4 text-sm text-muted-foreground">
-          <span>{project.role}</span>
-          <span>•</span>
-          <span>{project.period}</span>
-        </div>
-
         <div className="mb-6 flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
+          {project.tags.map((tag) => (
             <span
-              key={tech}
+              key={tag}
               className="rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground"
             >
-              {tech}
+              {tag}
             </span>
           ))}
         </div>
 
-        {project.links.length > 0 && (
+        {project.links && project.links.length > 0 && (
           <div className="flex gap-3">
             {project.links.map((link) => (
               <Button key={link.label} variant="outline" asChild>
@@ -67,7 +58,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         )}
       </header>
 
-      <MDXContent source={project.content} format="mdx" />
+      <div dangerouslySetInnerHTML={{ __html: project.bodyHtml }} />
     </PageLayout>
   )
 }

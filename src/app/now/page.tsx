@@ -1,14 +1,10 @@
 import { notFound } from 'next/navigation'
-import { DependencyContainer } from '@/infrastructure/container/di'
-import { MDXContent } from '@/components/MDXContent'
+import { PageService } from '@/application/services/PageService'
 import { PageLayout } from '@/components/PageLayout'
-import { Slug } from '@/domain/value-objects/Slug'
 
-export default async function NowPage() {
-  const container = DependencyContainer.getInstance()
-  const pageService = container.getPageService()
-
-  const page = await pageService.getPageBySlug(Slug.create('now'))
+export default function NowPage() {
+  const pageService = new PageService()
+  const page = pageService.getPageBySlug('now')
 
   if (!page) {
     notFound()
@@ -17,10 +13,10 @@ export default async function NowPage() {
   return (
     <PageLayout>
       <header className="mb-8">
-        <h1 className="mb-4 text-4xl font-bold">{page.title.value}</h1>
+        <h1 className="mb-4 text-4xl font-bold">{page.title}</h1>
       </header>
 
-      <MDXContent source={page.content} format="md" />
+      <div dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />
     </PageLayout>
   )
 }

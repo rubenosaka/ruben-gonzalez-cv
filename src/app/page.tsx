@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { DependencyContainer } from '@/infrastructure/container/di'
+import { CVService } from '@/application/services/CVService'
+import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectsSection } from '@/components/ProjectsSection'
@@ -31,25 +32,24 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function HomePage() {
-  const container = DependencyContainer.getInstance()
-  const cvService = container.getCVService()
-  const projectService = container.getProjectService()
+export default function HomePage() {
+  const cvService = new CVService()
+  const projectService = new ProjectService()
 
-  const cv = await cvService.getCV()
-  const projects = await projectService.listProjects()
+  const cv = cvService.getCV()
+  const projects = projectService.listProjects()
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: cv.name,
-    jobTitle: cv.title,
-    email: cv.email,
+    name: cv.metadata.name,
+    jobTitle: cv.metadata.title,
+    email: cv.metadata.email,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: cv.location,
+      addressLocality: cv.metadata.location,
     },
-    description: cv.summary,
+    description: cv.metadata.summary,
     knowsAbout: [
       'React',
       'TypeScript',
@@ -73,17 +73,15 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <PageLayout>
-        <AnimatedHero name={cv.name} title={cv.title} />
+        <AnimatedHero name={cv.metadata.name} title={cv.metadata.title} />
 
         <ProjectsSection
-          projects={projects.map((project) => ({
-            slug: project.slug.value,
-            title: project.title.value,
-            summary: project.summary.value || '',
-            stack: [...project.stack],
-            role: project.role,
-            period: project.period,
-            links: [...project.links],
+          projects={projects.map((project: any) => ({
+            slug: project.slug,
+            title: project.title,
+            summary: project.summary,
+            stack: project.tags,
+            links: project.links || [],
           }))}
         />
       </PageLayout>

@@ -1,13 +1,4 @@
-/**
- * This project is intentionally over-engineered (DDD, Hexagonal, SOLID) as part of a developer CV.
- * It demonstrates architectural thinking rather than being optimized for minimalism.
- *
- * This adapter implements the CVPdfGenerator port, showcasing the Hexagonal Architecture pattern.
- * It serves as an example of how external concerns (PDF generation) are isolated from the domain.
- */
 import React from 'react'
-import { CVPdfGenerator } from '@/domain/ports/CVPdfGenerator'
-import { CV } from '@/domain/entities/CV'
 import {
   Document,
   Page,
@@ -18,7 +9,6 @@ import {
   Font,
 } from '@react-pdf/renderer'
 
-// Register fonts for proper UTF-8 support
 Font.register({
   family: 'Inter',
   src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2',
@@ -51,10 +41,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#6b7280',
     marginBottom: 8,
-  },
-  email: {
-    color: '#3b82f6',
-    textDecoration: 'none',
   },
   section: {
     marginBottom: 16,
@@ -102,102 +88,44 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   skill: {
-    backgroundColor: '#f3f4f6',
-    padding: '4 8',
-    borderRadius: 4,
-    fontSize: 9,
-    color: '#374151',
-  },
-  project: {
-    marginBottom: 8,
-    breakInside: 'avoid',
-  },
-  projectTitle: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: 2,
-  },
-  projectDescription: {
     fontSize: 9,
     color: '#6b7280',
+    backgroundColor: '#f3f4f6',
+    padding: '4px 8px',
+    borderRadius: 4,
   },
 })
 
-interface CVPDFProps {
-  cv: CV
-}
-
-const CVPDF = ({ cv }: CVPDFProps) => (
-  <Document
-    title={`${cv.name} - CV`}
-    author={cv.name}
-    subject="Professional CV"
-    keywords="CV, resume, software engineer, full stack developer"
-    creator="CV Generator"
-    producer="React PDF"
-  >
+const CVPDF = ({ cv }: { cv: any }) => (
+  <Document>
     <Page size="A4" style={styles.page}>
-      {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.name}>{cv.name}</Text>
-        <Text style={styles.title}>{cv.title}</Text>
+        <Text style={styles.name}>{cv.metadata.name}</Text>
+        <Text style={styles.title}>{cv.metadata.title}</Text>
         <Text style={styles.contact}>
-          {cv.location} • {cv.email}
+          {cv.metadata.location} • {cv.metadata.email}
         </Text>
       </View>
 
-      {/* Profile */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Profile</Text>
-        <Text style={styles.content}>{cv.summary}</Text>
+        <Text style={styles.sectionTitle}>Summary</Text>
+        <Text style={styles.content}>{cv.metadata.summary}</Text>
       </View>
 
-      {/* Experience */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Experience</Text>
-        <View style={styles.experienceItem}>
-          <View style={styles.experienceHeader}>
-            <Text style={styles.company}>Frenetic.ai</Text>
-            <Text style={styles.period}>02/2021 - Present</Text>
+        {cv.content.experience.map((exp: any, index: number) => (
+          <View key={index} style={styles.experienceItem}>
+            <View style={styles.experienceHeader}>
+              <Text style={styles.company}>{exp.company}</Text>
+              <Text style={styles.period}>{exp.period}</Text>
+            </View>
+            <Text style={styles.role}>{exp.title}</Text>
+            <Text style={styles.content}>{exp.description}</Text>
           </View>
-          <Text style={styles.role}>Engineering Manager</Text>
-          <Text style={styles.content}>
-            Leading engineering team in the development of a SaaS platform for magnet design.
-            Responsible for team leadership, architectural strategy, and implementation of best practices.
-            Tech stack includes PHP 8 (Laravel 9), Vue 3, TypeScript, Pinia, MySQL, Python (REST API),
-            AWS, serverless deployment, and PDF generation with Puppeteer.
-          </Text>
-        </View>
-
-        <View style={styles.experienceItem}>
-          <View style={styles.experienceHeader}>
-            <Text style={styles.company}>Isobar Spain (Dentsu Group)</Text>
-            <Text style={styles.period}>04/2019 - 02/2021</Text>
-          </View>
-          <Text style={styles.role}>Team Lead / Full-Stack Developer</Text>
-          <Text style={styles.content}>
-            Technical lead on web and application projects using Python, PHP, Node.js/Express,
-            React, and Material UI. Integrated CMS and e-commerce solutions including Salesforce,
-            WordPress, Prestashop, Drupal, and Magento.
-          </Text>
-        </View>
-
-        <View style={styles.experienceItem}>
-          <View style={styles.experienceHeader}>
-            <Text style={styles.company}>Product School</Text>
-            <Text style={styles.period}>06/2018 - 04/2019</Text>
-          </View>
-          <Text style={styles.role}>Full-Stack Developer</Text>
-          <Text style={styles.content}>
-            Developed components and apps, including an LMS using Node.js and React.
-            Improved performance and SEO with advanced AWS deployment strategies,
-            Git workflows, and Twig/Timber templating.
-          </Text>
-        </View>
+        ))}
       </View>
 
-      {/* Skills */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Skills</Text>
         <View style={styles.skills}>
@@ -208,38 +136,14 @@ const CVPDF = ({ cv }: CVPDFProps) => (
           <Text style={styles.skill}>Node.js/Express</Text>
           <Text style={styles.skill}>PHP (Laravel, Symfony)</Text>
           <Text style={styles.skill}>Python</Text>
-          <Text style={styles.skill}>C#/.NET</Text>
           <Text style={styles.skill}>AWS</Text>
           <Text style={styles.skill}>Docker</Text>
-          <Text style={styles.skill}>GitLab CI/CD</Text>
           <Text style={styles.skill}>Clean Architecture</Text>
           <Text style={styles.skill}>DDD</Text>
           <Text style={styles.skill}>SOLID Principles</Text>
         </View>
       </View>
 
-      {/* Projects */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Portfolio</Text>
-        <View style={styles.project}>
-          <Text style={styles.projectTitle}>simulator.frenetic.ai</Text>
-          <Text style={styles.projectDescription}>SaaS magnet simulator</Text>
-        </View>
-        <View style={styles.project}>
-          <Text style={styles.projectTitle}>app.frenetic.ai</Text>
-          <Text style={styles.projectDescription}>SaaS magnet design platform</Text>
-        </View>
-        <View style={styles.project}>
-          <Text style={styles.projectTitle}>cartesio.com</Text>
-          <Text style={styles.projectDescription}>Cartesio Investment Funds</Text>
-        </View>
-        <View style={styles.project}>
-          <Text style={styles.projectTitle}>productschool.com</Text>
-          <Text style={styles.projectDescription}>Product School platform</Text>
-        </View>
-      </View>
-
-      {/* Education */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Education</Text>
         <Text style={styles.content}>
@@ -251,8 +155,8 @@ const CVPDF = ({ cv }: CVPDFProps) => (
   </Document>
 )
 
-export class ReactPdfCVGenerator implements CVPdfGenerator {
-  async generateFromCV(cv: CV): Promise<Buffer> {
+export class ReactPdfCVGenerator {
+  async generatePDF(cv: any): Promise<Buffer> {
     try {
       const blob = await pdf(<CVPDF cv={cv} />).toBlob()
       const arrayBuffer = await blob.arrayBuffer()
@@ -262,9 +166,5 @@ export class ReactPdfCVGenerator implements CVPdfGenerator {
         `Failed to generate PDF: ${error instanceof Error ? error.message : 'Unknown error'}`
       )
     }
-  }
-
-  async generateFromHtml(html: string): Promise<Buffer> {
-    throw new Error('generateFromHtml is deprecated. Use generateFromCV instead.')
   }
 }
