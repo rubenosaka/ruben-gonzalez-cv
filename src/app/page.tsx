@@ -81,11 +81,11 @@ export default async function HomePage() {
           projects={projects.map((project) => ({
             slug: project.slug.value,
             title: project.title.value,
-            summary: project.summary.value,
-            stack: project.stack,
+            summary: project.summary.value || '',
+            stack: [...project.stack],
             role: project.role,
             period: project.period,
-            links: project.links,
+            links: project.links ? [...project.links] : [],
           }))}
         />
       </PageLayout>

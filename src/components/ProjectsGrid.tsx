@@ -19,18 +19,20 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <TrinukiBanner variant="project" />
-      {projects.map((project, index) => (
-        <ProjectCard
-          key={project.slug}
-          title={project.title}
-          summary={project.summary}
-          tags={project.stack}
-          href={`/projects/${project.slug}`}
-          role={project.role}
-          period={project.period}
-          links={project.links || []}
-        />
-      ))}
+              {projects.map((project, index) => {
+          const props: any = {
+            title: project.title,
+            summary: project.summary,
+            tags: project.stack,
+            href: `/projects/${project.slug}`,
+            links: project.links || [],
+          }
+          
+          if (project.role) props.role = project.role
+          if (project.period) props.period = project.period
+          
+          return <ProjectCard key={project.slug} {...props} />
+        })}
     </div>
   )
 }
