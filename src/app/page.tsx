@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { DependencyContainer } from '@/infrastructure/container/di'
-import { CVService } from '@/application/services/CVService'
-import { ProjectService } from '@/application/services/ProjectService'
+
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectsSection } from '@/components/ProjectsSection'
@@ -9,7 +8,7 @@ import { ProjectsSection } from '@/components/ProjectsSection'
 export const metadata: Metadata = {
   title: 'Rubén González Aranda - Senior Full Stack Developer',
   description:
-    'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+    'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
   keywords: [
     'Full Stack Developer',
     'React',
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Rubén González Aranda - Senior Full Stack Developer',
     description:
-      'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+      'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
     type: 'website',
     locale: 'en_US',
   },
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Rubén González Aranda - Senior Full Stack Developer',
     description:
-      'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
+      'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
   },
 }
 
