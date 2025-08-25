@@ -6,13 +6,34 @@ import path from 'path'
 export class MDXCVRepository implements CVRepository {
   async getCV(): Promise<CV> {
     try {
-      const cvFilePath = path.join(process.cwd(), 'content', 'cv.md')
+      const possiblePaths = [
+        path.join(process.cwd(), 'content', 'cv.mdx'),
+        path.join(process.cwd(), 'content', 'cv.md'),
+      ]
+
+      let cvFilePath: string | undefined
+      let format: 'mdx' | 'md' | undefined
+
+      for (const filePath of possiblePaths) {
+        try {
+          await fs.access(filePath)
+          cvFilePath = filePath
+          format = filePath.endsWith('.mdx') ? 'mdx' : 'md'
+          break
+        } catch {
+          continue
+        }
+      }
+
+      if (!cvFilePath || !format) {
+        throw new Error('CV file not found (tried cv.mdx and cv.md)')
+      }
+
       const cvContent = await fs.readFile(cvFilePath, 'utf-8')
 
-      // Extraer metadata del frontmatter si existe, o parsear del contenido
-      const { metadata, content } = this.parseCVContent(cvContent)
+      const { metadata, content } = this.parseCVContent(cvContent, format)
 
-      return CV.create(metadata, content)
+      return CV.create(metadata, content, format)
     } catch (error) {
       throw new Error(
         `Failed to load CV: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -20,15 +41,16 @@ export class MDXCVRepository implements CVRepository {
     }
   }
 
-  private parseCVContent(content: string): { metadata: any; content: string } {
-    // Buscar frontmatter al inicio del archivo
+  private parseCVContent(
+    content: string,
+    format: 'mdx' | 'md'
+  ): { metadata: any; content: string } {
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
 
     if (frontmatterMatch && frontmatterMatch[1] && frontmatterMatch[2]) {
       const frontmatter = frontmatterMatch[1]
       const markdownContent = frontmatterMatch[2]
 
-      // Parsear el frontmatter
       const metadata = this.parseFrontmatter(frontmatter)
 
       return {
@@ -37,66 +59,17 @@ export class MDXCVRepository implements CVRepository {
       }
     }
 
-    // Si no hay frontmatter, extraer metadata del primer heading y líneas siguientes
-    const lines = content.split('\n')
-    const name = lines[0]?.replace('# ', '').trim() || 'Rubén González Aranda'
-
-    // Buscar información de contacto en las líneas siguientes
-    let title = ''
-    let email = ''
-    let location = ''
-    let summary = ''
-
-    for (let i = 1; i < Math.min(10, lines.length); i++) {
-      const line = lines[i]?.trim() || ''
-
-      if (line.includes('**') && line.includes('**')) {
-        title = line.replace(/\*\*/g, '').trim()
-      } else if (line.includes('@') && line.includes('.')) {
-        const emailMatch = line.match(/[\w.-]+@[\w.-]+\.\w+/)
-        email = emailMatch?.[0] || ''
-      } else if (line.includes('Madrid') || line.includes('Spain')) {
-        location = line.trim()
-      } else if (line && !line.startsWith('---') && !line.startsWith('##')) {
-        summary = line.trim()
-        break
-      }
-    }
-
-    // Extraer el contenido después del header
-    // Buscar la primera línea que no sea metadata (después de las primeras líneas de contacto)
-    let markdownContent = content
-    let contentStartLine = 0
-
-    for (let i = 0; i < Math.min(15, lines.length); i++) {
-      const line = lines[i]?.trim() || ''
-      
-      // Si encontramos un heading ##, ese es el inicio del contenido real
-      if (line.startsWith('## ')) {
-        contentStartLine = i
-        break
-      }
-      
-      // Si encontramos una línea vacía seguida de contenido, también puede ser el inicio
-      if (line === '' && i + 1 < lines.length && lines[i + 1]?.trim().startsWith('## ')) {
-        contentStartLine = i + 1
-        break
-      }
-    }
-
-    markdownContent = lines.slice(contentStartLine).join('\n').trim()
-
+    // Si no hay frontmatter, usar metadata por defecto y todo el contenido como markdown
     return {
       metadata: {
-        name,
-        title: title || 'Engineering Manager / Full-Stack Tech Lead',
-        email: email || 'rubenosaka@gmail.com',
-        location: location || 'Madrid, Spain',
+        name: 'Rubén González Aranda',
+        title: 'Engineering Manager / Full-Stack Tech Lead',
+        email: 'rubenosaka@gmail.com',
+        location: 'Madrid, Spain',
         summary:
-          summary ||
           'Engineering Manager with over 18 years of experience leading teams and building digital products.',
       },
-      content: markdownContent,
+      content: content.trim(),
     }
   }
 

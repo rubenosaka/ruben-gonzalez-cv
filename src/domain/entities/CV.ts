@@ -9,11 +9,12 @@ export interface CVMetadata {
 export class CV {
   private constructor(
     private readonly _metadata: CVMetadata,
-    private readonly _content: string
+    private readonly _content: string,
+    private readonly _format: 'mdx' | 'md'
   ) {}
 
-  static create(metadata: CVMetadata, content: string): CV {
-    return new CV(metadata, content)
+  static create(metadata: CVMetadata, content: string, format: 'mdx' | 'md' = 'md'): CV {
+    return new CV(metadata, content, format)
   }
 
   get name(): string {
@@ -38,6 +39,10 @@ export class CV {
 
   get content(): string {
     return this._content
+  }
+
+  get format(): 'mdx' | 'md' {
+    return this._format
   }
 
   get metadata(): Readonly<CVMetadata> {

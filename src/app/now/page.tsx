@@ -20,7 +20,7 @@ export default async function NowPage() {
         <h1 className="mb-4 text-4xl font-bold">{page.title.value}</h1>
       </header>
 
-      <MDXContent content={page.content} />
+      <MDXContent source={page.content} format="md" />
     </PageLayout>
   )
 }

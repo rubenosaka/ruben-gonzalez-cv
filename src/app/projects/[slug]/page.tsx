@@ -67,7 +67,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         )}
       </header>
 
-      <MDXContent content={project.content} />
+      <MDXContent source={project.content} format="mdx" />
     </PageLayout>
   )
 }

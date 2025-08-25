@@ -65,7 +65,7 @@ export default async function CVPage() {
         <Timeline items={timelineItems} />
 
         <div className="prose prose-gray max-w-none dark:prose-invert">
-          <MDXContent content={cv.content} />
+          <MDXContent source={cv.content} format={cv.format} />
         </div>
       </PageLayout>
     )
