@@ -10,8 +10,16 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Rubén González Aranda - Full Stack Developer',
-  description: 'Personal portfolio and CV showcasing clean architecture, DDD, and modern web development skills.',
-  keywords: ['Full Stack Developer', 'Clean Architecture', 'DDD', 'TypeScript', 'Next.js', 'React'],
+  description:
+    'Personal portfolio and CV showcasing clean architecture, DDD, and modern web development skills.',
+  keywords: [
+    'Full Stack Developer',
+    'Clean Architecture',
+    'DDD',
+    'TypeScript',
+    'Next.js',
+    'React',
+  ],
   authors: [{ name: 'Rubén González Aranda' }],
   creator: 'Rubén González Aranda',
   publisher: 'Rubén González Aranda',
@@ -29,7 +37,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://rubengonzalez.dev',
     title: 'Rubén González Aranda - Full Stack Developer',
-    description: 'Personal portfolio and CV showcasing clean architecture, DDD, and modern web development skills.',
+    description:
+      'Personal portfolio and CV showcasing clean architecture, DDD, and modern web development skills.',
     siteName: 'Rubén González Aranda',
     images: [
       {
@@ -43,7 +52,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Rubén González Aranda - Full Stack Developer',
-    description: 'Personal portfolio and CV showcasing clean architecture, DDD, and modern web development skills.',
+    description:
+      'Personal portfolio and CV showcasing clean architecture, DDD, and modern web development skills.',
     images: ['/og-default.png'],
     creator: '@rubengonzalez',
   },
@@ -74,11 +84,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen flex flex-col">
+          <div className="flex min-h-screen flex-col">
             <SiteHeader />
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <SiteFooter />
           </div>
         </ThemeProvider>

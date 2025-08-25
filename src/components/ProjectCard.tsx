@@ -31,7 +31,7 @@ export function ProjectCard({
       transition={{ duration: 0.3 }}
     >
       <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-      
+
       {(role || period) && (
         <div className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
           {role && <span>{role}</span>}
@@ -39,7 +39,7 @@ export function ProjectCard({
           {period && <span>{period}</span>}
         </div>
       )}
-      
+
       <p className="mb-4 text-muted-foreground">{summary}</p>
 
       <div className="mb-4 flex flex-wrap gap-2">
@@ -47,9 +47,7 @@ export function ProjectCard({
           <SkillPill key={tag}>{tag}</SkillPill>
         ))}
         {tags.length > 3 && (
-          <SkillPill className="text-xs">
-            +{tags.length - 3} more
-          </SkillPill>
+          <SkillPill className="text-xs">+{tags.length - 3} more</SkillPill>
         )}
       </div>
 
@@ -65,7 +63,7 @@ export function ProjectCard({
             {link.label}
           </a>
         ))}
-        
+
         <a
           href={href}
           className="text-sm text-primary transition-colors hover:text-primary/80"

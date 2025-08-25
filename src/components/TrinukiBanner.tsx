@@ -1,5 +1,9 @@
+'use client'
+
+import { motion } from 'framer-motion'
+
 interface TrinukiBannerProps {
-  variant: 'home' | 'project'
+  variant: string
 }
 
 export function TrinukiBanner({ variant }: TrinukiBannerProps) {
@@ -7,10 +11,14 @@ export function TrinukiBanner({ variant }: TrinukiBannerProps) {
   const nukiImage = '/trinuki-nuki.webp'
 
   return (
-    <div
-      className={`overflow-hidden rounded-2xl shadow-sm ${
+    <motion.article
+      className={`overflow-hidden rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md ${
         variant === 'project' ? 'w-full' : ''
       }`}
+      whileHover={{ y: -4 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
       style={{
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
@@ -44,6 +52,6 @@ export function TrinukiBanner({ variant }: TrinukiBannerProps) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.article>
   )
 }

@@ -4,11 +4,10 @@ import { CVService } from '@/application/services/CVService'
 import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
-import { ProjectCard } from '@/components/ProjectCard'
-import { TrinukiBanner } from '@/app/components/TrinukiBanner'
+import { ProjectsSection } from '@/components/ProjectsSection'
 
 export const metadata: Metadata = {
-  title: 'Rubén García Alonso - Senior Full Stack Developer',
+  title: 'Rubén González Aranda - Senior Full Stack Developer',
   description:
     'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
   keywords: [
@@ -18,9 +17,9 @@ export const metadata: Metadata = {
     'Node.js',
     'Clean Architecture',
   ],
-  authors: [{ name: 'Rubén García Alonso' }],
+  authors: [{ name: 'Rubén González Aranda' }],
   openGraph: {
-    title: 'Rubén García Alonso - Senior Full Stack Developer',
+    title: 'Rubén González Aranda - Senior Full Stack Developer',
     description:
       'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
     type: 'website',
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rubén García Alonso - Senior Full Stack Developer',
+    title: 'Rubén González Aranda - Senior Full Stack Developer',
     description:
       'Experienced developer with 8+ years building scalable web applications using modern technologies and clean architecture principles.',
   },
@@ -78,24 +77,17 @@ export default async function HomePage() {
       <PageLayout>
         <AnimatedHero name={cv.name} title={cv.title} />
 
-        <section className="mb-12">
-          <h2 className="mb-6 text-3xl font-bold">Featured Projects</h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <TrinukiBanner variant="home" />
-            {projects.slice(0, 4).map((project: any, index: number) => (
-              <ProjectCard
-                key={project.slug.value}
-                title={project.title.value}
-                summary={project.summary.value}
-                tags={project.stack}
-                href={`/projects/${project.slug.value}`}
-                role={project.role}
-                period={project.period}
-                links={project.links}
-              />
-            ))}
-          </div>
-        </section>
+        <ProjectsSection
+          projects={projects.map((project) => ({
+            slug: project.slug.value,
+            title: project.title.value,
+            summary: project.summary.value,
+            stack: project.stack,
+            role: project.role,
+            period: project.period,
+            links: project.links,
+          }))}
+        />
       </PageLayout>
     </>
   )
