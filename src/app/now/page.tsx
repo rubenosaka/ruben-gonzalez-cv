@@ -1,22 +1,42 @@
-import { notFound } from 'next/navigation'
-import { PageService } from '@/application/services/PageService'
 import { PageLayout } from '@/components/PageLayout'
+import { AnimatedHero } from '@/components/AnimatedHero'
 
 export default function NowPage() {
-  const pageService = new PageService()
-  const page = pageService.getPageBySlug('now')
-
-  if (!page) {
-    notFound()
-  }
-
   return (
     <PageLayout>
-      <header className="mb-8">
-        <h1 className="mb-4 text-4xl font-bold">{page.title}</h1>
-      </header>
+      <AnimatedHero title="Now" />
 
-      <div dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />
+      <div className="prose prose-lg max-w-none">
+        <p>This is what I'm currently focused on:</p>
+
+        <ul>
+          <li>
+            <strong>Engineering Management:</strong> Leading the engineering
+            team at Frenetic.ai, focusing on team growth and technical
+            excellence.
+          </li>
+          <li>
+            <strong>Technology Stack:</strong> Working with Vue 3, TypeScript,
+            Laravel, and AWS to build scalable SaaS applications.
+          </li>
+          <li>
+            <strong>AI Integration:</strong> Exploring AI and automation to
+            optimize development workflows and user experiences.
+          </li>
+          <li>
+            <strong>Clean Architecture:</strong> Implementing and advocating for
+            clean architecture principles and DDD practices.
+          </li>
+          <li>
+            <strong>Mentoring:</strong> Supporting junior developers and peers
+            through code reviews, pair programming, and career guidance.
+          </li>
+        </ul>
+
+        <p>
+          <em>Last updated: December 2024</em>
+        </p>
+      </div>
     </PageLayout>
   )
 }

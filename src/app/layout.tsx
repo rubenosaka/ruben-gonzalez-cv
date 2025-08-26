@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: 'Rubén González Aranda',
     images: [
       {
-        url: '/og-default.png',
+        url: '/ruben-gonzalez.jpg',
         width: 1200,
         height: 630,
         alt: 'Rubén González Aranda - Full Stack Developer',
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     title: 'Rubén González Aranda - Full Stack Developer',
     description:
       'Personal portfolio and CV showcasing clean architecture, DDD, and modern web development skills.',
-    images: ['/og-default.png'],
+    images: ['/ruben-gonzalez.jpg'],
     creator: '@rubengonzalez',
   },
   robots: {

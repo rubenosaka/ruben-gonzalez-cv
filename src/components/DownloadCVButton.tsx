@@ -9,10 +9,10 @@ export const DownloadCVButton = () => {
 
   const handleDownload = async () => {
     setIsLoading(true)
-    
+
     try {
       const response = await fetch('/api/cv/pdf')
-      
+
       if (response.ok) {
         const blob = await response.blob()
         const url = window.URL.createObjectURL(blob)
@@ -36,12 +36,12 @@ export const DownloadCVButton = () => {
   }
 
   return (
-    <Button 
+    <Button
       onClick={handleDownload}
       disabled={isLoading}
-      className="flex items-center gap-2"
+      className="flex w-full items-center gap-2"
     >
-      <Download className="w-4 h-4" />
+      <Download className="h-4 w-4" />
       {isLoading ? 'Generating...' : 'Download PDF'}
     </Button>
   )

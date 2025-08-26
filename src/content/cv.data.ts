@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 const HighlightSchema = z.object({
-  text: z.string(),
+  title: z.string(),
+  description: z.string(),
 })
 
 const ExperienceItemSchema = z.object({
@@ -45,25 +46,39 @@ const cvData = {
   content: {
     highlights: [
       {
-        text: '<strong>Led engineering teams of 3–10 developers</strong>, balancing delivery with mentoring, onboarding and career development.',
+        title: 'Led engineering teams of 3–10 developers',
+        description:
+          'balancing delivery with mentoring, onboarding and career development.',
       },
       {
-        text: '<strong>Owned roadmap sizing and prioritization</strong>, estimating cost and timing, and aligning with business stakeholders.',
+        title: 'Owned roadmap sizing and prioritization',
+        description:
+          'estimating cost and timing, and aligning with business stakeholders.',
       },
       {
-        text: '<strong>Saved ~4 hours/week by reducing production issues</strong> and accelerated release cadence (bi-weekly → weekly) via structured reviews, CI/CD and mentoring practices.',
+        title: 'Saved ~4 hours/week by reducing production issues',
+        description:
+          'and accelerated release cadence (bi-weekly → weekly) via structured reviews, CI/CD and mentoring practices.',
       },
       {
-        text: '<strong>Introduced AI and automation</strong> to optimize user lifecycle management and content generation workflows, saving ~8h/week and reducing operational risk.',
+        title: 'Introduced AI and automation',
+        description:
+          'to optimize user lifecycle management and content generation workflows, saving ~8h/week and reducing operational risk.',
       },
       {
-        text: '<strong>Built observability dashboards</strong> with PostHog and Mixpanel, enabling business and product teams to make data-driven decisions.',
+        title: 'Built observability dashboards',
+        description:
+          'with PostHog and Mixpanel, enabling business and product teams to make data-driven decisions.',
       },
       {
-        text: '<strong>Cross-team impact:</strong> Collaborated with Product, Marketing, Sales and QA to ensure measurable outcomes.',
+        title: 'Cross-team impact:',
+        description:
+          'Collaborated with Product, Marketing, Sales and QA to ensure measurable outcomes.',
       },
       {
-        text: '<strong>Product-driven mindset:</strong> Partnered with business and product managers to translate technical solutions into growth and customer impact.',
+        title: 'Product-driven mindset:',
+        description:
+          'Partnered with business and product managers to translate technical solutions into growth and customer impact.',
       },
     ],
     experience: [

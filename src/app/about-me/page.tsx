@@ -1,22 +1,38 @@
-import { notFound } from 'next/navigation'
-import { PageService } from '@/application/services/PageService'
 import { PageLayout } from '@/components/PageLayout'
+import { AnimatedHero } from '@/components/AnimatedHero'
 
-export default function AboutPage() {
-  const pageService = new PageService()
-  const page = pageService.getPageBySlug('about-me')
-
-  if (!page) {
-    notFound()
-  }
-
+export default function AboutMePage() {
   return (
     <PageLayout>
-      <header className="mb-8">
-        <h1 className="mb-4 text-4xl font-bold">{page.title}</h1>
-      </header>
+      <AnimatedHero title="About Me" />
 
-      <div dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />
+      <div className="prose prose-lg max-w-none">
+        <p>
+          I'm a passionate Engineering Manager and Full-Stack Developer with
+          over 18 years of experience building scalable web applications and
+          leading development teams.
+        </p>
+
+        <p>
+          My expertise spans modern web technologies including React, Vue.js,
+          TypeScript, Node.js, and PHP frameworks like Laravel. I'm a strong
+          advocate for clean architecture principles, Domain-Driven Design, and
+          SOLID practices.
+        </p>
+
+        <p>
+          Throughout my career, I've led teams of 3-10 developers, balancing
+          technical delivery with mentoring and career development. I've
+          successfully delivered projects for clients ranging from startups to
+          Fortune 500 companies.
+        </p>
+
+        <p>
+          When I'm not coding, you can find me exploring new technologies,
+          contributing to open source, or sharing knowledge with the developer
+          community.
+        </p>
+      </div>
     </PageLayout>
   )
 }

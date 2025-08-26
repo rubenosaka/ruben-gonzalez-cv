@@ -37,7 +37,17 @@ export default function HomePage() {
   const projectService = new ProjectService()
 
   const cv = cvService.getCV()
-  const projects = projectService.listProjects()
+  const allProjects = projectService.listProjects()
+
+  const featuredProjects = allProjects
+    .filter((project: any) => project.slug === 'frenetic')
+    .map((project: any) => ({
+      slug: project.slug,
+      title: project.title,
+      summary: project.summary,
+      stack: project.tags,
+      links: project.links || [],
+    }))
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -73,17 +83,13 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <PageLayout>
-        <AnimatedHero name={cv.metadata.name} title={cv.metadata.title} />
-
-        <ProjectsSection
-          projects={projects.map((project: any) => ({
-            slug: project.slug,
-            title: project.title,
-            summary: project.summary,
-            stack: project.tags,
-            links: project.links || [],
-          }))}
+        <AnimatedHero
+          title={cv.metadata.name}
+          subtitle={cv.metadata.title}
+          description={cv.metadata.summary}
         />
+
+        <ProjectsSection projects={featuredProjects} />
       </PageLayout>
     </>
   )
