@@ -181,8 +181,7 @@ const cvData = {
         title: 'Webmaster / Web Developer',
         company: 'Guía del Ocio',
         period: '03/2008–10/2011',
-        description:
-          'Oversaw maintenance and development of <strong>guiadelocio.com</strong>.',
+        description: 'Oversaw maintenance and development of guiadelocio.com.',
         highlights: [
           'Modernized site architecture with HTML, CSS, JavaScript, ColdFusion and PHP.',
           'Ensured stability and improved content workflows for editors.',

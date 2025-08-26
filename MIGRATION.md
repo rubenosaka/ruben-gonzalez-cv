@@ -28,6 +28,7 @@ This document describes the complete migration from MDX-based content management
 ### 1. Content Structure Migration
 
 #### Before: MDX Files
+
 ```
 content/
 ├── cv.mdx
@@ -42,6 +43,7 @@ content/
 ```
 
 #### After: TypeScript Data Modules
+
 ```
 src/content/
 ├── cv.data.ts
@@ -52,6 +54,7 @@ src/content/
 ### 2. Data Schema Definition
 
 #### CV Schema
+
 ```typescript
 const CVSchema = z.object({
   metadata: z.object({
@@ -62,20 +65,28 @@ const CVSchema = z.object({
     summary: z.string(),
   }),
   content: z.object({
-    highlights: z.array(z.object({ text: z.string() })),
-    experience: z.array(z.object({
-      title: z.string(),
-      company: z.string(),
-      period: z.string(),
-      description: z.string(),
-      stack: z.array(z.string()).optional(),
-      highlights: z.array(z.string()).optional(),
-    })),
+    highlights: z.array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      })
+    ),
+    experience: z.array(
+      z.object({
+        title: z.string(),
+        company: z.string(),
+        period: z.string(),
+        description: z.string(),
+        stack: z.array(z.string()).optional(),
+        highlights: z.array(z.string()).optional(),
+      })
+    ),
   }),
 })
 ```
 
 #### Page Schema
+
 ```typescript
 const PageSchema = z.object({
   slug: z.string(),
@@ -86,6 +97,7 @@ const PageSchema = z.object({
 ```
 
 #### Project Schema
+
 ```typescript
 const ProjectSchema = z.object({
   slug: z.string(),
@@ -93,16 +105,21 @@ const ProjectSchema = z.object({
   summary: z.string(),
   tags: z.array(z.string()),
   bodyHtml: z.string(),
-  links: z.array(z.object({ 
-    label: z.string(), 
-    url: z.string().url() 
-  })).optional(),
+  links: z
+    .array(
+      z.object({
+        label: z.string(),
+        url: z.string().url(),
+      })
+    )
+    .optional(),
 })
 ```
 
 ### 3. Service Layer Simplification
 
 #### Before: Repository Pattern with DI
+
 ```typescript
 // Complex repository pattern
 export class MDXCVRepository implements CVRepository {
@@ -117,6 +134,7 @@ const cvService = container.getCVService()
 ```
 
 #### After: Direct Data Access
+
 ```typescript
 // Simple service with direct imports
 import { cv } from '@/content/cv.data'
@@ -134,48 +152,56 @@ const cvService = new CVService()
 ### 4. Component Updates
 
 #### Before: MDX Processing
+
 ```typescript
 // Complex MDX processing
 <MDXContent source={cv.content} format={cv.format} />
 ```
 
 #### After: Direct Rendering
+
 ```typescript
 // Direct HTML rendering
 <div dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />
 
 // Structured data mapping
 {cv.content.highlights.map((highlight, index) => (
-  <HighlightItem key={index} text={highlight.text} />
+  <HighlightItem key={index} title={highlight.title} description={highlight.description} />
 ))}
 ```
 
 ### 5. Content Conversion
 
 #### MDX to HTML Conversion
+
 ```mdx
 // Before: MDX with custom components
+
 <Highlights>
   <HighlightItem>
-    **Led engineering teams of 3–10 developers**, balancing delivery with mentoring.
+    **Led engineering teams of 3–10 developers**, balancing delivery with
+    mentoring.
   </HighlightItem>
 </Highlights>
 ```
 
 ```typescript
-// After: HTML in data
+// After: Structured data
 {
-  text: '<strong>Led engineering teams of 3–10 developers</strong>, balancing delivery with mentoring.'
+  title: 'Team Leadership',
+  description: 'Led engineering teams of 3–10 developers, balancing delivery with mentoring.'
 }
 ```
 
 ## Files Removed
 
 ### Components
+
 - `src/components/MDXContent.tsx`
 - `src/components/MDXContentWrapper.tsx`
 
 ### Infrastructure
+
 - `src/infrastructure/repositories/MDXCVRepository.ts`
 - `src/infrastructure/repositories/MDXPageRepository.ts`
 - `src/infrastructure/repositories/MDXProjectRepository.ts`
@@ -183,6 +209,7 @@ const cvService = new CVService()
 - `src/infrastructure/container/types.ts`
 
 ### Domain Layer
+
 - `src/domain/entities/CV.ts`
 - `src/domain/entities/Page.ts`
 - `src/domain/entities/Project.ts`
@@ -194,16 +221,19 @@ const cvService = new CVService()
 - `src/domain/ports/CVPdfGenerator.ts`
 
 ### Interfaces
+
 - `src/application/interfaces/CVRepository.ts`
 - `src/application/interfaces/PageRepository.ts`
 - `src/application/interfaces/ProjectRepository.ts`
 
 ### Utilities
+
 - `src/lib/mdx.ts`
 - `src/application/hooks/usePages.ts`
 - `src/application/services/CVExportService.ts`
 
 ### Content Files
+
 - `content/cv.mdx`
 - `content/pages/about-me.md`
 - `content/pages/now.md`
@@ -215,11 +245,13 @@ const cvService = new CVService()
 ## Files Created
 
 ### Data Modules
-- `src/content/cv.data.ts` - CV data with Zod validation
+
+- `src/content/cv.data.ts` - Resume data with Zod validation
 - `src/content/pages.data.ts` - Pages data with Zod validation
 - `src/content/projects.data.ts` - Projects data with Zod validation
 
 ### Configuration Updates
+
 - Updated `tsconfig.json` with correct path mappings
 - Updated `next.config.js` to remove MDX configuration
 - Updated `package.json` to remove MDX dependencies
@@ -227,6 +259,7 @@ const cvService = new CVService()
 ## Dependencies Removed
 
 ### MDX and Related
+
 - `@mdx-js/mdx`
 - `@next/mdx`
 - `next-mdx-remote`
@@ -235,10 +268,12 @@ const cvService = new CVService()
 - `rehype-slug`
 
 ### Infrastructure
+
 - `tsyringe` (DI container)
-- `puppeteer` (replaced with @react-pdf/renderer)
+- `@react-pdf/renderer` (replaced with pdfkit)
 
 ### Total Reduction
+
 - **276 packages removed** (from 901 to 625)
 - **Bundle size reduced** significantly
 - **Build time improved** due to simplified processing
@@ -246,11 +281,17 @@ const cvService = new CVService()
 ## Dependencies Added
 
 ### Validation
+
 - `zod` - Runtime validation and type safety
+
+### PDF Generation
+
+- `pdfkit` - Lightweight PDF generation library
 
 ## Configuration Changes
 
 ### TypeScript Configuration
+
 ```json
 {
   "paths": {
@@ -261,10 +302,12 @@ const cvService = new CVService()
 ```
 
 ### Next.js Configuration
+
 ```javascript
-// Removed MDX configuration
+// Removed MDX configuration, added pdfkit support
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  serverExternalPackages: ['pdfkit'],
   // ... other config
 }
 ```
@@ -272,11 +315,13 @@ const nextConfig = {
 ## Testing Updates
 
 ### Unit Tests
+
 - Updated service tests to work with direct data access
 - Removed repository mocking
 - Added validation tests for Zod schemas
 
 ### E2E Tests
+
 - All navigation tests continue to work
 - PDF generation tests updated for new structure
 - Content rendering tests updated
@@ -284,11 +329,13 @@ const nextConfig = {
 ## Performance Improvements
 
 ### Build Performance
+
 - **Faster builds** due to simplified processing
 - **Reduced bundle size** from removed dependencies
 - **Better tree shaking** with ES6 modules
 
 ### Runtime Performance
+
 - **Direct data access** without abstraction layers
 - **No MDX processing** at runtime
 - **Optimized rendering** with direct HTML
@@ -296,11 +343,13 @@ const nextConfig = {
 ## Validation Benefits
 
 ### Type Safety
+
 - **Compile-time validation** with TypeScript
 - **Runtime validation** with Zod
 - **Fail fast** validation at startup
 
 ### Data Integrity
+
 - **Schema validation** ensures data consistency
 - **Type checking** prevents runtime errors
 - **Clear error messages** for validation failures
@@ -308,19 +357,22 @@ const nextConfig = {
 ## Migration Verification
 
 ### Build Verification
+
 ```bash
 npm run build  # ✅ Success
 npm run type-check  # ✅ Success
 ```
 
 ### Test Verification
+
 ```bash
 npm test  # ✅ All tests pass
 npx playwright test  # ✅ E2E tests pass
 ```
 
 ### Functionality Verification
-- ✅ CV page renders correctly
+
+- ✅ Resume page renders correctly
 - ✅ PDF generation works
 - ✅ All navigation works
 - ✅ Content displays properly
@@ -339,31 +391,39 @@ If rollback is needed:
 ## Lessons Learned
 
 ### What Worked Well
+
 - **Zod validation** provides excellent type safety
 - **Direct data access** simplifies the codebase
-- **HTML content** is more flexible than MDX
+- **Structured content** is more maintainable than MDX
 - **Reduced dependencies** improve performance
+- **pdfkit** provides lightweight PDF generation
 
 ### Challenges Faced
-- **Content conversion** required careful HTML formatting
+
+- **Content conversion** required careful data structuring
 - **Type definitions** needed updates for new structure
 - **Component updates** required testing and validation
+- **PDF generation** required multiple library iterations
 
 ### Best Practices
+
 - **Fail fast validation** catches errors early
 - **Direct imports** reduce complexity
-- **HTML content** provides more flexibility
+- **Structured data** provides better maintainability
 - **Type safety** prevents runtime errors
+- **Lightweight libraries** improve performance
 
 ## Future Considerations
 
 ### Potential Enhancements
+
 - **CMS Integration**: Add dynamic content management
 - **Content Versioning**: Track content changes
 - **Rich Text Editor**: Add visual content editing
 - **Internationalization**: Add multi-language support
 
 ### Monitoring
+
 - **Performance monitoring** for build and runtime
 - **Error tracking** for validation failures
 - **Bundle analysis** to maintain small size
@@ -378,5 +438,6 @@ The migration from MDX to TypeScript data with Zod validation was successful and
 - ✅ **Maintained functionality** across all features
 - ✅ **Better performance** in build and runtime
 - ✅ **Enhanced developer experience** with better tooling
+- ✅ **Reliable PDF generation** with pdfkit
 
 The new architecture is more maintainable, performant, and developer-friendly while preserving all existing functionality.

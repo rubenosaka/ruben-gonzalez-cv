@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { ProjectService } from '@/application/services/ProjectService'
 import { Button } from '@/components/ui/button'
 import { PageLayout } from '@/components/PageLayout'
@@ -23,16 +24,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <header className="mb-8">
         <div className="mb-4 flex items-center gap-4">
           <Button variant="outline" size="sm" asChild>
-            <a href="/projects">← Back to Projects</a>
+            <Link href="/projects">← Back to Projects</Link>
           </Button>
         </div>
 
-        <h1 className="mb-2 text-4xl font-bold">
-          {project.title}
-        </h1>
-        <p className="mb-4 text-xl text-muted-foreground">
-          {project.summary}
-        </p>
+        <h1 className="mb-2 text-4xl font-bold">{project.title}</h1>
+        <p className="mb-4 text-xl text-muted-foreground">{project.summary}</p>
 
         <div className="mb-6 flex flex-wrap gap-2">
           {project.tags.map((tag) => (

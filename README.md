@@ -1,10 +1,10 @@
-# Rubén González – Developer CV
+# Rubén González – Developer Resume
 
-A modern, scalable personal portfolio and CV built with Next.js 15, TypeScript, and following Clean Architecture principles. This repository serves as both a professional CV and a demonstration of engineering excellence.
+A modern, scalable personal portfolio and resume built with Next.js 15, TypeScript, and following Clean Architecture principles. This repository serves as both a professional resume and a demonstration of engineering excellence.
 
 ## Project Goal
 
-This CV is strategically designed to impress two distinct audiences:
+This resume is strategically designed to impress two distinct audiences:
 
 - **Recruiters & HR**: Clear presentation of skills, experience, metrics, and professional achievements
 - **Developers & CTOs**: Showcase of technical architecture, engineering practices, and code quality
@@ -17,7 +17,7 @@ The repository is intentionally public to demonstrate not just the content but a
 
 The project implements a **two-route strategy** to serve different stakeholders:
 
-1. **Recruiter View** (`/cv`): Traditional CV layout with clear skills, experience timeline, and downloadable PDF
+1. **Recruiter View** (`/resume`): Traditional resume layout with clear skills, experience timeline, and downloadable PDF
 2. **Developer View** (`/`): Technical portfolio showcasing projects, architecture decisions, and engineering practices
 
 ### Initial Disclaimer
@@ -26,7 +26,7 @@ A prominent disclaimer explains the dual-purpose nature, setting expectations fo
 
 ### PDF Export
 
-Professional PDF generation for traditional CV distribution, maintaining consistency across digital and print formats.
+Professional PDF generation for traditional resume distribution, maintaining consistency across digital and print formats.
 
 ## Key Decisions
 
@@ -50,7 +50,7 @@ The project implements a **simplified, lightweight architecture** that demonstra
 
 ### Content Strategy
 
-- **Structured data** (CV, pages, projects) stored in TypeScript modules with Zod validation
+- **Structured data** (Resume, pages, projects) stored in TypeScript modules with Zod validation
 - **HTML content** for rich formatting and direct rendering
 - **Type safety** ensured at both compile-time and runtime
 - **Simplified data flow** from content modules to components
@@ -75,10 +75,10 @@ This demonstrates both technical capability and personality, making the portfoli
 - Clear presentation of skills and experience
 - Quantifiable achievements and metrics
 - Professional appearance and accessibility
-- Traditional CV format availability
+- Traditional resume format availability
 - Contact information and availability
 
-**How this CV serves them:**
+**How this resume serves them:**
 
 - Clean, professional layout
 - Downloadable PDF format
@@ -96,7 +96,7 @@ This demonstrates both technical capability and personality, making the portfoli
 - Scalability and maintainability
 - Problem-solving approach
 
-**How this CV serves them:**
+**How this resume serves them:**
 
 - Public repository with clean, practical architecture
 - TypeScript with Zod validation
@@ -106,7 +106,7 @@ This demonstrates both technical capability and personality, making the portfoli
 
 ## Philosophy
 
-This CV operates on the principle that **a developer's portfolio should be both a résumé and a demonstration of engineering culture**. The architecture focuses on practical solutions that work well and are easy to maintain, demonstrating real-world engineering skills.
+This resume operates on the principle that **a developer's portfolio should be both a résumé and a demonstration of engineering culture**. The architecture focuses on practical solutions that work well and are easy to maintain, demonstrating real-world engineering skills.
 
 The project demonstrates:
 
@@ -138,7 +138,16 @@ The project demonstrates:
 - **Architecture**: Simplified, lightweight architecture
 - **Testing**: Jest, Playwright
 - **Deployment**: Vercel
-- **PDF Generation**: @react-pdf/renderer
+- **PDF Generation**: pdfkit
+
+## Documentation
+
+This project includes comprehensive documentation:
+
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)**: Technical architecture details and design decisions
+- **[DEVELOPMENT.md](./DEVELOPMENT.md)**: Development guidelines and best practices
+- **[CODING_STANDARDS.md](./CODING_STANDARDS.md)**: Code quality standards and conventions
+- **[MIGRATION.md](./MIGRATION.md)**: Migration from MDX to TypeScript data with Zod
 
 ## Getting Started
 
@@ -149,7 +158,7 @@ npm install
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the developer view or [http://localhost:3000/cv](http://localhost:3000/cv) for the recruiter view.
+Visit [http://localhost:3000](http://localhost:3000) to see the developer view or [http://localhost:3000/resume](http://localhost:3000/resume) for the recruiter view.
 
 ## License
 

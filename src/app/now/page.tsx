@@ -7,7 +7,7 @@ export default function NowPage() {
       <AnimatedHero title="Now" />
 
       <div className="prose prose-lg max-w-none">
-        <p>This is what I'm currently focused on:</p>
+        <p>This is what I&apos;m currently focused on:</p>
 
         <ul>
           <li>

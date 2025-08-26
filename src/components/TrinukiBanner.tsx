@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 interface TrinukiBannerProps {
@@ -49,9 +50,11 @@ export function TrinukiBanner({ variant }: TrinukiBannerProps) {
         </div>
       </div>
       <div className="absolute bottom-[-20px] right-[-20px] h-48 w-40  flex-shrink-0">
-        <img
+        <Image
           src={nukiImage}
           alt="Nuki mascot"
+          width={160}
+          height={192}
           className="h-48 w-40 object-contain"
         />
       </div>

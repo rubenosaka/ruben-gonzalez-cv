@@ -101,11 +101,11 @@ export const Component = ({ prop1, prop2, className, ...props }: ComponentProps)
 
 ### 3. Content Management
 
-The CV uses TypeScript modules with Zod validation for content management, ensuring type safety and data integrity.
+The resume uses TypeScript modules with Zod validation for content management, ensuring type safety and data integrity.
 
 #### Content Structure
 
-**CV Data** (`src/content/cv.data.ts`):
+**Resume Data** (`src/content/cv.data.ts`):
 
 ```typescript
 import { z } from 'zod'
@@ -119,17 +119,28 @@ const CVSchema = z.object({
     summary: z.string(),
   }),
   content: z.object({
-    highlights: z.array(z.object({ text: z.string() })),
-    experience: z.array(z.object({
-      title: z.string(),
-      company: z.string(),
-      period: z.string(),
-      description: z.string(),
-    })),
+    highlights: z.array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      })
+    ),
+    experience: z.array(
+      z.object({
+        title: z.string(),
+        company: z.string(),
+        period: z.string(),
+        description: z.string(),
+        stack: z.array(z.string()).optional(),
+        highlights: z.array(z.string()).optional(),
+      })
+    ),
   }),
 })
 
-const cvData = { /* ... */ }
+const cvData = {
+  /* ... */
+}
 export const cv = CVSchema.parse(cvData)
 ```
 
@@ -143,8 +154,10 @@ const PageSchema = z.object({
   bodyHtml: z.string(),
 })
 
-const pagesData = [ /* ... */ ]
-export const pages = pagesData.map(page => PageSchema.parse(page))
+const pagesData = [
+  /* ... */
+]
+export const pages = pagesData.map((page) => PageSchema.parse(page))
 ```
 
 **Projects Data** (`src/content/projects.data.ts`):
@@ -156,11 +169,17 @@ const ProjectSchema = z.object({
   summary: z.string(),
   tags: z.array(z.string()),
   bodyHtml: z.string(),
-  links: z.array(z.object({ label: z.string(), url: z.string().url() })).optional(),
+  links: z
+    .array(z.object({ label: z.string(), url: z.string().url() }))
+    .optional(),
 })
 
-const projectsData = [ /* ... */ ]
-export const projects = projectsData.map(project => ProjectSchema.parse(project))
+const projectsData = [
+  /* ... */
+]
+export const projects = projectsData.map((project) =>
+  ProjectSchema.parse(project)
+)
 ```
 
 #### Service Access
@@ -183,14 +202,14 @@ export class CVService {
 Components use services to access data:
 
 ```typescript
-// src/app/cv/page.tsx
-export default function CVPage() {
+// src/app/resume/page.tsx
+export default function ResumePage() {
   const cvService = new CVService()
   const cv = cvService.getCV()
-  
+
   return (
     <PageLayout>
-      <CVHeader
+      <ResumeMainInfo
         name={cv.metadata.name}
         title={cv.metadata.title}
         location={cv.metadata.location}
@@ -320,7 +339,7 @@ describe('CVService', () => {
   it('should return CV data', () => {
     const cvService = new CVService()
     const cv = cvService.getCV()
-    
+
     expect(cv.metadata.name).toBe('Rubén González Aranda')
     expect(cv.content.highlights).toHaveLength(7)
   })
@@ -338,10 +357,10 @@ describe('CVService', () => {
 ### 2. Integration Tests
 
 ```typescript
-describe('CV Page Integration', () => {
-  it('should render CV with all sections', () => {
-    render(<CVPage />)
-    
+describe('Resume Page Integration', () => {
+  it('should render resume with all sections', () => {
+    render(<ResumePage />)
+
     expect(screen.getByText('Rubén González Aranda')).toBeInTheDocument()
     expect(screen.getByText('Career Highlights')).toBeInTheDocument()
     expect(screen.getByText('Experience')).toBeInTheDocument()
@@ -352,8 +371,8 @@ describe('CV Page Integration', () => {
 ### 3. Component Tests
 
 ```typescript
-describe('CVHeader Component', () => {
-  it('should display CV metadata', () => {
+describe('ResumeMainInfo Component', () => {
+  it('should display resume metadata', () => {
     const mockCV = {
       metadata: {
         name: 'Test Name',
@@ -364,7 +383,7 @@ describe('CVHeader Component', () => {
       }
     }
 
-    render(<CVHeader {...mockCV.metadata} />)
+    render(<ResumeMainInfo {...mockCV.metadata} />)
 
     expect(screen.getByText('Test Name')).toBeInTheDocument()
     expect(screen.getByText('Test Title')).toBeInTheDocument()
@@ -423,7 +442,7 @@ const CVSchema = z.object({
   metadata: z.object({
     email: z.string().email(),
     name: z.string().min(1).max(100),
-  })
+  }),
 })
 ```
 

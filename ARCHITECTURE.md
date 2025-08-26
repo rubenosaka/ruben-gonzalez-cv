@@ -4,7 +4,7 @@
 
 This project implements a **simplified, lightweight architecture** focused on practical solutions and maintainable code. The architecture prioritizes type safety, validation, and direct data access over complex patterns.
 
-> **Note**: This project intentionally uses a simplified architecture as part of a developer CV. It demonstrates practical engineering thinking rather than over-engineering.
+> **Note**: This project intentionally uses a simplified architecture as part of a developer resume. It demonstrates practical engineering thinking rather than over-engineering.
 
 ## Architecture Layers
 
@@ -28,13 +28,13 @@ This project implements a **simplified, lightweight architecture** focused on pr
 
 ```typescript
 // Clean component with direct data access
-export default function CVPage() {
+export default function ResumePage() {
   const cvService = new CVService()
   const cv = cvService.getCV()
-  
+
   return (
     <PageLayout>
-      <CVHeader
+      <ResumeMainInfo
         name={cv.metadata.name}
         title={cv.metadata.title}
         location={cv.metadata.location}
@@ -104,17 +104,28 @@ const CVSchema = z.object({
     summary: z.string(),
   }),
   content: z.object({
-    highlights: z.array(z.object({ text: z.string() })),
-    experience: z.array(z.object({
-      title: z.string(),
-      company: z.string(),
-      period: z.string(),
-      description: z.string(),
-    })),
+    highlights: z.array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      })
+    ),
+    experience: z.array(
+      z.object({
+        title: z.string(),
+        company: z.string(),
+        period: z.string(),
+        description: z.string(),
+        stack: z.array(z.string()).optional(),
+        highlights: z.array(z.string()).optional(),
+      })
+    ),
   }),
 })
 
-const cvData = { /* ... */ }
+const cvData = {
+  /* ... */
+}
 export const cv = CVSchema.parse(cvData)
 ```
 
@@ -125,8 +136,12 @@ export const cv = CVSchema.parse(cvData)
 ```typescript
 // src/content/cv.data.ts
 const cvData = {
-  metadata: { /* ... */ },
-  content: { /* ... */ }
+  metadata: {
+    /* ... */
+  },
+  content: {
+    /* ... */
+  },
 }
 export const cv = CVSchema.parse(cvData)
 ```
@@ -147,7 +162,7 @@ export class CVService {
 ### 3. Component Usage
 
 ```typescript
-// src/app/cv/page.tsx
+// src/app/resume/page.tsx
 const cvService = new CVService()
 const cv = cvService.getCV()
 ```
@@ -181,12 +196,17 @@ interface CV {
     summary: string
   }
   content: {
-    highlights: Array<{ text: string }>
+    highlights: Array<{
+      title: string
+      description: string
+    }>
     experience: Array<{
       title: string
       company: string
       period: string
       description: string
+      stack?: string[]
+      highlights?: string[]
     }>
   }
 }
@@ -211,7 +231,7 @@ try {
 
 **TypeScript Modules**: Content is stored in TypeScript modules for type safety.
 
-- `src/content/cv.data.ts` - CV data with validation
+- `src/content/cv.data.ts` - Resume data with validation
 - `src/content/pages.data.ts` - Static pages data
 - `src/content/projects.data.ts` - Projects data
 
@@ -223,7 +243,7 @@ try {
 const pageData = {
   slug: 'about-me',
   title: 'About Me',
-  bodyHtml: '<p>This is <strong>rich</strong> content.</p>'
+  bodyHtml: '<p>This is <strong>rich</strong> content.</p>',
 }
 ```
 
@@ -232,11 +252,14 @@ const pageData = {
 **Programmatic Access**: Structured data is easily accessible for components.
 
 ```typescript
-const highlights = cv.content.highlights.map(h => h.text)
-const experience = cv.content.experience.map(exp => ({
+const highlights = cv.content.highlights.map((h) => ({
+  title: h.title,
+  description: h.description,
+}))
+const experience = cv.content.experience.map((exp) => ({
   title: exp.title,
   company: exp.company,
-  period: exp.period
+  period: exp.period,
 }))
 ```
 

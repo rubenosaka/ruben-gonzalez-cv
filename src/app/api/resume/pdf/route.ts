@@ -16,7 +16,8 @@ export async function GET() {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="ruben-gonzalez-cv.pdf"',
+        'Content-Disposition':
+          'attachment; filename="ruben-gonzalez-resume.pdf"',
         'Cache-Control': 'no-store',
         'Content-Length': pdfBuffer.length.toString(),
       },

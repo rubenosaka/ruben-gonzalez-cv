@@ -16,14 +16,16 @@
 ### 1. Self-Documenting Code
 
 **❌ Avoid Comments**
+
 ```typescript
 // This function calculates the total price including tax
 function calculateTotal(price: number, tax: number): number {
-  return price + (price * tax) // Add tax to price
+  return price + price * tax // Add tax to price
 }
 ```
 
 **✅ Write Expressive Code**
+
 ```typescript
 function calculateTotalWithTax(basePrice: number, taxRate: number): number {
   const taxAmount = basePrice * taxRate
@@ -34,6 +36,7 @@ function calculateTotalWithTax(basePrice: number, taxRate: number): number {
 ### 2. Clean Code Principles
 
 #### Meaningful Names
+
 ```typescript
 // ❌ Poor naming
 const d = new Date()
@@ -45,6 +48,7 @@ const doubleValue = (value: number) => value * 2
 ```
 
 #### Small Functions
+
 ```typescript
 // ❌ Large function with multiple responsibilities
 function processUserData(user: User): ProcessedUser {
@@ -65,7 +69,7 @@ function processUserData(user: User): ProcessedUser {
   if (!validation.isValid) {
     throw new ValidationError(validation.errors)
   }
-  
+
   const enrichedUser = enrichUserData(user)
   return userProcessor.process(enrichedUser)
 }
@@ -74,33 +78,35 @@ function processUserData(user: User): ProcessedUser {
 ### 3. Type Safety and Validation
 
 #### Zod Schemas
+
 ```typescript
 // ❌ No validation
 const userData = {
   name: 'John',
   email: 'invalid-email',
-  age: 'not-a-number'
+  age: 'not-a-number',
 }
 
 // ✅ Zod validation
 const UserSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
-  age: z.number().min(0).max(120)
+  age: z.number().min(0).max(120),
 })
 
 const userData = UserSchema.parse({
   name: 'John',
   email: 'john@example.com',
-  age: 30
+  age: 30,
 })
 ```
 
 #### Type Safety
+
 ```typescript
 // ❌ Any types
 function processData(data: any): any {
-  return data.map(item => item.value)
+  return data.map((item) => item.value)
 }
 
 // ✅ Proper typing
@@ -110,13 +116,14 @@ interface DataItem {
 }
 
 function processData(data: DataItem[]): string[] {
-  return data.map(item => item.value)
+  return data.map((item) => item.value)
 }
 ```
 
 ### 4. Simplified Architecture
 
 #### Direct Data Access
+
 ```typescript
 // ❌ Complex repository pattern
 class UserRepository {
@@ -127,7 +134,7 @@ class UserRepository {
 
 class UserService {
   constructor(private userRepository: UserRepository) {}
-  
+
   async getUser(id: string): Promise<User> {
     return this.userRepository.findById(id)
   }
@@ -138,17 +145,18 @@ import { users } from '@/content/users.data'
 
 class UserService {
   getUser(id: string): User | undefined {
-    return users.find(user => user.id === id)
+    return users.find((user) => user.id === id)
   }
 }
 ```
 
 #### Service Implementation
+
 ```typescript
 // ❌ Dependency injection complexity
 class CVService {
   constructor(private cvRepository: CVRepository) {}
-  
+
   async getCV(): Promise<CV> {
     return this.cvRepository.getCV()
   }
@@ -169,6 +177,7 @@ export class CVService {
 ### 1. Content Structure
 
 #### Data Modules
+
 ```typescript
 // src/content/cv.data.ts
 import { z } from 'zod'
@@ -182,13 +191,22 @@ const CVSchema = z.object({
     summary: z.string(),
   }),
   content: z.object({
-    highlights: z.array(z.object({ text: z.string() })),
-    experience: z.array(z.object({
-      title: z.string(),
-      company: z.string(),
-      period: z.string(),
-      description: z.string(),
-    })),
+    highlights: z.array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      })
+    ),
+    experience: z.array(
+      z.object({
+        title: z.string(),
+        company: z.string(),
+        period: z.string(),
+        description: z.string(),
+        stack: z.array(z.string()).optional(),
+        highlights: z.array(z.string()).optional(),
+      })
+    ),
   }),
 })
 
@@ -202,7 +220,10 @@ const cvData = {
   },
   content: {
     highlights: [
-      { text: '<strong>Led engineering teams</strong> of 3–10 developers...' },
+      {
+        title: 'Team Leadership',
+        description: 'Led engineering teams of 3–10 developers...',
+      },
     ],
     experience: [
       {
@@ -210,6 +231,8 @@ const cvData = {
         company: 'Frenetic.ai',
         period: '2021-Present',
         description: 'Leading engineering for SaaS platform...',
+        stack: ['React', 'Node.js', 'TypeScript'],
+        highlights: ['Led team of 8 developers', 'Improved performance by 40%'],
       },
     ],
   },
@@ -219,6 +242,7 @@ export const cv = CVSchema.parse(cvData)
 ```
 
 #### HTML Content
+
 ```typescript
 // ❌ MDX processing
 <MDXContent source={content} format="mdx" />
@@ -230,9 +254,10 @@ export const cv = CVSchema.parse(cvData)
 ### 2. Component Standards
 
 #### Component Structure
+
 ```typescript
 // ✅ Clean component with proper typing
-interface CVHeaderProps {
+interface ResumeMainInfoProps {
   name: string
   title: string
   location: string
@@ -240,7 +265,7 @@ interface CVHeaderProps {
   summary: string
 }
 
-export function CVHeader({ name, title, location, email, summary }: CVHeaderProps) {
+export function ResumeMainInfo({ name, title, location, email, summary }: ResumeMainInfoProps) {
   return (
     <header className="mb-8">
       <h1 className="text-4xl font-bold">{name}</h1>
@@ -253,15 +278,16 @@ export function CVHeader({ name, title, location, email, summary }: CVHeaderProp
 ```
 
 #### Page Components
+
 ```typescript
 // ✅ Simple page with direct data access
-export default function CVPage() {
+export default function ResumePage() {
   const cvService = new CVService()
   const cv = cvService.getCV()
 
   return (
     <PageLayout>
-      <CVHeader
+      <ResumeMainInfo
         name={cv.metadata.name}
         title={cv.metadata.title}
         location={cv.metadata.location}
@@ -271,7 +297,7 @@ export default function CVPage() {
       <Timeline items={timelineItems} />
       <Highlights>
         {cv.content.highlights.map((highlight, index) => (
-          <HighlightItem key={index} text={highlight.text} />
+          <HighlightItem key={index} title={highlight.title} description={highlight.description} />
         ))}
       </Highlights>
     </PageLayout>
@@ -284,13 +310,14 @@ export default function CVPage() {
 ### 1. Unit Tests
 
 #### Service Tests
+
 ```typescript
 // ✅ Simple service tests
 describe('CVService', () => {
   it('should return CV data', () => {
     const cvService = new CVService()
     const cv = cvService.getCV()
-    
+
     expect(cv.metadata.name).toBe('Rubén González Aranda')
     expect(cv.content.highlights).toHaveLength(7)
   })
@@ -298,10 +325,11 @@ describe('CVService', () => {
 ```
 
 #### Component Tests
+
 ```typescript
 // ✅ Component tests with proper mocking
-describe('CVHeader', () => {
-  it('should display CV metadata', () => {
+describe('ResumeMainInfo', () => {
+  it('should display resume metadata', () => {
     const props = {
       name: 'Test Name',
       title: 'Test Title',
@@ -310,7 +338,7 @@ describe('CVHeader', () => {
       summary: 'Test Summary'
     }
 
-    render(<CVHeader {...props} />)
+    render(<ResumeMainInfo {...props} />)
 
     expect(screen.getByText('Test Name')).toBeInTheDocument()
     expect(screen.getByText('Test Title')).toBeInTheDocument()
@@ -321,12 +349,13 @@ describe('CVHeader', () => {
 ### 2. Integration Tests
 
 #### Page Tests
+
 ```typescript
 // ✅ Integration tests
-describe('CV Page', () => {
+describe('Resume Page', () => {
   it('should render all sections', () => {
-    render(<CVPage />)
-    
+    render(<ResumePage />)
+
     expect(screen.getByText('Rubén González Aranda')).toBeInTheDocument()
     expect(screen.getByText('Career Highlights')).toBeInTheDocument()
     expect(screen.getByText('Experience')).toBeInTheDocument()
@@ -337,6 +366,7 @@ describe('CV Page', () => {
 ## File Organization
 
 ### 1. Directory Structure
+
 ```
 src/
 ├── app/                    # Next.js pages
@@ -354,12 +384,14 @@ src/
 ### 2. Naming Conventions
 
 #### Files
-- **Components**: PascalCase (`CVHeader.tsx`)
+
+- **Components**: PascalCase (`ResumeMainInfo.tsx`)
 - **Services**: PascalCase (`CVService.ts`)
 - **Data Modules**: camelCase with `.data.ts` suffix (`cv.data.ts`)
-- **Pages**: kebab-case (`cv/page.tsx`)
+- **Pages**: kebab-case (`resume/page.tsx`)
 
 #### Variables and Functions
+
 - **Variables**: camelCase (`cvData`)
 - **Functions**: camelCase (`getCV`)
 - **Constants**: UPPER_SNAKE_CASE (`MAX_LENGTH`)
@@ -368,6 +400,7 @@ src/
 ## Performance Standards
 
 ### 1. Bundle Optimization
+
 ```typescript
 // ✅ Dynamic imports for heavy components
 const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
@@ -377,6 +410,7 @@ const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
 ```
 
 ### 2. Memoization
+
 ```typescript
 // ✅ Proper memoization
 export const ExpensiveComponent = React.memo(({ data }) => {
@@ -400,6 +434,7 @@ export const ExpensiveComponent = React.memo(({ data }) => {
 ## Error Handling
 
 ### 1. Validation Errors
+
 ```typescript
 // ✅ Fail fast validation
 try {
@@ -411,6 +446,7 @@ try {
 ```
 
 ### 2. Component Errors
+
 ```typescript
 // ✅ Error boundaries
 export class ErrorBoundary extends Component {
@@ -440,16 +476,18 @@ export class ErrorBoundary extends Component {
 ## Security Standards
 
 ### 1. Input Validation
+
 ```typescript
 // ✅ Zod validation for all inputs
 const UserSchema = z.object({
   email: z.string().email(),
   name: z.string().min(1).max(100),
-  age: z.number().min(0).max(120)
+  age: z.number().min(0).max(120),
 })
 ```
 
 ### 2. HTML Content
+
 ```typescript
 // ✅ Safe HTML rendering
 <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
@@ -458,12 +496,14 @@ const UserSchema = z.object({
 ## Documentation Standards
 
 ### 1. Code Documentation
+
 - **No comments**: Code should be self-documenting
 - **Clear naming**: Use descriptive names
 - **Type definitions**: Comprehensive TypeScript interfaces
 - **Examples**: Include usage examples in tests
 
 ### 2. Architecture Documentation
+
 - **README.md**: Project overview and setup
 - **ARCHITECTURE.md**: Technical architecture details
 - **DEVELOPMENT.md**: Development guidelines
