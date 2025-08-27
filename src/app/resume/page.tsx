@@ -21,7 +21,7 @@ export default function ResumePage() {
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <div className="mb-4 flex items-center gap-2">
+          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
             <h2 className="text-2xl font-semibold text-foreground first:mt-0">
               Career Highlights
             </h2>
@@ -30,7 +30,7 @@ export default function ResumePage() {
             </CodeComment>
           </div>
           <Highlights items={resume.content.highlights} />
-          <div className="mb-4 flex items-center gap-2">
+          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
             <h2 className="text-2xl font-semibold text-foreground first:mt-0">
               Experience
             </h2>

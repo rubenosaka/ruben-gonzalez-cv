@@ -33,13 +33,13 @@ export function ResumeMainInfo({
         />
       </div>
 
-      <div className="mx-3 rounded-lg border bg-white/90 p-4 shadow-lg">
+      <div className="mx-3 rounded-lg border bg-card p-4 shadow-lg">
         <CodeComment>problably not human</CodeComment>
         <h2 className="mb-3 text-xl font-bold text-foreground sm:text-xl">
           {name}
         </h2>
 
-        <p className="mb-4 text-sm">{location}</p>
+        <p className="mb-4 text-sm text-foreground">{location}</p>
         <p className="text-sm leading-relaxed text-muted-foreground">
           {summary}
         </p>
