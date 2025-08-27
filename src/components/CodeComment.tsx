@@ -25,14 +25,16 @@ const randomComments = [
 
 export function CodeComment({ children, className = '' }: CodeCommentProps) {
   const [randomComment, setRandomComment] = useState<string>('')
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    setIsClient(true)
     const comment =
       randomComments[Math.floor(Math.random() * randomComments.length)] || ''
     setRandomComment(comment)
   }, [])
 
-  const content = children || randomComment
+  const content = children || (isClient ? randomComment : '')
 
   return (
     <span className={`font-mono text-xs text-gray-400 ${className}`}>
