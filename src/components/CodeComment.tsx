@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
 
 interface CodeCommentProps {
@@ -25,7 +27,8 @@ export function CodeComment({ children, className = '' }: CodeCommentProps) {
   const [randomComment, setRandomComment] = useState<string>('')
 
   useEffect(() => {
-    const comment = randomComments[Math.floor(Math.random() * randomComments.length)] || ''
+    const comment =
+      randomComments[Math.floor(Math.random() * randomComments.length)] || ''
     setRandomComment(comment)
   }, [])
 
