@@ -16,7 +16,6 @@ export function TrinukiBanner({ variant }: TrinukiBannerProps) {
       className={`relative transition-all duration-200 hover:shadow-md ${
         variant === 'project' ? 'w-full' : ''
       }`}
-      whileHover={{ y: -4 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}

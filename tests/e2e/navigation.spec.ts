@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('Navigation Tests', () => {
-  test('should render CV page', async ({ page }) => {
-    await page.goto('/cv')
+  test('should render resume page', async ({ page }) => {
+    await page.goto('/resume')
     
     await expect(page).toHaveTitle(/Rubén González Aranda/)
     await expect(page.locator('h1').first()).toBeVisible()
@@ -15,8 +15,8 @@ test.describe('Navigation Tests', () => {
     await expect(page.locator('h1').first()).toBeVisible()
   })
 
-  test('should render individual project page', async ({ page }) => {
-    await page.goto('/projects/frenetic')
+  test('should render about-me page', async ({ page }) => {
+    await page.goto('/about-me')
     
     await expect(page).toHaveTitle(/Rubén González Aranda/)
     await expect(page.locator('h1').first()).toBeVisible()

@@ -55,7 +55,7 @@ export default function HomePage() {
   const allProjects = projectService.listProjects()
 
   const featuredProjects = allProjects
-    .filter((project: Project) => project.slug === 'trinuki' || project.slug === 'frenetic')
+    .filter((project: Project) => project.slug === 'frenetic')
     .map((project: Project) => ({
       slug: project.slug,
       title: project.title,
@@ -103,13 +103,12 @@ export default function HomePage() {
           subtitle={resume.metadata.title}
           description={resume.metadata.summary}
         />
-        <CodeComment />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-7">
             <ProjectsSection projects={featuredProjects} />
           </div>
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-5">
             <NewsSection />
           </div>
         </div>
