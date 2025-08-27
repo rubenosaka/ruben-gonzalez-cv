@@ -6,11 +6,11 @@ export const runtime = 'nodejs'
 
 export async function GET() {
   try {
-    const ResumeService = new ResumeService()
-    const cv = ResumeService.getResume()
+    const resumeService = new ResumeService()
+    const resume = resumeService.getResume()
 
     const pdfGenerator = new ReactPdfCVGenerator()
-    const pdfBuffer = await pdfGenerator.generatePDF(cv)
+    const pdfBuffer = await pdfGenerator.generatePDF(resume)
 
     return new NextResponse(pdfBuffer as any, {
       status: 200,

@@ -13,6 +13,8 @@ const randomComments = [
   'Pizza without pineapple',
   'My cats are named Fox and Dana after Mulder and Scully.',
   'Silent HIll 2 is the best Silent HIll',
+  'Smile and the world will smile with you',
+  'I prefer Midsommar over The Witch',
 ]
 
 export function CodeComment({ children, className = '' }: CodeCommentProps) {

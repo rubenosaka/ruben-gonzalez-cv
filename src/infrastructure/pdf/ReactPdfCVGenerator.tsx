@@ -26,15 +26,15 @@ export class ReactPdfCVGenerator {
     })
   }
 
-  private generateContent(doc: PDFKit.PDFDocument, cv: any): void {
-    this.addHeader(doc, cv)
-    this.addCareerHighlights(doc, cv)
-    this.addExperience(doc, cv)
+  private generateContent(doc: PDFKit.PDFDocument, resume: any): void {
+    this.addHeader(doc, resume)
+    this.addCareerHighlights(doc, resume)
+    this.addExperience(doc, resume)
     this.addSkills(doc)
     this.addEducation(doc)
   }
 
-  private addHeader(doc: PDFKit.PDFDocument, cv: any): void {
+  private addHeader(doc: PDFKit.PDFDocument, resume: any): void {
     doc
       .fontSize(28)
       .fillColor('#1f2937')
@@ -67,25 +67,34 @@ export class ReactPdfCVGenerator {
       .stroke()
   }
 
-  private addCareerHighlights(doc: PDFKit.PDFDocument, cv: any): void {
+  private addCareerHighlights(doc: PDFKit.PDFDocument, resume: any): void {
     doc.moveDown(1)
     this.addSectionTitle(doc, 'Career Highlights')
 
     resume.content.highlights.forEach((highlight: any) => {
       doc
-        .fontSize(10)
-        .fillColor('#374151')
-        .text(`• ${highlight.title}: ${highlight.description}`, {
+        .fontSize(11)
+        .fillColor('#1f2937')
+        .font('Helvetica-Bold')
+        .text(`• ${highlight.title}`, {
           align: 'left',
           continued: false,
         })
-      doc.moveDown(0.3)
+      doc.font('Helvetica')
+      doc
+        .fontSize(9)
+        .fillColor('#374151')
+        .text(highlight.description, {
+          align: 'left',
+          continued: false,
+        })
+      doc.moveDown(0.5)
     })
 
     doc.moveDown(1)
   }
 
-  private addExperience(doc: PDFKit.PDFDocument, cv: any): void {
+  private addExperience(doc: PDFKit.PDFDocument, resume: any): void {
     this.addSectionTitle(doc, 'Experience')
 
     resume.content.experience.forEach((exp: any, index: number) => {
@@ -93,28 +102,27 @@ export class ReactPdfCVGenerator {
         doc.moveDown(1.5)
       }
 
+      // Company and period on same line
       const startY = doc.y
-
-      doc.fontSize(12).fillColor('#1f2937').text(exp.company, { align: 'left' })
-
+      doc.fontSize(14).fillColor('#1f2937').text(exp.company, { align: 'left' })
       doc.fontSize(11).fillColor('#6b7280').text(exp.period, { align: 'right' })
-
       doc.y = startY
 
       doc.moveDown(0.8)
-      doc.fontSize(11).fillColor('#374151').text(exp.title, { align: 'left' })
+      doc.fontSize(12).fillColor('#374151').font('Helvetica-Bold').text(exp.title, { align: 'left' })
+      doc.font('Helvetica')
 
       doc.moveDown(0.5)
       doc
-        .fontSize(11)
+        .fontSize(10)
         .fillColor('#374151')
         .text(exp.description, { align: 'left' })
 
       if (exp.stack) {
         doc.moveDown(0.5)
         doc
-          .fontSize(11)
-          .fillColor('#374151')
+          .fontSize(9)
+          .fillColor('#6b7280')
           .text(`Stack: ${exp.stack.join(', ')}`, { align: 'left' })
       }
 
@@ -122,7 +130,7 @@ export class ReactPdfCVGenerator {
         doc.moveDown(0.8)
         exp.highlights.forEach((highlight: string) => {
           doc
-            .fontSize(11)
+            .fontSize(9)
             .fillColor('#374151')
             .text(`• ${highlight}`, { align: 'left', indent: 20 })
         })
