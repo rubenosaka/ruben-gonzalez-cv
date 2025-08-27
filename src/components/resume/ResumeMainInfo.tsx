@@ -1,5 +1,6 @@
-import { DownloadCVButton } from '@/components/DownloadCVButton'
+import { DownloadResumeButton } from '@/components/DownloadResumeButton'
 import Image from 'next/image'
+import { CodeComment } from '../CodeComment'
 
 interface ResumeMainInfoProps {
   name: string
@@ -19,35 +20,34 @@ export function ResumeMainInfo({
   return (
     <div className="space-y-6">
       <div className="flex justify-center">
+        <DownloadResumeButton />
+      </div>
+
+      <div className="flex w-full justify-center">
         <Image
-          src="/ruben-gonzalez.jpg"
+          src="/ruben-gonzalez.webp"
           alt="Rubén González Aranda"
-          width={120}
-          height={120}
-          className="rounded-full"
+          width={400}
+          height={400}
+          className="h-48 w-48 rounded-full object-cover sm:h-56 sm:w-56 md:h-64 md:w-64"
         />
       </div>
 
-      <div className="flex justify-center">
-        <DownloadCVButton />
-      </div>
-
-      <div className="rounded-lg border bg-card p-6 shadow-sm">
-        <h2 className="mb-3 text-2xl font-bold text-foreground sm:text-3xl">
+      <div className="mx-3 rounded-lg border bg-white/90 p-4 shadow-lg">
+        <CodeComment>problably not human</CodeComment>
+        <h2 className="mb-3 text-xl font-bold text-foreground sm:text-xl">
           {name}
         </h2>
-        <p className="mb-2 text-lg font-medium text-muted-foreground">
-          {title}
-        </p>
-        <p className="mb-4 text-muted-foreground">{location}</p>
+
+        <p className="mb-4 text-sm">{location}</p>
         <p className="text-sm leading-relaxed text-muted-foreground">
           {summary}
         </p>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <a
             href={`mailto:${email}`}
-            className="flex items-center gap-2 text-primary transition-colors hover:text-primary/80 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
+            className="flex items-center gap-2 text-sm text-primary transition-colors hover:text-primary/80 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
             aria-label={`Send email to ${email}`}
           >
             <svg

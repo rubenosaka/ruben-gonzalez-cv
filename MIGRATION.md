@@ -31,7 +31,7 @@ This document describes the complete migration from MDX-based content management
 
 ```
 content/
-├── cv.mdx
+├── resume.mdx
 ├── pages/
 │   ├── about-me.md
 │   └── now.md
@@ -46,7 +46,7 @@ content/
 
 ```
 src/content/
-├── cv.data.ts
+├── resume.data.ts
 ├── pages.data.ts
 └── projects.data.ts
 ```
@@ -56,7 +56,7 @@ src/content/
 #### CV Schema
 
 ```typescript
-const CVSchema = z.object({
+const ResumeSchema = z.object({
   metadata: z.object({
     name: z.string(),
     title: z.string(),
@@ -123,30 +123,30 @@ const ProjectSchema = z.object({
 ```typescript
 // Complex repository pattern
 export class MDXCVRepository implements CVRepository {
-  async getCV(): Promise<CV> {
+  async getResume(): Promise<CV> {
     // Complex MDX parsing logic
   }
 }
 
 // Dependency injection
 const container = DependencyContainer.getInstance()
-const cvService = container.getCVService()
+const ResumeService = container.getResumeService()
 ```
 
 #### After: Direct Data Access
 
 ```typescript
 // Simple service with direct imports
-import { cv } from '@/content/cv.data'
+import { cv } from '@/content/resume.data'
 
-export class CVService {
-  getCV() {
+export class ResumeService {
+  getResume() {
     return cv
   }
 }
 
 // Direct instantiation
-const cvService = new CVService()
+const ResumeService = new ResumeService()
 ```
 
 ### 4. Component Updates
@@ -155,7 +155,7 @@ const cvService = new CVService()
 
 ```typescript
 // Complex MDX processing
-<MDXContent source={cv.content} format={cv.format} />
+<MDXContent source={resume.content} format={resume.format} />
 ```
 
 #### After: Direct Rendering
@@ -165,7 +165,7 @@ const cvService = new CVService()
 <div dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />
 
 // Structured data mapping
-{cv.content.highlights.map((highlight, index) => (
+{resume.content.highlights.map((highlight, index) => (
   <HighlightItem key={index} title={highlight.title} description={highlight.description} />
 ))}
 ```
@@ -210,7 +210,7 @@ const cvService = new CVService()
 
 ### Domain Layer
 
-- `src/domain/entities/CV.ts`
+- `src/domain/entities/resume.ts`
 - `src/domain/entities/Page.ts`
 - `src/domain/entities/Project.ts`
 - `src/domain/value-objects/Slug.ts`
@@ -234,7 +234,7 @@ const cvService = new CVService()
 
 ### Content Files
 
-- `content/cv.mdx`
+- `content/resume.mdx`
 - `content/pages/about-me.md`
 - `content/pages/now.md`
 - `content/projects/frenetic.mdx`
@@ -246,7 +246,7 @@ const cvService = new CVService()
 
 ### Data Modules
 
-- `src/content/cv.data.ts` - Resume data with Zod validation
+- `src/content/resume.data.ts` - Resume data with Zod validation
 - `src/content/pages.data.ts` - Pages data with Zod validation
 - `src/content/projects.data.ts` - Projects data with Zod validation
 

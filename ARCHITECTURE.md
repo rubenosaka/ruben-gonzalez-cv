@@ -29,17 +29,17 @@ This project implements a **simplified, lightweight architecture** focused on pr
 ```typescript
 // Clean component with direct data access
 export default function ResumePage() {
-  const cvService = new CVService()
-  const cv = cvService.getCV()
+  const ResumeService = new ResumeService()
+  const cv = ResumeService.getResume()
 
   return (
     <PageLayout>
       <ResumeMainInfo
-        name={cv.metadata.name}
-        title={cv.metadata.title}
-        location={cv.metadata.location}
-        email={cv.metadata.email}
-        summary={cv.metadata.summary}
+        name={resume.metadata.name}
+        title={resume.metadata.title}
+        location={resume.metadata.location}
+        email={resume.metadata.email}
+        summary={resume.metadata.summary}
       />
     </PageLayout>
   )
@@ -65,10 +65,10 @@ export default function ResumePage() {
 
 ```typescript
 // Simple service with direct data access
-import { cv } from '@/content/cv.data'
+import { resume } from '@/content/resume.data'
 
-export class CVService {
-  getCV() {
+export class ResumeService {
+  getResume() {
     return cv
   }
 }
@@ -95,7 +95,7 @@ export class CVService {
 ```typescript
 import { z } from 'zod'
 
-const CVSchema = z.object({
+const ResumeSchema = z.object({
   metadata: z.object({
     name: z.string(),
     title: z.string(),
@@ -123,10 +123,10 @@ const CVSchema = z.object({
   }),
 })
 
-const cvData = {
+const resumeData = {
   /* ... */
 }
-export const cv = CVSchema.parse(cvData)
+export const cv = ResumeSchema.parse(resumeData)
 ```
 
 ## Data Flow
@@ -134,8 +134,8 @@ export const cv = CVSchema.parse(cvData)
 ### 1. Content Definition
 
 ```typescript
-// src/content/cv.data.ts
-const cvData = {
+// src/content/resume.data.ts
+const resumeData = {
   metadata: {
     /* ... */
   },
@@ -143,17 +143,17 @@ const cvData = {
     /* ... */
   },
 }
-export const cv = CVSchema.parse(cvData)
+export const cv = ResumeSchema.parse(resumeData)
 ```
 
 ### 2. Service Access
 
 ```typescript
-// src/application/services/CVService.ts
-import { cv } from '@/content/cv.data'
+// src/application/services/ResumeService.ts
+import { cv } from '@/content/resume.data'
 
-export class CVService {
-  getCV() {
+export class ResumeService {
+  getResume() {
     return cv
   }
 }
@@ -163,8 +163,8 @@ export class CVService {
 
 ```typescript
 // src/app/resume/page.tsx
-const cvService = new CVService()
-const cv = cvService.getCV()
+const ResumeService = new ResumeService()
+const cv = ResumeService.getResume()
 ```
 
 ## Validation Strategy
@@ -218,7 +218,7 @@ interface CV {
 
 ```typescript
 try {
-  export const cv = CVSchema.parse(cvData)
+  export const cv = ResumeSchema.parse(resumeData)
 } catch (error) {
   console.error('CV data validation failed:', error)
   process.exit(1)
@@ -231,7 +231,7 @@ try {
 
 **TypeScript Modules**: Content is stored in TypeScript modules for type safety.
 
-- `src/content/cv.data.ts` - Resume data with validation
+- `src/content/resume.data.ts` - Resume data with validation
 - `src/content/pages.data.ts` - Static pages data
 - `src/content/projects.data.ts` - Projects data
 
@@ -252,11 +252,11 @@ const pageData = {
 **Programmatic Access**: Structured data is easily accessible for components.
 
 ```typescript
-const highlights = cv.content.highlights.map((h) => ({
+const highlights = resume.content.highlights.map((h) => ({
   title: h.title,
   description: h.description,
 }))
-const experience = cv.content.experience.map((exp) => ({
+const experience = resume.content.experience.map((exp) => ({
   title: exp.title,
   company: exp.company,
   period: exp.period,

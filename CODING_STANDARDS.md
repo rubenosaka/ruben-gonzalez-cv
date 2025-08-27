@@ -154,19 +154,19 @@ class UserService {
 
 ```typescript
 // ❌ Dependency injection complexity
-class CVService {
+class ResumeService {
   constructor(private cvRepository: CVRepository) {}
 
-  async getCV(): Promise<CV> {
-    return this.cvRepository.getCV()
+  async getResume(): Promise<CV> {
+    return this.cvRepository.getResume()
   }
 }
 
 // ✅ Simple service
-import { cv } from '@/content/cv.data'
+import { cv } from '@/content/resume.data'
 
-export class CVService {
-  getCV() {
+export class ResumeService {
+  getResume() {
     return cv
   }
 }
@@ -179,10 +179,10 @@ export class CVService {
 #### Data Modules
 
 ```typescript
-// src/content/cv.data.ts
+// src/content/resume.data.ts
 import { z } from 'zod'
 
-const CVSchema = z.object({
+const ResumeSchema = z.object({
   metadata: z.object({
     name: z.string(),
     title: z.string(),
@@ -210,7 +210,7 @@ const CVSchema = z.object({
   }),
 })
 
-const cvData = {
+const resumeData = {
   metadata: {
     name: 'Rubén González Aranda',
     title: 'Engineering Manager',
@@ -238,7 +238,7 @@ const cvData = {
   },
 }
 
-export const cv = CVSchema.parse(cvData)
+export const cv = ResumeSchema.parse(resumeData)
 ```
 
 #### HTML Content
@@ -282,21 +282,21 @@ export function ResumeMainInfo({ name, title, location, email, summary }: Resume
 ```typescript
 // ✅ Simple page with direct data access
 export default function ResumePage() {
-  const cvService = new CVService()
-  const cv = cvService.getCV()
+  const ResumeService = new ResumeService()
+  const cv = ResumeService.getResume()
 
   return (
     <PageLayout>
       <ResumeMainInfo
-        name={cv.metadata.name}
-        title={cv.metadata.title}
-        location={cv.metadata.location}
-        email={cv.metadata.email}
-        summary={cv.metadata.summary}
+        name={resume.metadata.name}
+        title={resume.metadata.title}
+        location={resume.metadata.location}
+        email={resume.metadata.email}
+        summary={resume.metadata.summary}
       />
       <Timeline items={timelineItems} />
       <Highlights>
-        {cv.content.highlights.map((highlight, index) => (
+        {resume.content.highlights.map((highlight, index) => (
           <HighlightItem key={index} title={highlight.title} description={highlight.description} />
         ))}
       </Highlights>
@@ -313,13 +313,13 @@ export default function ResumePage() {
 
 ```typescript
 // ✅ Simple service tests
-describe('CVService', () => {
+describe('ResumeService', () => {
   it('should return CV data', () => {
-    const cvService = new CVService()
-    const cv = cvService.getCV()
+    const ResumeService = new ResumeService()
+    const cv = ResumeService.getResume()
 
-    expect(cv.metadata.name).toBe('Rubén González Aranda')
-    expect(cv.content.highlights).toHaveLength(7)
+    expect(resume.metadata.name).toBe('Rubén González Aranda')
+    expect(resume.content.highlights).toHaveLength(7)
   })
 })
 ```
@@ -372,7 +372,7 @@ src/
 ├── app/                    # Next.js pages
 ├── components/             # Reusable UI components
 ├── content/                # Data modules with Zod validation
-│   ├── cv.data.ts
+│   ├── resume.data.ts
 │   ├── pages.data.ts
 │   └── projects.data.ts
 ├── application/            # Application services
@@ -386,16 +386,16 @@ src/
 #### Files
 
 - **Components**: PascalCase (`ResumeMainInfo.tsx`)
-- **Services**: PascalCase (`CVService.ts`)
-- **Data Modules**: camelCase with `.data.ts` suffix (`cv.data.ts`)
+- **Services**: PascalCase (`ResumeService.ts`)
+- **Data Modules**: camelCase with `.data.ts` suffix (`resume.data.ts`)
 - **Pages**: kebab-case (`resume/page.tsx`)
 
 #### Variables and Functions
 
-- **Variables**: camelCase (`cvData`)
-- **Functions**: camelCase (`getCV`)
+- **Variables**: camelCase (`resumeData`)
+- **Functions**: camelCase (`getResume`)
 - **Constants**: UPPER_SNAKE_CASE (`MAX_LENGTH`)
-- **Classes**: PascalCase (`CVService`)
+- **Classes**: PascalCase (`ResumeService`)
 
 ## Performance Standards
 
@@ -438,7 +438,7 @@ export const ExpensiveComponent = React.memo(({ data }) => {
 ```typescript
 // ✅ Fail fast validation
 try {
-  export const cv = CVSchema.parse(cvData)
+  export const cv = ResumeSchema.parse(resumeData)
 } catch (error) {
   console.error('CV data validation failed:', error)
   process.exit(1)

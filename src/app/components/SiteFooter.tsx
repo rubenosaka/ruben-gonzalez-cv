@@ -1,3 +1,5 @@
+import { CodeComment } from '@/components/CodeComment'
+
 export const SiteFooter = () => {
   const currentYear = new Date().getFullYear()
 
@@ -6,7 +8,8 @@ export const SiteFooter = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
           <div className="text-sm text-white">
-            © {currentYear} Rubén González Aranda. All rights reserved.
+            © {currentYear} Rubén González Aranda. All rights reserved. -{' '}
+            <CodeComment />
           </div>
 
           <div className="flex items-center space-x-6">

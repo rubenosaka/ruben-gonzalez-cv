@@ -38,23 +38,25 @@ export class ReactPdfCVGenerator {
     doc
       .fontSize(28)
       .fillColor('#1f2937')
-      .text(cv.metadata.name, { align: 'left' })
+      .text(resume.metadata.name, { align: 'left' })
 
     doc
       .fontSize(18)
       .fillColor('#6b7280')
-      .text(cv.metadata.title, { align: 'left' })
+      .text(resume.metadata.title, { align: 'left' })
 
     doc
       .fontSize(11)
       .fillColor('#6b7280')
-      .text(`${cv.metadata.location} • ${cv.metadata.email}`, { align: 'left' })
+      .text(`${resume.metadata.location} • ${resume.metadata.email}`, {
+        align: 'left',
+      })
 
     doc.moveDown(0.5)
     doc
       .fontSize(12)
       .fillColor('#374151')
-      .text(cv.metadata.summary, { align: 'left' })
+      .text(resume.metadata.summary, { align: 'left' })
 
     doc.moveDown(2)
     doc
@@ -69,7 +71,7 @@ export class ReactPdfCVGenerator {
     doc.moveDown(1)
     this.addSectionTitle(doc, 'Career Highlights')
 
-    cv.content.highlights.forEach((highlight: any) => {
+    resume.content.highlights.forEach((highlight: any) => {
       doc
         .fontSize(10)
         .fillColor('#374151')
@@ -86,7 +88,7 @@ export class ReactPdfCVGenerator {
   private addExperience(doc: PDFKit.PDFDocument, cv: any): void {
     this.addSectionTitle(doc, 'Experience')
 
-    cv.content.experience.forEach((exp: any, index: number) => {
+    resume.content.experience.forEach((exp: any, index: number) => {
       if (index > 0) {
         doc.moveDown(1.5)
       }

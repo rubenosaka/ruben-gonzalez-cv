@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server'
-import { CVService } from '@/application/services/CVService'
+import { ResumeService } from '@/application/services/ResumeService'
 import { ReactPdfCVGenerator } from '@/infrastructure/pdf/ReactPdfCVGenerator'
 
 export const runtime = 'nodejs'
 
 export async function GET() {
   try {
-    const cvService = new CVService()
-    const cv = cvService.getCV()
+    const ResumeService = new ResumeService()
+    const cv = ResumeService.getResume()
 
     const pdfGenerator = new ReactPdfCVGenerator()
     const pdfBuffer = await pdfGenerator.generatePDF(cv)

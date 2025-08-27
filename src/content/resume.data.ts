@@ -3,6 +3,18 @@ import { z } from 'zod'
 const HighlightSchema = z.object({
   title: z.string(),
   description: z.string(),
+  icon: z
+    .enum([
+      'teams',
+      'roadmap',
+      'efficiency',
+      'ai',
+      'analytics',
+      'cross',
+      'product',
+    ])
+    .optional(),
+  color: z.string().optional(),
 })
 
 const ExperienceItemSchema = z.object({
@@ -19,7 +31,7 @@ const SkillSchema = z.object({
   level: z.string().optional(),
 })
 
-const CVSchema = z.object({
+const ResumeSchema = z.object({
   metadata: z.object({
     name: z.string(),
     title: z.string(),
@@ -34,51 +46,67 @@ const CVSchema = z.object({
   }),
 })
 
-const cvData = {
+const resumeData = {
   metadata: {
     name: 'Rubén González Aranda',
-    title: 'Engineering Manager / Full-Stack Tech Lead',
+    title:
+      'Engineering Manager · Product-focused Tech Lead · AI-driven Builder',
     email: 'rubenosaka@gmail.com',
     location: 'Madrid, Spain',
     summary:
       'Engineering Manager with over 18 years of experience leading teams and building digital products.',
   },
   content: {
+    featured: [
+      {
+        title: 'Adopted a product-driven mindset',
+        description:
+          'partnering with business and product managers to translate technical solutions into growth and customer impact.',
+        icon: 'product',
+      },
+    ],
     highlights: [
       {
         title: 'Led engineering teams of 3–10 developers',
         description:
-          'balancing delivery with mentoring, onboarding and career development.',
+          'balancing delivery with mentoring, onboarding and career development. Experienced with teams of different sizes and levels of seniority.',
+        icon: 'teams',
+        color: 'pink-400',
       },
       {
         title: 'Owned roadmap sizing and prioritization',
         description:
-          'estimating cost and timing, and aligning with business stakeholders.',
+          'estimating cost and timing while aligning engineering outcomes with business stakeholders.',
+        icon: 'roadmap',
+        color: 'pink-500',
       },
       {
-        title: 'Saved ~4 hours/week by reducing production issues',
+        title: 'Reduced production issues',
         description:
-          'and accelerated release cadence (bi-weekly → weekly) via structured reviews, CI/CD and mentoring practices.',
+          'by ~4 hours/week and accelerated release cadence (bi-weekly → weekly) through structured reviews, CI/CD and mentoring practices.',
+        icon: 'efficiency',
+        color: 'pink-600',
       },
       {
         title: 'Introduced AI and automation',
         description:
-          'to optimize user lifecycle management and content generation workflows, saving ~8h/week and reducing operational risk.',
+          'optimizing user lifecycle management and content generation workflows, saving ~8h/week and reducing operational risk.',
+        icon: 'ai',
+        color: 'pink-700',
       },
       {
         title: 'Built observability dashboards',
         description:
           'with PostHog and Mixpanel, enabling business and product teams to make data-driven decisions.',
+        icon: 'analytics',
+        color: 'pink-800',
       },
       {
-        title: 'Cross-team impact:',
+        title: 'Drove cross-team impact',
         description:
-          'Collaborated with Product, Marketing, Sales and QA to ensure measurable outcomes.',
-      },
-      {
-        title: 'Product-driven mindset:',
-        description:
-          'Partnered with business and product managers to translate technical solutions into growth and customer impact.',
+          'by collaborating with Product, Marketing, Sales and QA to ensure measurable outcomes.',
+        icon: 'cross',
+        color: 'pink-800',
       },
     ],
     experience: [
@@ -191,4 +219,4 @@ const cvData = {
   },
 }
 
-export const cv = CVSchema.parse(cvData)
+export const resume = ResumeSchema.parse(resumeData)

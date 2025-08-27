@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 import { useState } from 'react'
 
-export const DownloadCVButton = () => {
+export const DownloadResumeButton = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleDownload = async () => {

@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
-import { CVService } from '@/application/services/CVService'
+import { ResumeService } from '@/application/services/ResumeService'
 import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectsSection } from '@/components/ProjectsSection'
+import { CodeComment } from '@/components/CodeComment'
 
 export const metadata: Metadata = {
-  title: 'Rubén González Aranda - Senior Full Stack Developer',
+  title:
+    'Rubén González Aranda - Engineering Manager · Product-focused Tech Lead · AI-driven Builder',
   description:
     'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
   keywords: [
@@ -18,7 +20,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Rubén González Aranda' }],
   openGraph: {
-    title: 'Rubén González Aranda - Senior Full Stack Developer',
+    title:
+      'Rubén González Aranda - Engineering Manager · Product-focused Tech Lead · AI-driven Builder',
     description:
       'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
     type: 'website',
@@ -26,17 +29,18 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rubén González Aranda - Senior Full Stack Developer',
+    title:
+      'Rubén González Aranda - Engineering Manager · Product-focused Tech Lead · AI-driven Builder',
     description:
       'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
   },
 }
 
 export default function HomePage() {
-  const cvService = new CVService()
+  const resumeService = new ResumeService()
   const projectService = new ProjectService()
 
-  const cv = cvService.getCV()
+  const resume = resumeService.getResume()
   const allProjects = projectService.listProjects()
 
   const featuredProjects = allProjects
@@ -52,14 +56,14 @@ export default function HomePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: cv.metadata.name,
-    jobTitle: cv.metadata.title,
-    email: cv.metadata.email,
+    name: resume.metadata.name,
+    jobTitle: resume.metadata.title,
+    email: resume.metadata.email,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: cv.metadata.location,
+      addressLocality: resume.metadata.location,
     },
-    description: cv.metadata.summary,
+    description: resume.metadata.summary,
     knowsAbout: [
       'React',
       'TypeScript',
@@ -70,7 +74,7 @@ export default function HomePage() {
     ],
     hasOccupation: {
       '@type': 'Occupation',
-      name: 'Senior Full Stack Developer',
+      name: 'Engineering Manager · Product-focused Tech Lead · AI-driven Builder',
       description:
         'Building scalable web applications with modern technologies',
     },
@@ -84,11 +88,11 @@ export default function HomePage() {
       />
       <PageLayout>
         <AnimatedHero
-          title={cv.metadata.name}
-          subtitle={cv.metadata.title}
-          description={cv.metadata.summary}
+          title={resume.metadata.name}
+          subtitle={resume.metadata.title}
+          description={resume.metadata.summary}
         />
-
+        <CodeComment />
         <ProjectsSection projects={featuredProjects} />
       </PageLayout>
     </>

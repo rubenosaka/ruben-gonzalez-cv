@@ -23,20 +23,26 @@ export const HeaderMenu = () => {
 
   return (
     <nav className="hidden items-center space-x-6 md:flex">
-      {navigationItems.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={`border-b-2 py-1 text-sm font-medium text-white ${
-            isActive(item.href)
-              ? 'cursor-auto border-white'
-              : 'cursor-pointer border-black hover:opacity-70'
-          }`}
-          aria-label={`Navigate to ${item.label} page`}
-          aria-current={isActive(item.href) ? 'page' : undefined}
-        >
-          {item.label}
-        </Link>
+      {navigationItems.map((item, index) => (
+        <div key={item.href} className="flex items-center">
+          <Link
+            href={item.href}
+            className={`border-b-2 py-1 text-sm font-medium text-white ${
+              isActive(item.href)
+                ? 'cursor-auto border-white'
+                : 'cursor-pointer border-black hover:opacity-70'
+            }`}
+            aria-label={`Navigate to ${item.label} page`}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </Link>
+          {index < navigationItems.length - 1 && (
+            <span className="mx-3 font-mono text-xs text-gray-400">
+              {'</>'}
+            </span>
+          )}
+        </div>
       ))}
     </nav>
   )

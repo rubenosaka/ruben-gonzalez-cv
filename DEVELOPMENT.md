@@ -105,12 +105,12 @@ The resume uses TypeScript modules with Zod validation for content management, e
 
 #### Content Structure
 
-**Resume Data** (`src/content/cv.data.ts`):
+**Resume Data** (`src/content/resume.data.ts`):
 
 ```typescript
 import { z } from 'zod'
 
-const CVSchema = z.object({
+const ResumeSchema = z.object({
   metadata: z.object({
     name: z.string(),
     title: z.string(),
@@ -138,10 +138,10 @@ const CVSchema = z.object({
   }),
 })
 
-const cvData = {
+const resumeData = {
   /* ... */
 }
-export const cv = CVSchema.parse(cvData)
+export const cv = ResumeSchema.parse(resumeData)
 ```
 
 **Pages Data** (`src/content/pages.data.ts`):
@@ -187,11 +187,11 @@ export const projects = projectsData.map((project) =>
 Services directly import and expose data:
 
 ```typescript
-// src/application/services/CVService.ts
-import { cv } from '@/content/cv.data'
+// src/application/services/ResumeService.ts
+import { cv } from '@/content/resume.data'
 
-export class CVService {
-  getCV() {
+export class ResumeService {
+  getResume() {
     return cv
   }
 }
@@ -204,17 +204,17 @@ Components use services to access data:
 ```typescript
 // src/app/resume/page.tsx
 export default function ResumePage() {
-  const cvService = new CVService()
-  const cv = cvService.getCV()
+  const ResumeService = new ResumeService()
+  const cv = ResumeService.getResume()
 
   return (
     <PageLayout>
       <ResumeMainInfo
-        name={cv.metadata.name}
-        title={cv.metadata.title}
-        location={cv.metadata.location}
-        email={cv.metadata.email}
-        summary={cv.metadata.summary}
+        name={resume.metadata.name}
+        title={resume.metadata.title}
+        location={resume.metadata.location}
+        email={resume.metadata.email}
+        summary={resume.metadata.summary}
       />
     </PageLayout>
   )
@@ -242,8 +242,8 @@ const [state, setState] = useState(initialState)
 
 ```typescript
 // Direct data access through services
-const cvService = new CVService()
-const cv = cvService.getCV()
+const ResumeService = new ResumeService()
+const cv = ResumeService.getResume()
 ```
 
 ### 5. Error Handling
@@ -252,7 +252,7 @@ const cv = cvService.getCV()
 
 ```typescript
 try {
-  export const cv = CVSchema.parse(cvData)
+  export const cv = ResumeSchema.parse(resumeData)
 } catch (error) {
   console.error('CV data validation failed:', error)
   process.exit(1)
@@ -317,16 +317,16 @@ export class ErrorBoundary extends Component {
 #### Files and Directories
 
 - **Components**: PascalCase (`PostCard.tsx`)
-- **Services**: PascalCase (`CVService.ts`)
-- **Data Modules**: camelCase with `.data.ts` suffix (`cv.data.ts`)
+- **Services**: PascalCase (`ResumeService.ts`)
+- **Data Modules**: camelCase with `.data.ts` suffix (`resume.data.ts`)
 - **Types**: PascalCase (`CVMetadata.ts`)
 
 #### Variables and Functions
 
-- **Variables**: camelCase (`cvData`)
-- **Functions**: camelCase (`getCV`)
+- **Variables**: camelCase (`resumeData`)
+- **Functions**: camelCase (`getResume`)
 - **Constants**: UPPER_SNAKE_CASE (`MAX_LENGTH`)
-- **Classes**: PascalCase (`CVService`)
+- **Classes**: PascalCase (`ResumeService`)
 
 ## Testing Guidelines
 
@@ -335,13 +335,13 @@ export class ErrorBoundary extends Component {
 #### Test Structure
 
 ```typescript
-describe('CVService', () => {
+describe('ResumeService', () => {
   it('should return CV data', () => {
-    const cvService = new CVService()
-    const cv = cvService.getCV()
+    const ResumeService = new ResumeService()
+    const cv = ResumeService.getResume()
 
-    expect(cv.metadata.name).toBe('Rubén González Aranda')
-    expect(cv.content.highlights).toHaveLength(7)
+    expect(resume.metadata.name).toBe('Rubén González Aranda')
+    expect(resume.content.highlights).toHaveLength(7)
   })
 })
 ```
@@ -383,7 +383,7 @@ describe('ResumeMainInfo Component', () => {
       }
     }
 
-    render(<ResumeMainInfo {...mockCV.metadata} />)
+    render(<ResumeMainInfo {...mockresume.metadata} />)
 
     expect(screen.getByText('Test Name')).toBeInTheDocument()
     expect(screen.getByText('Test Title')).toBeInTheDocument()
@@ -438,7 +438,7 @@ export const ExpensiveComponent = React.memo(({ data }) => {
 ### 1. Input Validation
 
 ```typescript
-const CVSchema = z.object({
+const ResumeSchema = z.object({
   metadata: z.object({
     email: z.string().email(),
     name: z.string().min(1).max(100),

@@ -2,6 +2,7 @@
 
 import { ProjectCard } from './ProjectCard'
 import { TrinukiBanner } from './TrinukiBanner'
+import { CodeComment } from './CodeComment'
 
 interface ProjectsSectionProps {
   projects: Array<{
@@ -19,6 +20,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section className="mb-12">
       <h2 className="mb-6 text-3xl font-bold">Featured Projects</h2>
+
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <TrinukiBanner variant="home" />
         {projects.slice(0, 1).map((project: any, index: number) => (
