@@ -21,7 +21,7 @@ export function AnimatedHero({
       transition={{ duration: 0.6 }}
     >
       <motion.h1
-        className="to-purple mb-4 bg-gradient-to-r from-pink-500 to-purple-950 bg-clip-text text-5xl font-bold text-transparent md:text-6xl"
+        className="to-purple mb-4 bg-gradient-to-r from-pink-500 to-purple-950 bg-clip-text text-5xl font-bold text-transparent md:text-6xl px-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
