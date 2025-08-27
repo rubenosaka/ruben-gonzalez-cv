@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 interface CodeCommentProps {
   children?: React.ReactNode
@@ -22,8 +22,13 @@ const randomComments = [
 ]
 
 export function CodeComment({ children, className = '' }: CodeCommentProps) {
-  const randomComment =
-    randomComments[Math.floor(Math.random() * randomComments.length)]
+  const [randomComment, setRandomComment] = useState<string>('')
+
+  useEffect(() => {
+    const comment = randomComments[Math.floor(Math.random() * randomComments.length)] || ''
+    setRandomComment(comment)
+  }, [])
+
   const content = children || randomComment
 
   return (
