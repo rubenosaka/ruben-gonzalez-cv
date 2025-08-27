@@ -68,7 +68,7 @@ export function Highlights({ items, className = '' }: Props) {
               delay: i * 0.1,
               ease: 'easeOut',
             }}
-            className={`relative overflow-hidden rounded-xl border-4 bg-white p-6 shadow-md hover:shadow-lg ${item.color ? `border-${item.color}` : 'border-black'}`}
+            className={`relative overflow-hidden rounded-xl border-4  bg-white p-6 shadow-md hover:shadow-lg ${item.color ? `border-${item.color}` : 'border-black'}`}
           >
             {Icon ? (
               <Icon

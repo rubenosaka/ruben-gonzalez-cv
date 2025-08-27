@@ -1,10 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
-  content: [
-    './src/**/*.{ts,tsx,mdx}',
-    './content/**/*.{md,mdx}',
-  ],
+  content: ['./src/**/*.{ts,tsx,mdx}', './content/**/*.{md,mdx}'],
   theme: {
     container: {
       center: true,
@@ -70,5 +67,17 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    'border-pink-400',
+    'border-pink-500',
+    'border-pink-600',
+    'border-pink-700',
+    'border-pink-800',
+    'text-pink-400/20',
+    'text-pink-500/20',
+    'text-pink-600/20',
+    'text-pink-700/20',
+    'text-pink-800/20',
+  ],
   plugins: [require('@tailwindcss/typography')],
 }

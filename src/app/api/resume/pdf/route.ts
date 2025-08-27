@@ -1,16 +1,20 @@
 import { NextResponse } from 'next/server'
 import { ResumeService } from '@/application/services/ResumeService'
-import { ReactPdfCVGenerator } from '@/infrastructure/pdf/ReactPdfCVGenerator'
+import { ReactPdfResumeGenerator } from '@/infrastructure/pdf/ReactPdfResumeGenerator'
 
 export const runtime = 'nodejs'
 
 export async function GET() {
   try {
+    console.log('Starting PDF generation...')
     const resumeService = new ResumeService()
     const resume = resumeService.getResume()
+    console.log('Resume data loaded:', !!resume)
 
-    const pdfGenerator = new ReactPdfCVGenerator()
+    const pdfGenerator = new ReactPdfResumeGenerator()
+    console.log('PDF generator created')
     const pdfBuffer = await pdfGenerator.generatePDF(resume)
+    console.log('PDF generated, buffer size:', pdfBuffer.length)
 
     return new NextResponse(pdfBuffer as any, {
       status: 200,
