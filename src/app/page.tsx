@@ -5,6 +5,7 @@ import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectsSection } from '@/components/ProjectsSection'
 import { CodeComment } from '@/components/CodeComment'
+import type { Project } from '@/types/project'
 
 export const metadata: Metadata = {
   title:
@@ -44,8 +45,8 @@ export default function HomePage() {
   const allProjects = projectService.listProjects()
 
   const featuredProjects = allProjects
-    .filter((project: any) => project.slug === 'frenetic')
-    .map((project: any) => ({
+    .filter((project: Project) => project.slug === 'frenetic')
+    .map((project: Project) => ({
       slug: project.slug,
       title: project.title,
       summary: project.summary,

@@ -23,16 +23,16 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <TrinukiBanner variant="home" />
-        {projects.slice(0, 1).map((project: any, index: number) => (
+        {projects.slice(0, 1).map((project, index: number) => (
           <ProjectCard
             key={project.slug}
             title={project.title}
             summary={project.summary}
             tags={project.stack}
             href={`/projects/${project.slug}`}
-            role={project.role}
-            period={project.period}
-            links={project.links}
+            {...(project.role && { role: project.role })}
+            {...(project.period && { period: project.period })}
+            {...(project.links && { links: project.links })}
           />
         ))}
       </div>

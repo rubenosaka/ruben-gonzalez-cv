@@ -15,6 +15,10 @@ const randomComments = [
   'Silent HIll 2 is the best Silent HIll',
   'Smile and the world will smile with you',
   'I prefer Midsommar over The Witch',
+  'Code Vibing is the Pair Programming of freelancers',
+  'Zelda: Link to the Past is the best Zelda game',
+  'Donatello is my favorite ninja turtle',
+  'I made my own arcade machine',
 ]
 
 export function CodeComment({ children, className = '' }: CodeCommentProps) {

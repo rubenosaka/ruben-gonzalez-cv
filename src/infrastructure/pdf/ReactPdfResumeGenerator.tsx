@@ -1,7 +1,8 @@
 import PDFDocument from 'pdfkit'
+import type { Resume, Highlight, Experience } from '@/types/resume'
 
 export class ReactPdfResumeGenerator {
-  async generatePDF(resume: any): Promise<Buffer> {
+  async generatePDF(resume: Resume): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       try {
         const doc = new PDFDocument({
@@ -26,49 +27,44 @@ export class ReactPdfResumeGenerator {
     })
   }
 
-  private generateContent(doc: PDFKit.PDFDocument, resume: any): void {
+  private generateContent(doc: PDFKit.PDFDocument, resume: Resume): void {
     this.addHeader(doc, resume)
     this.addCareerHighlights(doc, resume)
     this.addExperience(doc, resume)
+    doc.moveDown(2)
     this.addSkills(doc)
     this.addEducation(doc)
   }
 
-  private addHeader(doc: PDFKit.PDFDocument, resume: any): void {
-    // Background header
+  private addHeader(doc: PDFKit.PDFDocument, resume: Resume): void {
     doc.fillColor('#f8fafc').rect(0, 0, 595, 120).fill()
 
-    // Name
     doc
       .fontSize(32)
       .fillColor('#1e293b')
       .font('Helvetica-Bold')
       .text(resume.metadata.name, 50, 30)
 
-    // Title
     doc
       .fontSize(16)
       .fillColor('#64748b')
       .font('Helvetica')
       .text(resume.metadata.title, 50, 70)
 
-    // Contact info
     doc
       .fontSize(12)
       .fillColor('#64748b')
       .text(`${resume.metadata.location} • ${resume.metadata.email}`, 50, 95)
 
-    // Summary
     doc
-      .fontSize(14)
+      .fontSize(12)
       .fillColor('#334155')
       .text(resume.metadata.summary, 50, 140, { width: 495 })
 
     doc.moveDown(2)
   }
 
-  private addCareerHighlights(doc: PDFKit.PDFDocument, resume: any): void {
-    doc.moveDown(1)
+  private addCareerHighlights(doc: PDFKit.PDFDocument, resume: Resume): void {
     this.addSectionTitle(doc, 'Career Highlights')
 
     const colorMap: Record<string, string> = {
@@ -79,130 +75,101 @@ export class ReactPdfResumeGenerator {
       'pink-800': '#9d174d',
     }
 
-    let currentY = doc.y
-    let currentX = 50
-    const cardWidth = 240
-    const cardHeight = 80
-    const margin = 20
+    resume.content.highlights.forEach((highlight: Highlight, index: number) => {
+      const highlightColor =
+        (highlight.color && colorMap[highlight.color]) || '#1f2937'
 
-    resume.content.highlights.forEach((highlight: any, index: number) => {
-      // Check if we need to move to next row
-      if (currentX + cardWidth > 545) {
-        currentX = 50
-        currentY += cardHeight + margin
-      }
-
-      const highlightColor = (highlight.color && colorMap[highlight.color]) || '#1f2937'
-
-      // Card background
       doc
         .fillColor('#ffffff')
         .strokeColor('#e2e8f0')
         .lineWidth(1)
-        .roundedRect(currentX, currentY, cardWidth, cardHeight, 8)
+        .roundedRect(50, doc.y, 495, 60, 8)
         .fill()
         .stroke()
 
-      // Colored border (top)
-      doc
-        .fillColor(highlightColor)
-        .rect(currentX, currentY, cardWidth, 4)
-        .fill()
+      doc.fillColor(highlightColor).rect(50, doc.y, 4, 60).fill()
 
-      // Title
       doc
-        .fontSize(10)
+        .fontSize(12)
         .fillColor('#1e293b')
         .font('Helvetica-Bold')
-        .text(highlight.title, currentX + 12, currentY + 12, {
-          width: cardWidth - 24,
-        })
+        .text(highlight.title, 70, doc.y + 5, { width: 465 })
 
-      // Description
       doc
-        .fontSize(8)
+        .fontSize(10)
         .fillColor('#64748b')
         .font('Helvetica')
-        .text(highlight.description, currentX + 12, currentY + 35, {
-          width: cardWidth - 24,
-        })
+        .text(highlight.description, 70, doc.y + 18, { width: 465 })
 
-      currentX += cardWidth + margin
+      doc.y += 30
     })
 
-    doc.y = currentY + cardHeight + 30
+    doc.moveDown(1)
+    doc.addPage()
   }
 
-  private addExperience(doc: PDFKit.PDFDocument, resume: any): void {
+  private addExperience(doc: PDFKit.PDFDocument, resume: Resume): void {
     this.addSectionTitle(doc, 'Experience')
 
-    resume.content.experience.forEach((exp: any, index: number) => {
+    resume.content.experience.forEach((exp: Experience, index: number) => {
       if (index > 0) {
         doc.moveDown(2)
       }
 
-      // Company name with background
-      doc
-        .fillColor('#f1f5f9')
-        .rect(50, doc.y, 495, 25)
-        .fill()
+      doc.fillColor('#f1f5f9').rect(50, doc.y, 495, 25).fill()
 
       doc
-        .fontSize(16)
+        .fontSize(14)
         .fillColor('#1e293b')
         .font('Helvetica-Bold')
         .text(exp.company, 60, doc.y + 5)
 
       doc
-        .fontSize(12)
+        .fontSize(10)
         .fillColor('#64748b')
         .font('Helvetica')
-        .text(exp.period, 60, doc.y + 5, { align: 'right', width: 475 })
+        .text(exp.period, 60, doc.y + 10)
 
-      doc.moveDown(1.5)
+      doc.moveDown(0.8)
 
-      // Job title
       doc
-        .fontSize(14)
+        .fontSize(12)
         .fillColor('#334155')
         .font('Helvetica-Bold')
         .text(exp.title, 60, doc.y)
 
-      doc.moveDown(1)
+      doc.moveDown(0.5)
 
-      // Description
       doc
-        .fontSize(11)
+        .fontSize(10)
         .fillColor('#475569')
         .font('Helvetica')
         .text(exp.description, 60, doc.y, { width: 475 })
 
-      // Stack
       if (exp.stack) {
-        doc.moveDown(0.8)
+        doc.moveDown(0.5)
         doc
-          .fontSize(10)
+          .fontSize(9)
           .fillColor('#64748b')
           .font('Helvetica-Bold')
           .text('Stack:', 60, doc.y)
 
         doc
-          .fontSize(9)
+          .fontSize(8)
           .fillColor('#64748b')
           .font('Helvetica')
           .text(exp.stack.join(', '), 80, doc.y, { width: 455 })
       }
 
-      // Highlights
       if (exp.highlights && exp.highlights.length > 0) {
-        doc.moveDown(1)
+        doc.moveDown(0.3)
         exp.highlights.forEach((highlight: string) => {
           doc
-            .fontSize(9)
+            .fontSize(8)
             .fillColor('#475569')
             .font('Helvetica')
-            .text(`• ${highlight}`, 60, doc.y, { width: 475 })
-          doc.moveDown(0.3)
+            .text(`• ${highlight}`, 60, doc.y, { width: 275 })
+          doc.moveDown(0.15)
         })
       }
     })
@@ -212,10 +179,10 @@ export class ReactPdfResumeGenerator {
     this.addSectionTitle(doc, 'Skills')
 
     const skills = [
-      'JavaScript (ES6+)',
       'Vue 3',
       'React',
       'TypeScript',
+      'JavaScript (ES6+)',
       'Node.js/Express',
       'PHP (Laravel, Symfony)',
       'Python',
@@ -230,29 +197,31 @@ export class ReactPdfResumeGenerator {
     let currentY = doc.y
 
     skills.forEach((skill, index) => {
-      const skillWidth = doc.widthOfString(skill) + 16
+      const skillWidth = doc.widthOfString(skill) + 14
 
       if (currentX + skillWidth > 545) {
         currentX = 50
-        currentY += 20
+        currentY += 25
       }
 
       doc
-        .fontSize(9)
-        .fillColor('#6b7280')
-        .fillAndStroke('#f3f4f6', '#e5e7eb')
-        .roundedRect(currentX, currentY, skillWidth, 16, 4)
+        .fillColor('#f1f5f9')
+        .strokeColor('#e2e8f0')
+        .lineWidth(1)
+        .roundedRect(currentX, currentY, skillWidth, 20, 10)
         .fill()
+        .stroke()
 
       doc
         .fontSize(9)
-        .fillColor('#6b7280')
-        .text(skill, currentX + 8, currentY + 4)
+        .fillColor('#475569')
+        .font('Helvetica')
+        .text(skill, currentX + 6, currentY + 5)
 
-      currentX += skillWidth + 8
+      currentX += skillWidth + 10
     })
 
-    doc.y = currentY + 30
+    doc.y = currentY + 35
   }
 
   private addEducation(doc: PDFKit.PDFDocument): void {
@@ -279,18 +248,18 @@ export class ReactPdfResumeGenerator {
 
   private addSectionTitle(doc: PDFKit.PDFDocument, title: string): void {
     doc
-      .fontSize(20)
+      .fontSize(18)
       .fillColor('#1e293b')
       .font('Helvetica-Bold')
       .text(title, 50, doc.y)
 
     doc
       .strokeColor('#e2e8f0')
-      .lineWidth(2)
-      .moveTo(50, doc.y + 8)
-      .lineTo(545, doc.y + 8)
+      .lineWidth(1)
+      .moveTo(50, doc.y + 5)
+      .lineTo(545, doc.y + 5)
       .stroke()
 
-    doc.moveDown(1.5)
+    doc.moveDown(1)
   }
 }

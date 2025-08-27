@@ -6,6 +6,7 @@ import { AnimatedHero } from '@/components/AnimatedHero'
 import { ResumeMainInfo } from '@/components/resume/ResumeMainInfo'
 import { Highlights } from '@/components/resume/Highlights'
 import { CodeComment } from '@/components/CodeComment'
+import type { Experience } from '@/types/resume'
 
 export default function ResumePage() {
   const resumeService = new ResumeService()
@@ -36,7 +37,7 @@ export default function ResumePage() {
             <CodeComment>it&apos;s like leveling up</CodeComment>
           </div>
 
-          {resume.content.experience.map((exp: any, index: number) => (
+          {resume.content.experience.map((exp: Experience, index: number) => (
             <div key={index} className="mb-8">
               <h3 className="mb-3 mt-6 text-xl font-medium text-foreground">
                 <strong>{exp.title}</strong> — {exp.company} ({exp.period})
@@ -51,7 +52,7 @@ export default function ResumePage() {
               )}
               {exp.highlights && (
                 <ul className="mb-6 space-y-2">
-                  {exp.highlights.map((highlight: any, hIndex: number) => (
+                  {exp.highlights.map((highlight: string, hIndex: number) => (
                     <li
                       key={hIndex}
                       className="leading-relaxed text-muted-foreground"

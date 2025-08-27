@@ -20,7 +20,15 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <TrinukiBanner variant="project" />
               {projects.map((project, index) => {
-          const props: any = {
+                        const props: {
+                title: string
+                summary: string
+                tags: string[]
+                href: string
+                links: Array<{ label: string; url: string }>
+                role?: string
+                period?: string
+              } = {
             title: project.title,
             summary: project.summary,
             tags: project.stack,

@@ -2,6 +2,7 @@ import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectsGrid } from '@/components/ProjectsGrid'
+import type { Project } from '@/types/project'
 
 export default function ProjectsPage() {
   const projectService = new ProjectService()
@@ -12,7 +13,7 @@ export default function ProjectsPage() {
       <AnimatedHero title="Projects" />
 
       <ProjectsGrid
-        projects={projects.map((project: any) => ({
+        projects={projects.map((project: Project) => ({
           slug: project.slug,
           title: project.title,
           summary: project.summary,

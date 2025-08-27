@@ -1,5 +1,6 @@
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
+import { CodeComment } from '@/components/CodeComment'
 
 export default function AboutMePage() {
   return (
@@ -32,6 +33,7 @@ export default function AboutMePage() {
           contributing to open source, or sharing knowledge with the developer
           community.
         </p>
+        <CodeComment />
       </div>
     </PageLayout>
   )
