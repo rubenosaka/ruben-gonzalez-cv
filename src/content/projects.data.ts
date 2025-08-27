@@ -14,6 +14,30 @@ const ProjectSchema = z.object({
 
 const projectsData = [
   {
+    slug: 'trinuki',
+    title: 'Trinuki',
+    summary: 'AI-powered travel planner for Japan',
+    tags: ['AI/ML', 'Travel', 'React', 'Node.js'],
+    bodyHtml: `
+      <h2>Trinuki</h2>
+      <p>AI-powered travel planner for Japan that helps travelers create personalized itineraries using machine learning and local insights.</p>
+      
+      <h3>Key Features</h3>
+      <ul>
+        <li>AI-powered itinerary generation</li>
+        <li>Local culture and tradition integration</li>
+        <li>Personalized recommendations based on preferences</li>
+        <li>Red panda mascot for user engagement</li>
+      </ul>
+      
+      <h3>Tech Stack</h3>
+      <p>React, TypeScript, Node.js, AI/ML, Travel APIs</p>
+    `,
+    links: [
+      { label: 'Coming Soon', url: '#' },
+    ],
+  },
+  {
     slug: 'frenetic',
     title: 'Frenetic.ai',
     summary: 'SaaS platform for magnet design and simulation',

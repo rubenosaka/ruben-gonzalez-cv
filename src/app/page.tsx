@@ -4,6 +4,7 @@ import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
 import { ProjectsSection } from '@/components/ProjectsSection'
+import { NewsSection } from '@/components/NewsSection'
 import { CodeComment } from '@/components/CodeComment'
 import type { Project } from '@/types/project'
 
@@ -54,7 +55,7 @@ export default function HomePage() {
   const allProjects = projectService.listProjects()
 
   const featuredProjects = allProjects
-    .filter((project: Project) => project.slug === 'frenetic')
+    .filter((project: Project) => project.slug === 'trinuki' || project.slug === 'frenetic')
     .map((project: Project) => ({
       slug: project.slug,
       title: project.title,
@@ -103,7 +104,15 @@ export default function HomePage() {
           description={resume.metadata.summary}
         />
         <CodeComment />
-        <ProjectsSection projects={featuredProjects} />
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-8">
+            <ProjectsSection projects={featuredProjects} />
+          </div>
+          <div className="lg:col-span-4">
+            <NewsSection />
+          </div>
+        </div>
       </PageLayout>
     </>
   )
