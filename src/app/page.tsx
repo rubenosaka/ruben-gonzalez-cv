@@ -27,6 +27,14 @@ export const metadata: Metadata = {
       'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: '/ruben-gonzalez-og.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Rubén González Aranda - Engineering Manager · Product-focused Tech Lead · AI-driven Builder',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -34,6 +42,7 @@ export const metadata: Metadata = {
       'Rubén González Aranda - Engineering Manager · Product-focused Tech Lead · AI-driven Builder',
     description:
       'Experienced developer with 18+ years building scalable web applications using modern technologies and clean architecture principles.',
+    images: ['/ruben-gonzalez-og.webp'],
   },
 }
 

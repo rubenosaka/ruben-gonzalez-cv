@@ -1,5 +1,6 @@
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
+import { CodeComment } from '@/components/CodeComment'
 
 export default function NowPage() {
   return (
@@ -33,9 +34,10 @@ export default function NowPage() {
           </li>
         </ul>
 
-        <p>
-          <em>Last updated: December 2024</em>
+        <p className="text-sm text-gray-500">
+          <em>Last updated: August 2025</em>
         </p>
+        <CodeComment />
       </div>
     </PageLayout>
   )
