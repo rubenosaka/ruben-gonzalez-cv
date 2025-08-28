@@ -13,7 +13,7 @@ export function TrinukiBanner({ variant }: TrinukiBannerProps) {
 
   return (
     <motion.article
-      className={`relative transition-all duration-200 hover:shadow-md ${
+      className={`relative h-[300px] transition-all duration-200  hover:shadow-md md:h-auto ${
         variant === 'project' ? 'w-full' : ''
       }`}
       initial={{ opacity: 0, y: 20 }}
@@ -21,7 +21,7 @@ export function TrinukiBanner({ variant }: TrinukiBannerProps) {
       transition={{ duration: 0.3 }}
     >
       <div
-        className="relative h-full overflow-hidden rounded-2xl shadow-sm backdrop-blur-sm "
+        className="relative h-full overflow-hidden rounded-2xl shadow-sm backdrop-blur-sm"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',

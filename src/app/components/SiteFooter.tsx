@@ -4,7 +4,7 @@ export const SiteFooter = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="m-4 rounded-lg bg-black shadow-md">
+    <footer className="m-4 rounded-lg bg-black shadow-md dark:border-2 dark:border-pink-500">
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
           <div className="text-sm text-white">

@@ -4,13 +4,9 @@ import { HeaderMenu } from '@/components/HeaderMenu'
 
 export const SiteHeader = () => {
   return (
-    <header className="m-4 rounded-lg bg-black shadow-md">
+    <header className="relative m-4 rounded-lg bg-black shadow-md dark:border-2 dark:border-pink-500">
       <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-8">
-            <HeaderMenu />
-          </div>
-        </div>
+        <HeaderMenu />
       </div>
     </header>
   )
