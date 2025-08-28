@@ -28,6 +28,37 @@ A prominent disclaimer explains the dual-purpose nature, setting expectations fo
 
 Professional PDF generation for traditional resume distribution, maintaining consistency across digital and print formats.
 
+## Key Features
+
+### Responsive Design
+
+- **Mobile-first approach** with hamburger menu navigation
+- **Adaptive layouts** that work seamlessly across all devices
+- **Touch-friendly interactions** optimized for mobile users
+
+### Enhanced User Experience
+
+- **Smooth animations** and transitions using Framer Motion
+- **Accessible navigation** with proper ARIA labels and keyboard support
+- **Progressive enhancement** ensuring functionality across all browsers
+
+### Advanced Theme System
+
+- **Creative themes** beyond standard light/dark modes:
+  - Death Metal
+  - Unicorns
+  - Horror Movies
+  - Musical
+- **Dynamic color schemes** with pink-500 to purple-950 gradients
+- **Consistent theming** across all components
+
+### PDF Generation
+
+- **Professional layout** with sidebar and main content areas
+- **Contact information** including email and telephone
+- **Responsive design** that works in print and digital formats
+- **Error handling** with fallback to browser print
+
 ## Key Decisions
 
 ### TypeScript Data with Zod Validation
@@ -139,6 +170,8 @@ The project demonstrates:
 - **Testing**: Jest, Playwright
 - **Deployment**: Vercel
 - **PDF Generation**: pdfkit
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
 
 ## Documentation
 
@@ -148,6 +181,7 @@ This project includes comprehensive documentation:
 - **[DEVELOPMENT.md](./DEVELOPMENT.md)**: Development guidelines and best practices
 - **[CODING_STANDARDS.md](./CODING_STANDARDS.md)**: Code quality standards and conventions
 - **[MIGRATION.md](./MIGRATION.md)**: Migration from MDX to TypeScript data with Zod
+- **[FEATURES.md](./FEATURES.md)**: Detailed feature documentation and usage
 
 ## Getting Started
 

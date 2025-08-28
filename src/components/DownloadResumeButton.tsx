@@ -49,7 +49,7 @@ export const DownloadResumeButton = () => {
       disabled={isLoading}
       className="btn-gradient flex w-full items-center gap-2"
     >
-      <Download className="h-4 w-4" />
+      <Download className="h-4 w-4" data-testid="download-icon" />
       {isLoading ? 'Generating...' : 'Download PDF'}
     </Button>
   )

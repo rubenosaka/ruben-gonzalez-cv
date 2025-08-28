@@ -408,3 +408,45 @@ const experience = resume.content.experience.map((exp) => ({
 - **Internationalization**: Add multi-language support
 - **Analytics**: Add user analytics
 - **SEO**: Enhanced SEO features
+
+## Technology Stack
+
+### Core Technologies
+
+- **Frontend Framework**: Next.js 15 with App Router
+- **UI Library**: React 18 with TypeScript
+- **Styling**: Tailwind CSS with custom design system
+- **Content Management**: TypeScript modules with Zod validation
+- **PDF Generation**: pdfkit for professional resume creation
+
+### UI/UX Technologies
+
+- **Component Library**: shadcn/ui with Radix UI primitives
+- **Animations**: Framer Motion for smooth transitions
+- **Icons**: Lucide React for consistent iconography
+- **Theme Management**: next-themes for dynamic theme switching
+- **Responsive Design**: Mobile-first approach with Tailwind breakpoints
+
+### Development Tools
+
+- **Type Safety**: TypeScript with strict configuration
+- **Code Quality**: ESLint with Next.js and TypeScript rules
+- **Code Formatting**: Prettier with Tailwind CSS plugin
+- **Testing**: Jest for unit tests, Playwright for E2E tests
+- **Development Server**: Next.js development server with hot reload
+
+### Deployment & Monitoring
+
+- **Hosting**: Vercel with automatic deployments
+- **Analytics**: Vercel Analytics for performance monitoring
+- **Error Tracking**: Built-in error boundaries and logging
+- **Performance**: Core Web Vitals monitoring
+- **SEO**: Next.js built-in SEO optimization
+
+### Architecture Benefits
+
+- **Simplified Data Flow**: Direct imports without abstraction layers
+- **Type Safety**: Full TypeScript coverage with runtime validation
+- **Performance**: Optimized bundle size and loading times
+- **Maintainability**: Clean code principles and comprehensive documentation
+- **Scalability**: Modular architecture that grows with requirements

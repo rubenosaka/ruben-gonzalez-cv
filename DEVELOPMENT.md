@@ -99,6 +99,42 @@ export const Component = ({ prop1, prop2, className, ...props }: ComponentProps)
 }
 ```
 
+#### Responsive Component Example
+
+```typescript
+// Mobile-first responsive component
+export const ResponsiveComponent = ({ children, className }: ComponentProps) => {
+  return (
+    <div className={cn(
+      'w-full p-4',           // Mobile: full width, padding
+      'md:w-auto md:p-6',     // Desktop: auto width, more padding
+      'lg:max-w-4xl',         // Large screens: max width
+      className
+    )}>
+      {children}
+    </div>
+  )
+}
+```
+
+#### Theme-Aware Component
+
+```typescript
+// Component that adapts to theme changes
+export const ThemeAwareComponent = ({ children }: ComponentProps) => {
+  return (
+    <div className="
+      bg-white dark:bg-black
+      text-gray-900 dark:text-white
+      border border-gray-200 dark:border-pink-500
+      rounded-lg p-4
+    ">
+      {children}
+    </div>
+  )
+}
+```
+
 ### 3. Content Management
 
 The resume uses TypeScript modules with Zod validation for content management, ensuring type safety and data integrity.
@@ -244,6 +280,185 @@ const [state, setState] = useState(initialState)
 // Direct data access through services
 const ResumeService = new ResumeService()
 const cv = ResumeService.getResume()
+```
+
+### 5. Theme Management
+
+#### Theme Provider Setup
+
+```typescript
+// src/components/theme-provider.tsx
+'use client'
+
+import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import { type ThemeProviderProps } from 'next-themes/dist/types'
+
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+}
+```
+
+#### Theme Usage in Components
+
+```typescript
+'use client'
+
+import { useTheme } from 'next-themes'
+
+export const ThemeToggle = () => {
+  const { theme, setTheme } = useTheme()
+
+  return (
+    <button
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800"
+    >
+      {theme === 'dark' ? '🌞' : '🌙'}
+    </button>
+  )
+}
+```
+
+### 6. Mobile Navigation
+
+#### Hamburger Menu Implementation
+
+```typescript
+'use client'
+
+import { useState } from 'react'
+import { Menu, X } from 'lucide-react'
+
+export const MobileMenu = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="md:hidden">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="p-2 text-white hover:opacity-70 dark:text-pink-500"
+        aria-label="Toggle menu"
+        aria-expanded={isOpen}
+      >
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      <div
+        className={`absolute left-0 right-0 top-full z-50 bg-black shadow-lg transition-all duration-300 ease-in-out ${
+          isOpen
+            ? 'max-h-96 opacity-100'
+            : 'max-h-0 overflow-hidden opacity-0'
+        }`}
+      >
+        {/* Menu items */}
+      </div>
+    </div>
+  )
+}
+```
+
+### 7. PDF Generation
+
+#### API Route Implementation
+
+```typescript
+// src/app/api/resume/pdf/route.ts
+import { NextResponse } from 'next/server'
+import { ResumeService } from '@/application/services/ResumeService'
+import { ReactPdfResumeGenerator } from '@/infrastructure/pdf/ReactPdfResumeGenerator'
+
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
+export async function GET() {
+  try {
+    const resumeService = new ResumeService()
+    const resume = resumeService.getResume()
+
+    const pdfGenerator = new ReactPdfResumeGenerator()
+    const pdfBuffer = await pdfGenerator.generatePDF(resume)
+
+    return new NextResponse(new Uint8Array(pdfBuffer), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition':
+          'attachment; filename="ruben-gonzalez-resume.pdf"',
+        'Cache-Control':
+          'no-store, no-cache, must-revalidate, proxy-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Content-Length': pdfBuffer.length.toString(),
+      },
+    })
+  } catch (error) {
+    console.error('Error generating PDF:', error)
+    return NextResponse.json(
+      {
+        error: 'Failed to generate PDF',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    )
+  }
+}
+```
+
+#### Client-Side Download Component
+
+```typescript
+'use client'
+
+import { Button } from '@/components/ui/button'
+import { Download } from 'lucide-react'
+import { useState } from 'react'
+
+export const DownloadResumeButton = () => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleDownload = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch('/api/resume/pdf', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/pdf',
+        },
+      })
+
+      if (response.ok) {
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'ruben-gonzalez-resume.pdf'
+        a.style.display = 'none'
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+      } else {
+        window.open('/api/resume/pdf', '_blank')
+      }
+    } catch (error) {
+      console.error('Error downloading PDF:', error)
+      window.open('/api/resume/pdf', '_blank')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Button
+      onClick={handleDownload}
+      disabled={isLoading}
+      className="btn-gradient flex w-full items-center gap-2"
+    >
+      <Download className="h-4 w-4" />
+      {isLoading ? 'Generating...' : 'Download PDF'}
+    </Button>
+  )
+}
 ```
 
 ### 5. Error Handling
