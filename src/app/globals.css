@@ -81,6 +81,34 @@ body {
 }
 
 @layer components {
+  /* Dark mode borders for header and footer */
+  .dark .header-border {
+    border: 2px solid hsl(327 73% 64%);
+  }
+
+  .dark .footer-border {
+    border: 2px solid hsl(327 73% 64%);
+  }
+
+  /* Dark mode pink text for hamburger menu */
+  .dark .hamburger-pink {
+    color: hsl(327 73% 64%);
+  }
+
+  /* Dark mode gradient buttons */
+  .dark .btn-gradient {
+    background: linear-gradient(to right, hsl(327 73% 64%), hsl(271 81% 56%));
+    color: white;
+  }
+
+  .dark .btn-gradient:hover {
+    background: linear-gradient(
+      to right,
+      hsl(327 73% 64% / 0.9),
+      hsl(271 81% 56% / 0.9)
+    );
+  }
+
   /* CV Typography Styles */
   .cv-prose {
     @apply prose prose-neutral max-w-none;

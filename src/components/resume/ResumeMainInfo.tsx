@@ -33,7 +33,7 @@ export function ResumeMainInfo({
         />
       </div>
 
-      <div className="mx-3 rounded-lg border bg-card p-4 shadow-lg">
+      <div className="rounded-lg border bg-card p-4 shadow-lg dark:bg-black lg:mx-3">
         <CodeComment>problably not human</CodeComment>
         <h2 className="mb-3 text-xl font-bold text-foreground sm:text-xl">
           {name}

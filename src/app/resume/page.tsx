@@ -20,7 +20,7 @@ export default function ResumePage() {
       />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+        <div className="order-2 lg:order-1 lg:col-span-2">
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
             <h2 className="text-2xl font-semibold text-foreground first:mt-0">
               Career Highlights
@@ -69,7 +69,7 @@ export default function ResumePage() {
           ))}
         </div>
 
-        <div className="lg:sticky lg:top-8 lg:h-fit lg:max-w-[320px]">
+        <div className="order-1 lg:sticky lg:top-8 lg:order-2 lg:h-fit lg:max-w-[320px]">
           <ResumeMainInfo
             name={resume.metadata.name}
             title={resume.metadata.title}

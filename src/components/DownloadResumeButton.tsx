@@ -11,7 +11,12 @@ export const DownloadResumeButton = () => {
     setIsLoading(true)
 
     try {
-      const response = await fetch('/api/resume/pdf')
+      const response = await fetch('/api/resume/pdf', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/pdf',
+        },
+      })
 
       if (response.ok) {
         const blob = await response.blob()
@@ -19,17 +24,20 @@ export const DownloadResumeButton = () => {
         const a = document.createElement('a')
         a.href = url
         a.download = 'ruben-gonzalez-resume.pdf'
+        a.style.display = 'none'
         document.body.appendChild(a)
         a.click()
         window.URL.revokeObjectURL(url)
         document.body.removeChild(a)
       } else {
-        console.error('Failed to download PDF, falling back to print')
-        window.print()
+        console.error('Failed to download PDF - Status:', response.status)
+        // Try opening in new window instead of print
+        window.open('/api/resume/pdf', '_blank')
       }
     } catch (error) {
-      console.error('Error downloading PDF, falling back to print:', error)
-      window.print()
+      console.error('Error downloading PDF:', error)
+      // Try opening in new window instead of print
+      window.open('/api/resume/pdf', '_blank')
     } finally {
       setIsLoading(false)
     }
@@ -39,7 +47,7 @@ export const DownloadResumeButton = () => {
     <Button
       onClick={handleDownload}
       disabled={isLoading}
-      className="flex w-full items-center gap-2"
+      className="btn-gradient flex w-full items-center gap-2"
     >
       <Download className="h-4 w-4" />
       {isLoading ? 'Generating...' : 'Download PDF'}

@@ -1,265 +1,433 @@
 import PDFDocument from 'pdfkit'
 import type { Resume, Highlight, Experience } from '@/types/resume'
 
+type Point = { x: number; y: number }
+
 export class ReactPdfResumeGenerator {
+  private page = { width: 595, height: 842, margin: 50 }
+  private colors = {
+    bgHero: '#0b0b0f',
+    fgOnHero: '#ffffff',
+    text: '#0f172a',
+    textMuted: '#475569',
+    textSoft: '#64748b',
+    divider: '#e2e8f0',
+    cardBg: '#f8fafc',
+    chipBg: '#eef2ff',
+    chipText: '#334155',
+    accent: '#ec4899',
+    accentDark: '#db2777',
+  }
+  private fonts = {
+    regular: 'Helvetica',
+    bold: 'Helvetica-Bold',
+  }
+  private layout = {
+    colGap: 24,
+    leftW: 180,
+    rightW: 595 - 50 - 50 - 24 - 180,
+    line: 1.35,
+  }
+
   async generatePDF(resume: Resume): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       try {
         const doc = new PDFDocument({
           size: 'A4',
-          margin: 50,
+          margin: this.page.margin,
           bufferPages: true,
         })
-
         const chunks: Buffer[] = []
-        doc.on('data', (chunk) => chunks.push(chunk))
+        doc.on('data', (c) => chunks.push(c))
         doc.on('end', () => resolve(Buffer.concat(chunks)))
 
-        this.generateContent(doc, resume)
+        let y = this.drawHero(doc, resume)
+        this.drawDivider(doc, 50, 545, y + 12)
+        y += 24
+
+        const leftX = 50
+        const rightX = 50 + this.layout.leftW + this.layout.colGap
+        let leftY = y
+        let rightY = y
+
+        leftY = this.drawSidebar(doc, resume, { x: leftX, y: leftY })
+        rightY = this.drawHighlights(doc, resume, { x: rightX, y: rightY })
+        rightY = this.drawExperience(doc, resume, { x: rightX, y: rightY })
+
+        const maxY = Math.max(leftY, rightY)
+        this.drawFooter(doc)
         doc.end()
-      } catch (error) {
+      } catch (e) {
         reject(
           new Error(
-            `Failed to generate PDF: ${error instanceof Error ? error.message : 'Unknown error'}`
+            `Failed to generate PDF: ${e instanceof Error ? e.message : 'Unknown error'}`
           )
         )
       }
     })
   }
 
-  private generateContent(doc: PDFKit.PDFDocument, resume: Resume): void {
-    this.addHeader(doc, resume)
-    this.addCareerHighlights(doc, resume)
-    this.addExperience(doc, resume)
-    doc.moveDown(2)
-    this.addSkills(doc)
-    this.addEducation(doc)
+  private drawHero(doc: PDFKit.PDFDocument, resume: Resume) {
+    const { bgHero, fgOnHero, accent } = this.colors
+    doc.save()
+    doc.rect(0, 0, this.page.width, 160).fill(bgHero)
+    doc
+      .fillColor(fgOnHero)
+      .font(this.fonts.bold)
+      .fontSize(28)
+      .text(resume.metadata.name, 50, 40, { width: 380 })
+    doc
+      .font(this.fonts.regular)
+      .fillColor('#cbd5e1')
+      .fontSize(14)
+      .text(resume.metadata.title, 50, 78, { width: 380 })
+    const lineY = 112
+    const meta = `${resume.metadata.location}  •  ${resume.metadata.email}`
+    doc.fontSize(10).fillColor('#e2e8f0').text(meta, 50, lineY)
+    doc
+      .moveTo(50, lineY + 22)
+      .lineTo(545, lineY + 22)
+      .lineWidth(2)
+      .strokeColor(accent)
+      .stroke()
+    doc.restore()
+    doc.fillColor(this.colors.text).font(this.fonts.regular).fontSize(11)
+    const summaryY = 170
+    doc.text(resume.metadata.summary, 50, summaryY, { width: 495, lineGap: 2 })
+    return (
+      summaryY +
+      doc.heightOfString(resume.metadata.summary, { width: 495 }) +
+      12
+    )
   }
 
-  private addHeader(doc: PDFKit.PDFDocument, resume: Resume): void {
-    doc.fillColor('#f8fafc').rect(0, 0, 595, 120).fill()
+  private drawSidebar(doc: PDFKit.PDFDocument, resume: Resume, start: Point) {
+    let y = start.y
+    y = this.sectionTitleSmall(doc, 'Contact', 50, y)
+    y = this.kv(doc, 'Email', resume.metadata.email, 50, y)
+    y = this.kv(doc, 'Location', resume.metadata.location, 50, y)
 
-    doc
-      .fontSize(32)
-      .fillColor('#1e293b')
-      .font('Helvetica-Bold')
-      .text(resume.metadata.name, 50, 30)
+    y += 12
+    y = this.sectionTitleSmall(doc, 'Skills', 50, y)
+    y = this.drawChips(
+      doc,
+      [
+        'Vue 3',
+        'React',
+        'TypeScript',
+        'Node.js',
+        'PHP',
+        'Python',
+        'AWS',
+        'Docker',
+        'Clean Architecture',
+        'DDD',
+        'SOLID',
+      ],
+      { x: 50, y, maxW: this.layout.leftW }
+    )
 
-    doc
-      .fontSize(16)
-      .fillColor('#64748b')
-      .font('Helvetica')
-      .text(resume.metadata.title, 50, 70)
-
-    doc
-      .fontSize(12)
-      .fillColor('#64748b')
-      .text(`${resume.metadata.location} • ${resume.metadata.email}`, 50, 95)
-
-    doc
-      .fontSize(12)
-      .fillColor('#334155')
-      .text(resume.metadata.summary, 50, 140, { width: 495 })
-
-    doc.moveDown(2)
+    y += 12
+    y = this.sectionTitleSmall(doc, 'Education', 50, y)
+    y = this.paragraph(
+      doc,
+      "Master's in Big Data & Business Analytics (2017–2020)",
+      50,
+      y,
+      this.layout.leftW
+    )
+    y += 4
+    y = this.paragraph(
+      doc,
+      'Higher Technical Diploma in Graphic Design 2D/3D (2005–2007)',
+      50,
+      y,
+      this.layout.leftW
+    )
+    return y
   }
 
-  private addCareerHighlights(doc: PDFKit.PDFDocument, resume: Resume): void {
-    this.addSectionTitle(doc, 'Career Highlights')
-
-    const colorMap: Record<string, string> = {
-      'pink-400': '#f472b6',
-      'pink-500': '#ec4899',
-      'pink-600': '#db2777',
-      'pink-700': '#be185d',
-      'pink-800': '#9d174d',
-    }
-
-    resume.content.highlights.forEach((highlight: Highlight, index: number) => {
-      const highlightColor =
-        (highlight.color && colorMap[highlight.color]) || '#1f2937'
-
+  private drawHighlights(
+    doc: PDFKit.PDFDocument,
+    resume: Resume,
+    start: Point
+  ) {
+    let y = start.y
+    y = this.sectionTitle(
+      doc,
+      'Career Highlights',
+      start.x,
+      y,
+      this.layout.rightW
+    )
+    const blocks = resume.content.highlights || []
+    blocks.forEach((h) => {
+      const hY = this.card(doc, start.x, y, this.layout.rightW, 64)
+      this.accentBar(doc, start.x, hY, 4, 64)
       doc
-        .fillColor('#ffffff')
-        .strokeColor('#e2e8f0')
-        .lineWidth(1)
-        .roundedRect(50, doc.y, 495, 60, 8)
-        .fill()
-        .stroke()
-
-      doc.fillColor(highlightColor).rect(50, doc.y, 4, 60).fill()
-
-      doc
+        .font(this.fonts.bold)
         .fontSize(12)
-        .fillColor('#1e293b')
-        .font('Helvetica-Bold')
-        .text(highlight.title, 70, doc.y + 5, { width: 465 })
-
+        .fillColor(this.colors.text)
+        .text(h.title, start.x + 12, hY + 8, { width: this.layout.rightW - 24 })
       doc
+        .font(this.fonts.regular)
         .fontSize(10)
-        .fillColor('#64748b')
-        .font('Helvetica')
-        .text(highlight.description, 70, doc.y + 18, { width: 465 })
-
-      doc.y += 30
+        .fillColor(this.colors.textMuted)
+        .text(h.description, start.x + 12, hY + 26, {
+          width: this.layout.rightW - 24,
+        })
+      y = hY + 64 + 8
     })
-
-    doc.moveDown(1)
-    doc.addPage()
+    return y
   }
 
-  private addExperience(doc: PDFKit.PDFDocument, resume: Resume): void {
-    this.addSectionTitle(doc, 'Experience')
-
-    resume.content.experience.forEach((exp: Experience, index: number) => {
-      if (index > 0) {
-        doc.moveDown(2)
-      }
-
-      doc.fillColor('#f1f5f9').rect(50, doc.y, 495, 25).fill()
-
+  private drawExperience(
+    doc: PDFKit.PDFDocument,
+    resume: Resume,
+    start: Point
+  ) {
+    let y = this.sectionTitle(
+      doc,
+      'Experience',
+      start.x,
+      start.y,
+      this.layout.rightW
+    )
+    const items: Experience[] = resume.content.experience || []
+    items.forEach((exp, idx) => {
+      const cardH = 110
+      const baseY = this.card(doc, start.x, y, this.layout.rightW, cardH)
+      this.accentBar(doc, start.x, baseY, 4, cardH)
       doc
-        .fontSize(14)
-        .fillColor('#1e293b')
-        .font('Helvetica-Bold')
-        .text(exp.company, 60, doc.y + 5)
-
+        .font(this.fonts.bold)
+        .fontSize(13)
+        .fillColor(this.colors.text)
+        .text(exp.company, start.x + 12, baseY + 8)
       doc
+        .font(this.fonts.regular)
         .fontSize(10)
-        .fillColor('#64748b')
-        .font('Helvetica')
-        .text(exp.period, 60, doc.y + 10)
-
-      doc.moveDown(0.8)
-
+        .fillColor(this.colors.textSoft)
+        .text(exp.period, start.x + 12, baseY + 28)
       doc
-        .fontSize(12)
-        .fillColor('#334155')
-        .font('Helvetica-Bold')
-        .text(exp.title, 60, doc.y)
-
-      doc.moveDown(0.5)
-
+        .font(this.fonts.bold)
+        .fontSize(11)
+        .fillColor(this.colors.text)
+        .text(exp.title, start.x + 12, baseY + 44)
+      const descY = baseY + 60
+      const descH = doc.heightOfString(exp.description || '', {
+        width: this.layout.rightW - 24,
+        lineGap: 1,
+      })
       doc
+        .font(this.fonts.regular)
         .fontSize(10)
-        .fillColor('#475569')
-        .font('Helvetica')
-        .text(exp.description, 60, doc.y, { width: 475 })
-
-      if (exp.stack) {
-        doc.moveDown(0.5)
-        doc
-          .fontSize(9)
-          .fillColor('#64748b')
-          .font('Helvetica-Bold')
-          .text('Stack:', 60, doc.y)
-
-        doc
-          .fontSize(8)
-          .fillColor('#64748b')
-          .font('Helvetica')
-          .text(exp.stack.join(', '), 80, doc.y, { width: 455 })
-      }
-
-      if (exp.highlights && exp.highlights.length > 0) {
-        doc.moveDown(0.3)
-        exp.highlights.forEach((highlight: string) => {
-          doc
-            .fontSize(8)
-            .fillColor('#475569')
-            .font('Helvetica')
-            .text(`• ${highlight}`, 60, doc.y, { width: 275 })
-          doc.moveDown(0.15)
+        .fillColor(this.colors.textMuted)
+        .text(exp.description || '', start.x + 12, descY, {
+          width: this.layout.rightW - 24,
+          lineGap: 1,
+        })
+      let listY = descY + descH + 4
+      if (Array.isArray(exp.highlights)) {
+        exp.highlights.forEach((t) => {
+          listY = this.bullet(
+            doc,
+            t,
+            start.x + 12,
+            listY,
+            this.layout.rightW - 24
+          )
         })
       }
-    })
-  }
-
-  private addSkills(doc: PDFKit.PDFDocument): void {
-    this.addSectionTitle(doc, 'Skills')
-
-    const skills = [
-      'Vue 3',
-      'React',
-      'TypeScript',
-      'JavaScript (ES6+)',
-      'Node.js/Express',
-      'PHP (Laravel, Symfony)',
-      'Python',
-      'AWS',
-      'Docker',
-      'Clean Architecture',
-      'DDD',
-      'SOLID Principles',
-    ]
-
-    let currentX = 50
-    let currentY = doc.y
-
-    skills.forEach((skill, index) => {
-      const skillWidth = doc.widthOfString(skill) + 14
-
-      if (currentX + skillWidth > 545) {
-        currentX = 50
-        currentY += 25
+      if (Array.isArray(exp.stack) && exp.stack.length) {
+        listY += 4
+        doc
+          .font(this.fonts.bold)
+          .fontSize(9)
+          .fillColor(this.colors.textSoft)
+          .text('Stack:', start.x + 12, listY)
+        doc
+          .font(this.fonts.regular)
+          .fontSize(9)
+          .fillColor(this.colors.textSoft)
+          .text(exp.stack.join(', '), start.x + 48, listY, {
+            width: this.layout.rightW - 60,
+          })
       }
-
-      doc
-        .fillColor('#f1f5f9')
-        .strokeColor('#e2e8f0')
-        .lineWidth(1)
-        .roundedRect(currentX, currentY, skillWidth, 20, 10)
-        .fill()
-        .stroke()
-
-      doc
-        .fontSize(9)
-        .fillColor('#475569')
-        .font('Helvetica')
-        .text(skill, currentX + 6, currentY + 5)
-
-      currentX += skillWidth + 10
+      y = Math.max(listY + 10, baseY + cardH + 10)
+      if (y > this.page.height - 140) {
+        doc.addPage()
+        y = 60
+      }
     })
-
-    doc.y = currentY + 35
+    return y
   }
 
-  private addEducation(doc: PDFKit.PDFDocument): void {
-    this.addSectionTitle(doc, 'Education')
-
-    doc.moveDown(0.8)
+  private sectionTitle(
+    doc: PDFKit.PDFDocument,
+    title: string,
+    x: number,
+    y: number,
+    w: number
+  ) {
     doc
-      .fontSize(11)
-      .fillColor('#374151')
-      .text("Master's in Big Data & Business Analytics (2017-2020)", {
-        align: 'left',
-        width: 495,
-      })
-
-    doc.moveDown(0.8)
-    doc
-      .fontSize(11)
-      .fillColor('#374151')
-      .text('Higher Technical Diploma in Graphic Design 2D/3D (2005-2007)', {
-        align: 'left',
-        width: 495,
-      })
+      .font(this.fonts.bold)
+      .fontSize(16)
+      .fillColor(this.colors.text)
+      .text(title, x, y, { width: w })
+    this.drawDivider(doc, x, x + w, doc.y + 4)
+    return doc.y + 12
   }
 
-  private addSectionTitle(doc: PDFKit.PDFDocument, title: string): void {
+  private sectionTitleSmall(
+    doc: PDFKit.PDFDocument,
+    title: string,
+    x: number,
+    y: number
+  ) {
     doc
-      .fontSize(18)
-      .fillColor('#1e293b')
-      .font('Helvetica-Bold')
-      .text(title, 50, doc.y)
+      .font(this.fonts.bold)
+      .fontSize(12)
+      .fillColor(this.colors.text)
+      .text(title, x, y)
+    this.drawDivider(doc, x, x + this.layout.leftW, doc.y + 3)
+    return doc.y + 10
+  }
 
+  private kv(
+    doc: PDFKit.PDFDocument,
+    k: string,
+    v: string,
+    x: number,
+    y: number
+  ) {
     doc
-      .strokeColor('#e2e8f0')
+      .font(this.fonts.bold)
+      .fontSize(10)
+      .fillColor(this.colors.text)
+      .text(k, x, y)
+    doc
+      .font(this.fonts.regular)
+      .fontSize(10)
+      .fillColor(this.colors.textMuted)
+      .text(v, x, doc.y)
+    return doc.y + 4
+  }
+
+  private drawChips(
+    doc: PDFKit.PDFDocument,
+    skills: string[],
+    start: Point & { maxW: number }
+  ) {
+    let x = start.x
+    let y = start.y
+    skills.forEach((s) => {
+      const w = doc.widthOfString(s) + 14
+      if (x + w > start.x + start.maxW) {
+        x = start.x
+        y += 26
+      }
+      doc.save()
+      doc.roundedRect(x, y, w, 20, 10).fillColor(this.colors.chipBg).fill()
+      doc
+        .fillColor(this.colors.chipText)
+        .font(this.fonts.regular)
+        .fontSize(9)
+        .text(s, x + 7, y + 6)
+      doc.restore()
+      x += w + 8
+    })
+    return y + 28
+  }
+
+  private paragraph(
+    doc: PDFKit.PDFDocument,
+    text: string,
+    x: number,
+    y: number,
+    w: number
+  ) {
+    doc
+      .font(this.fonts.regular)
+      .fontSize(10)
+      .fillColor(this.colors.textMuted)
+      .text(text, x, y, { width: w, lineGap: 1 })
+    return doc.y + 2
+  }
+
+  private bullet(
+    doc: PDFKit.PDFDocument,
+    text: string,
+    x: number,
+    y: number,
+    w: number
+  ) {
+    doc
+      .circle(x + 3, y + 6, 2)
+      .fillColor(this.colors.accent)
+      .fill()
+    doc
+      .fillColor(this.colors.textMuted)
+      .font(this.fonts.regular)
+      .fontSize(9)
+      .text(text, x + 12, y, { width: w - 12 })
+    return doc.y + 2
+  }
+
+  private card(
+    doc: PDFKit.PDFDocument,
+    x: number,
+    y: number,
+    w: number,
+    h: number
+  ) {
+    doc.save()
+    doc.roundedRect(x, y, w, h, 10).fillColor(this.colors.cardBg).fill()
+    doc
+      .roundedRect(x, y, w, h, 10)
       .lineWidth(1)
-      .moveTo(50, doc.y + 5)
-      .lineTo(545, doc.y + 5)
+      .strokeColor(this.colors.divider)
       .stroke()
+    doc.restore()
+    return y
+  }
 
-    doc.moveDown(1)
+  private accentBar(
+    doc: PDFKit.PDFDocument,
+    x: number,
+    y: number,
+    w: number,
+    h: number
+  ) {
+    doc.save()
+    doc.rect(x, y, w, h).fillColor(this.colors.accentDark).fill()
+    doc.restore()
+  }
+
+  private drawDivider(
+    doc: PDFKit.PDFDocument,
+    x1: number,
+    x2: number,
+    y: number
+  ) {
+    doc
+      .moveTo(x1, y)
+      .lineTo(x2, y)
+      .lineWidth(1)
+      .strokeColor(this.colors.divider)
+      .stroke()
+  }
+
+  private drawFooter(doc: PDFKit.PDFDocument) {
+    const range = doc.bufferedPageRange()
+    for (let i = 0; i < range.count; i++) {
+      doc.switchToPage(i)
+      const pageNum = i + 1
+      const label = `Page ${pageNum} of ${range.count}`
+      doc
+        .font(this.fonts.regular)
+        .fontSize(8)
+        .fillColor(this.colors.textSoft)
+        .text(label, 50, this.page.height - 40, { width: 495, align: 'center' })
+    }
   }
 }

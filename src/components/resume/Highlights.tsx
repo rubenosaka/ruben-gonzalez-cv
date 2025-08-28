@@ -68,7 +68,7 @@ export function Highlights({ items, className = '' }: Props) {
               delay: i * 0.1,
               ease: 'easeOut',
             }}
-            className={`relative overflow-hidden rounded-xl border-4  bg-white p-6 shadow-md hover:shadow-lg ${item.color ? `border-${item.color}` : 'border-black'}`}
+            className={`relative overflow-hidden rounded-xl border-4 bg-white p-6 shadow-md hover:shadow-lg dark:bg-black ${item.color ? `border-${item.color}` : 'border-black'}`}
           >
             {Icon ? (
               <Icon
@@ -76,11 +76,11 @@ export function Highlights({ items, className = '' }: Props) {
               />
             ) : null}
             <div className="relative z-10">
-              <div className="text-base font-semibold text-black sm:text-lg">
+              <div className="text-base font-semibold text-black dark:text-white sm:text-lg">
                 {item.title}
               </div>
               {item.description ? (
-                <div className="mt-1 text-sm text-black">
+                <div className="mt-1 text-sm text-black dark:text-white">
                   {item.description}
                 </div>
               ) : null}
