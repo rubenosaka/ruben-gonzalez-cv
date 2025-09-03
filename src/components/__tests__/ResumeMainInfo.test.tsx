@@ -77,4 +77,56 @@ describe('ResumeMainInfo', () => {
     const phoneLink = screen.getByRole('link', { name: /call \+34639176921/i })
     expect(phoneLink).toHaveAttribute('aria-label', 'Call +34639176921')
   })
+
+  it('should render social media links', () => {
+    render(<ResumeMainInfo {...mockProps} />)
+
+    // Check GitHub link
+    const githubLink = screen.getByRole('link', {
+      name: /visit github profile/i,
+    })
+    expect(githubLink).toBeInTheDocument()
+    expect(githubLink).toHaveAttribute('href', 'https://github.com/rubenosaka')
+    expect(githubLink).toHaveAttribute('target', '_blank')
+    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
+
+    // Check LinkedIn link
+    const linkedinLink = screen.getByRole('link', {
+      name: /visit linkedin profile/i,
+    })
+    expect(linkedinLink).toBeInTheDocument()
+    expect(linkedinLink).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/in/ruben-gonzalez-trinuki/'
+    )
+    expect(linkedinLink).toHaveAttribute('target', '_blank')
+    expect(linkedinLink).toHaveAttribute('rel', 'noopener noreferrer')
+
+    // Check Instagram link
+    const instagramLink = screen.getByRole('link', {
+      name: /visit instagram profile/i,
+    })
+    expect(instagramLink).toBeInTheDocument()
+    expect(instagramLink).toHaveAttribute(
+      'href',
+      'https://www.instagram.com/vinylosaka?igsh=MWRuMTFnNnd3a244Zg=='
+    )
+    expect(instagramLink).toHaveAttribute('target', '_blank')
+    expect(instagramLink).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('should render social media icons', () => {
+    render(<ResumeMainInfo {...mockProps} />)
+
+    // Check that all social media icons are present
+    expect(
+      screen.getByRole('link', { name: /visit github profile/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /visit linkedin profile/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /visit instagram profile/i })
+    ).toBeInTheDocument()
+  })
 })
