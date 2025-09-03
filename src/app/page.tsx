@@ -1,12 +1,10 @@
 import type { Metadata } from 'next'
 import { ResumeService } from '@/application/services/ResumeService'
-import { ProjectService } from '@/application/services/ProjectService'
 import { PageLayout } from '@/components/PageLayout'
 import { AnimatedHero } from '@/components/AnimatedHero'
-import { ProjectsSection } from '@/components/ProjectsSection'
+import { HomeProjects } from '@/components/HomeProjects'
 import { NewsSection } from '@/components/NewsSection'
 import { CodeComment } from '@/components/CodeComment'
-import type { Project } from '@/types/project'
 
 export const metadata: Metadata = {
   title:
@@ -49,20 +47,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   const resumeService = new ResumeService()
-  const projectService = new ProjectService()
-
   const resume = resumeService.getResume()
-  const allProjects = projectService.listProjects()
-
-  const featuredProjects = allProjects
-    .filter((project: Project) => project.slug === 'frenetic')
-    .map((project: Project) => ({
-      slug: project.slug,
-      title: project.title,
-      summary: project.summary,
-      stack: project.tags,
-      links: project.links || [],
-    }))
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -106,7 +91,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <ProjectsSection projects={featuredProjects} />
+            <HomeProjects />
           </div>
           <div className="lg:col-span-5">
             <NewsSection />

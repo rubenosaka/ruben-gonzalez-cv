@@ -126,17 +126,30 @@ export class ReactPdfResumeGenerator {
     y = this.drawChips(
       doc,
       [
-        'Vue 3',
-        'React',
+        'Leadership',
+        'Product & Roadmap',
+        'AI & Automation',
+        'SaaS Architecture',
         'TypeScript',
         'Node.js',
-        'PHP',
-        'Python',
+        'Vue 3',
+        'React',
+        'Astro',
+        'Prisma',
+        'PostgreSQL',
+        'TailwindCSS',
+        'Pinia',
+        'Vitest',
+        'Playwright',
+        'CI/CD',
+        'PostHog',
+        'Mixpanel',
         'AWS',
+        'Vercel',
+        'Railway',
         'Docker',
-        'Clean Architecture',
-        'DDD',
         'SOLID',
+        'DDD',
       ],
       { x: 50, y, maxW: this.layout.leftW }
     )
@@ -278,18 +291,17 @@ export class ReactPdfResumeGenerator {
       }
 
       let stackH = 0
+      let stackLabelW = 0
       if (Array.isArray(exp.stack) && exp.stack.length) {
-        const h1 = measure(
-          () => doc.font(this.fonts.bold).fontSize(9),
-          'Stack:',
-          contentW
-        )
-        const h2 = measure(
-          () => doc.font(this.fonts.regular).fontSize(9),
-          exp.stack.join(', '),
-          contentW - 36
-        )
-        stackH = h1 + h2 + 4
+        doc.font(this.fonts.bold).fontSize(9)
+        const labelText = 'Stack: '
+        stackLabelW = doc.widthOfString(labelText)
+        const h1 = doc.heightOfString(labelText, { width: contentW })
+        doc.font(this.fonts.regular).fontSize(9)
+        const h2 = doc.heightOfString(exp.stack.join(', '), {
+          width: contentW - stackLabelW,
+        })
+        stackH = Math.max(h1, h2) + 4
       }
 
       const cardH =
@@ -357,19 +369,21 @@ export class ReactPdfResumeGenerator {
       }
       if (Array.isArray(exp.stack) && exp.stack.length) {
         cy += 4
-        doc
-          .font(this.fonts.bold)
-          .fontSize(9)
-          .fillColor(this.colors.textSoft)
-          .text('Stack:', ix, cy, { width: contentW })
-        doc
-          .font(this.fonts.regular)
-          .fontSize(9)
-          .fillColor(this.colors.textSoft)
-          .text(exp.stack.join(', '), ix + 36, doc.y, { width: contentW - 36 })
+        const labelText = 'Stack: '
+        doc.font(this.fonts.bold).fontSize(9).fillColor(this.colors.textSoft)
+        const labelW = doc.widthOfString(labelText)
+        const baseY = cy
+        doc.text(labelText, ix, baseY, { width: contentW })
+        doc.font(this.fonts.regular).fontSize(9).fillColor(this.colors.textSoft)
+        doc.text(exp.stack.join(', '), ix + labelW, baseY, {
+          width: contentW - labelW,
+        })
+        cy =
+          baseY +
+          doc.heightOfString(exp.stack.join(', '), { width: contentW - labelW })
       }
 
-      y += cardH + 10
+      y += cardH + 24
     }
 
     return y
@@ -410,31 +424,34 @@ export class ReactPdfResumeGenerator {
       .text(v, x, doc.y)
     return doc.y + 4
   }
-
   private drawChips(
     doc: PDFKit.PDFDocument,
     skills: string[],
     start: Point & { maxW: number }
   ) {
-    let x = start.x,
-      y = start.y
+    const chipH = 20
+    const padX = 7
+    const gap = 8
+    let x = start.x
+    let y = start.y
+
+    doc.font(this.fonts.regular).fontSize(9)
+
     skills.forEach((s) => {
-      const w = doc.widthOfString(s) + 14
+      const textW = doc.widthOfString(s)
+      const w = textW + padX * 2
       if (x + w > start.x + start.maxW) {
         x = start.x
-        y += 26
+        y += chipH + 6
       }
       doc.save()
-      doc.roundedRect(x, y, w, 20, 10).fillColor(this.colors.chipBg).fill()
-      doc
-        .fillColor(this.colors.chipText)
-        .font(this.fonts.regular)
-        .fontSize(9)
-        .text(s, x + 7, y + 6)
+      doc.roundedRect(x, y, w, chipH, 10).fillColor(this.colors.chipBg).fill()
+      doc.fillColor(this.colors.chipText).text(s, x + padX, y + 6)
       doc.restore()
-      x += w + 8
+      x += w + gap
     })
-    return y + 28
+
+    return y + chipH + 8
   }
 
   private paragraph(

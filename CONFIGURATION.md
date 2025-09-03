@@ -41,7 +41,7 @@ The main package configuration file defines dependencies, scripts, and project m
 
 - `framer-motion`: ^12.23.12 - Animations
 - `lucide-react`: ^0.344.0 - Icons
-- `next-themes`: ^0.2.1 - Theme management
+- `next-themes`: ^0.2.1 - Light/dark theme management
 - `@radix-ui/react-dropdown-menu`: ^2.0.6 - UI primitives
 - `@radix-ui/react-slot`: ^1.0.2 - Component composition
 

@@ -424,7 +424,7 @@ const experience = resume.content.experience.map((exp) => ({
 - **Component Library**: shadcn/ui with Radix UI primitives
 - **Animations**: Framer Motion for smooth transitions
 - **Icons**: Lucide React for consistent iconography
-- **Theme Management**: next-themes for dynamic theme switching
+- **Theme Management**: next-themes for light/dark theme switching
 - **Responsive Design**: Mobile-first approach with Tailwind breakpoints
 
 ### Development Tools

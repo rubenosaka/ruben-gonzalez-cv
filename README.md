@@ -42,14 +42,9 @@ Professional PDF generation for traditional resume distribution, maintaining con
 - **Accessible navigation** with proper ARIA labels and keyboard support
 - **Progressive enhancement** ensuring functionality across all browsers
 
-### Advanced Theme System
+### Theme System
 
-- **Creative themes** beyond standard light/dark modes:
-  - Death Metal
-  - Unicorns
-  - Horror Movies
-  - Musical
-- **Dynamic color schemes** with pink-500 to purple-950 gradients
+- **Light and dark themes** with system preference detection
 - **Consistent theming** across all components
 
 ### PDF Generation
@@ -86,16 +81,9 @@ The project implements a **simplified, lightweight architecture** that demonstra
 - **Type safety** ensured at both compile-time and runtime
 - **Simplified data flow** from content modules to components
 
-### Creative Theme System
+### Theme System
 
-The theme switcher goes beyond standard light/dark modes, featuring creative themes like:
-
-- Death Metal
-- Unicorns
-- Horror Movies
-- Musical
-
-This demonstrates both technical capability and personality, making the portfolio memorable.
+The theme switcher provides light and dark modes with system preference detection, ensuring a consistent and professional appearance across all devices.
 
 ## Target Audiences
 
@@ -150,7 +138,6 @@ The project demonstrates:
 
 ### Planned Enhancements
 
-- **Expanded Creative Themes**: More personality-driven theme options
 - **Project Case Studies**: Transform project descriptions into detailed case studies (Problem → Solution → Outcome)
 - **Living Portfolio**: Continuous evolution of the repository as a demonstration of ongoing learning and improvement
 

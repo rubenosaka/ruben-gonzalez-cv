@@ -111,9 +111,36 @@ const resumeData = {
     ],
     experience: [
       {
+        title: 'Founder & Tech Lead',
+        company: 'Trinuki',
+        period: '09/2025–Present',
+        description:
+          'Building an AI-powered trip planner for Japan, combining automated itineraries with curated local data.',
+        stack: [
+          'Astro',
+          'Vue 3',
+          'TypeScript',
+          'Pinia',
+          'Node.js/Express',
+          'Prisma',
+          'PostgreSQL',
+          'TailwindCSS',
+          'Vitest',
+          'Railway',
+          'Vercel',
+        ],
+        highlights: [
+          'Designed and implemented a monorepo architecture for frontend and backend.',
+          'Developed automatic itinerary generation based on days, cities, and points of interest.',
+          'Integrated external data sources (Google Places, Routes) with local curated content.',
+          'Built an admin backoffice for managing locations, connections, restaurants, and POIs.',
+          'Applied AI-driven workflows to optimize travel planning and content generation.',
+        ],
+      },
+      {
         title: 'Engineering Manager',
         company: 'Frenetic.ai',
-        period: '02/2021–Present',
+        period: '02/2021–09/2025',
         description:
           'Leading engineering for a SaaS platform for magnet design and simulation.',
         stack: [

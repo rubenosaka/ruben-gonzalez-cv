@@ -40,18 +40,15 @@ The project implements a responsive navigation system optimized for mobile devic
 
 ## Theme System
 
-### Creative Themes
+### Light and Dark Themes
 
-The project goes beyond standard light/dark themes with personality-driven options:
+The project provides standard light and dark themes with system preference detection:
 
 #### Available Themes
 
 1. **Light**: Standard light theme with clean aesthetics
-2. **Dark**: Dark theme with pink accents
-3. **Death Metal**: High contrast with aggressive styling
-4. **Unicorns**: Playful and colorful theme
-5. **Horror Movies**: Spooky and atmospheric
-6. **Musical**: Music-inspired color palette
+2. **Dark**: Dark theme with consistent styling
+3. **System**: Automatic detection of system preference
 
 #### Theme Implementation
 

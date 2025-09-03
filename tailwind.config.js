@@ -67,6 +67,7 @@ module.exports = {
       },
     },
   },
+
   safelist: [
     'border-pink-400',
     'border-pink-500',

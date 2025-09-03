@@ -1,6 +1,7 @@
 import { DownloadResumeButton } from '@/components/DownloadResumeButton'
 import Image from 'next/image'
 import { CodeComment } from '../CodeComment'
+import { Github, Linkedin, Instagram } from 'lucide-react'
 
 interface ResumeMainInfoProps {
   name: string
@@ -88,6 +89,36 @@ export function ResumeMainInfo({
             </svg>
             +34 639 176 921
           </a>
+
+          <div className="flex justify-center space-x-4 pt-2">
+            <a
+              href="https://github.com/rubenosaka"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
+              aria-label="Visit GitHub profile"
+            >
+              <Github className="h-5 w-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/ruben-gonzalez-trinuki/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
+              aria-label="Visit LinkedIn profile"
+            >
+              <Linkedin className="h-5 w-5" />
+            </a>
+            <a
+              href="https://www.instagram.com/vinylosaka?igsh=MWRuMTFnNnd3a244Zg=="
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
+              aria-label="Visit Instagram profile"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
+          </div>
         </div>
       </div>
     </div>
