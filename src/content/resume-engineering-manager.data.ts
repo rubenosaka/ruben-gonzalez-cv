@@ -4,39 +4,39 @@ import { RoleBasedResumeSchema } from '@/types/role-based-resume'
 const resumeEngineeringManagerData = {
   metadata: {
     name: 'Rubén González Aranda',
-    title: 'Engineering Manager',
+    title: 'Engineering Manager / Product-focused Tech Lead',
     email: 'rubenosaka@gmail.com',
     phone: '+34 639 176 921',
     linkedin: 'https://linkedin.com/in/rubengonzalez',
     location: 'Madrid, Spain',
   },
   summary:
-    'Engineering Manager with 18+ years of experience leading technical teams and building scalable products. Proven track record managing teams of 3-10 engineers, driving technical strategy, and delivering business impact through engineering excellence. Strong focus on team development, process optimization, and cross-functional collaboration in high-growth startup environments.',
+    'Engineering Manager with 18+ years of experience leading teams and building SaaS products from concept to scale. Skilled at balancing delivery and mentoring, aligning technical decisions with product impact, and integrating AI and automation to improve efficiency. Strong focus on developer experience, measurable outcomes, and cross-functional collaboration in high-growth environments.',
   coreStrengths: [
     {
-      category: 'Team Leadership',
+      category: 'Leadership & Strategy',
       skills:
-        'Team management, Mentoring, Career development, Performance reviews, Hiring',
+        'Team management (3–10 engineers), mentoring, roadmap ownership, stakeholder alignment',
     },
     {
-      category: 'Technical Strategy',
+      category: 'Architecture & Development',
       skills:
-        'Architecture decisions, Technology roadmap, Technical debt management, Code quality',
+        'TypeScript, Node.js, Vue 3, React, Astro, Hexagonal Architecture, PostgreSQL, REST APIs, DDD, SOLID',
     },
     {
-      category: 'Process & Operations',
+      category: 'AI & Automation',
       skills:
-        'Agile methodologies, CI/CD, Code reviews, Engineering metrics, Release management',
+        'OpenAI API, process automation, lifecycle optimization, content workflows, prompt engineering',
     },
     {
-      category: 'Cross-functional Collaboration',
+      category: 'Product & Analytics',
       skills:
-        'Product partnership, Business alignment, Stakeholder management, Technical communication',
+        'PostHog, Mixpanel, data-driven roadmaps, observability dashboards, experiment tracking',
     },
     {
-      category: 'Product & Business Impact',
+      category: 'DevOps & Quality',
       skills:
-        'PostHog, Mixpanel, Business metrics, User analytics, ROI measurement',
+        'CI/CD, GitHub Actions, AWS (serverless), Railway, Docker, Vercel, Vitest, Playwright',
     },
   ],
   experience: [
@@ -45,88 +45,77 @@ const resumeEngineeringManagerData = {
       role: 'Engineering Manager',
       period: '02/2021 – 09/2025 · Remote',
       description:
-        'Led engineering team for a SaaS platform in electromagnetics design and simulation.',
+        'Led engineering for a SaaS platform for electromagnetic simulation, managing cross-functional teams.',
       bullets: [
-        'Managed team of 3-10 engineers across frontend, backend, and DevOps roles.',
-        'Conducted technical interviews and hiring for frontend, backend, QA, and DevOps positions.',
-        'Mentored junior and senior engineers, fostering career growth and technical excellence.',
-        'Evolved engineering processes: Jira validation columns, testing branches, conventional commits, semantic versioning.',
-        'Partnered with Product, Business, Marketing, and Sales to ensure engineering output had measurable business impact.',
-        'Optimized user lifecycle management, eliminating manual database queries and reducing operational overhead.',
-        'Built observability dashboards with PostHog and Mixpanel, enabling data-driven business decisions.',
-        'Reduced production issues by ~4 hours/week and accelerated release cadence from bi-weekly to weekly.',
+        'Managed a team of 3–10 engineers, balancing delivery with mentoring and onboarding.',
+        'Evolved engineering processes: Jira, Roadmap, semantic versioning, testing branches.',
+        'Collaborated with Product, Business, Marketing, and Sales to ensure measurable outcomes.',
+        'Conducted interviews for frontend, backend, QA, and DevOps roles.',
+        'Introduced AI workflows automating user lifecycle and content generation (~8h/week saved).',
+        'Implemented observability with PostHog and Mixpanel to track user engagement and growth.',
       ],
       stack:
-        'Team Leadership, Vue 3, TypeScript, Node.js, PHP/Laravel, AWS, CI/CD, PostHog, Mixpanel',
+        'PHP 8 (Laravel 9), Vue 3, TypeScript, Pinia, MySQL, Python (REST), Node.js/Express, AWS (serverless)',
     },
     {
       company: 'Isobar (Dentsu Group)',
-      role: 'Team Lead / Technical Lead',
+      role: 'Team Lead / Full-Stack Developer',
       period: '04/2019 – 02/2021 · Madrid',
       description:
-        'Led technical teams across multiple web and app projects for major brands.',
+        'Led multiple web apps projects, defining standards and deployment workflows across teams.',
       bullets: [
-        'Led development squads delivering multi-brand websites and e-commerce integrations.',
-        'Defined technical standards and collaborated with QA, product, and design teams.',
-        'Standardized deployment workflows across heterogeneous technology stacks.',
-        'Interviewed and mentored developers across frontend and backend roles.',
+        'Defined and enforced coding and CI/CD standards across heterogeneous tech stacks.',
+        'Coordinated with QA, Product, and Design to ensure maintainable and scalable delivery.',
+        'Mentored developers and contributed to cross-project architectural decisions.',
       ],
       stack:
-        'Team Leadership, Python, PHP, Node.js, React, Vue, AWS, Google App Engine',
+        'Python, PHP, Node.js/Express, React, Material UI, Salesforce, WordPress, Drupal, Magento, AWS, DigitalOcean',
     },
     {
       company: 'Product School (Startup)',
-      role: 'Technical Lead',
+      role: 'Full-Stack Developer',
       period: '06/2018 – 04/2019 · Remote',
       description:
-        'Led technical development for LMS platform and marketing infrastructure.',
+        'Developed and optimized the company LMS platform with focus on SEO, performance, and maintainability.',
       bullets: [
-        'Improved performance and SEO through strategic caching and deployment optimizations.',
-        'Collaborated with product and marketing teams to align technical features with business impact.',
+        'Collaborated with Product and Marketing teams to align technical work with KPIs.',
+        'Improved deployment automation and caching strategies.',
       ],
-      stack: 'Node.js, React, PostgreSQL, AWS, Performance optimization',
+      stack: 'Node.js, React, TypeScript, PostgreSQL, AWS, PHP, Wordpress',
     },
     {
       company: 'Quodem (Healthcare)',
-      role: 'Team Lead',
+      role: 'Team Lead / Full-Stack Developer',
       period: '12/2015 – 06/2018 · Madrid',
       description:
-        'Led technical teams developing secure, compliant healthcare applications.',
+        'Led teams building compliant and accessible platforms for global pharma clients (MSD, Pfizer, Bayer).',
       bullets: [
-        'Led teams developing secure, compliant sites for pharma clients (MSD, Pfizer, Bayer, GSK).',
-        'Established CI practices and code review culture for improved quality and delivery.',
-        'Coordinated with medical and business stakeholders to ensure compliance and usability.',
+        'Introduced CI and code review practices, improving reliability and delivery time.',
+        'Collaborated with business and medical teams to ensure compliance and UX quality.',
       ],
-      stack: 'Team Leadership, Umbraco, Drupal, Healthcare compliance, CI/CD',
+      stack:
+        'JavaScript, Vue, jQuery, Bootstrap, Umbraco, Drupal, .NET, PHP, Angular, Wordpress',
     },
   ],
   technicalSkills: {
     Leadership:
-      'Team management, Mentoring, Hiring, Performance reviews, Career development',
-    Technical:
-      'Vue 3, React, TypeScript, Node.js, PHP/Laravel, AWS, CI/CD, Database design',
-    'Process & Tools':
-      'Agile, Scrum, Jira, Git workflows, Code reviews, Engineering metrics',
-    'Analytics & Monitoring':
-      'PostHog, Mixpanel, Business metrics, Performance monitoring',
-    Communication:
-      'Technical writing, Stakeholder management, Cross-functional collaboration',
+      'Mentoring, hiring, roadmap planning, process improvement, stakeholder communication, cross-functional alignment',
+    Architecture:
+      'Node.js, TypeScript, Vue 3, React, Astro, Prisma, PostgreSQL, REST APIs, DDD, SOLID, modular monorepos',
+    AI_Automation:
+      'OpenAI API, prompt engineering, lifecycle automation, content generation, data enrichment',
+    DevOps_QA_Tools:
+      'GitHub Actions, CI/CD, Docker, AWS, Railway, Vercel, Vitest, Playwright, Jest, Cypress',
+    Analytics:
+      'PostHog, Mixpanel, event tracking, product analytics, data-driven insights',
+    Practices:
+      'Code reviews, performance optimization, automation, DX improvement, documentation',
   },
   projects: [
     {
-      name: 'Engineering Process Evolution @Frenetic',
+      name: 'Trinuki',
       description:
-        'Transformed engineering processes: implemented structured code reviews, CI/CD pipelines, and release management, reducing production issues by 4 hours/week.',
-    },
-    {
-      name: 'Team Scaling & Hiring',
-      description:
-        'Built and scaled engineering team from 3 to 10 engineers, establishing hiring processes and onboarding programs.',
-    },
-    {
-      name: 'Business Impact Analytics',
-      description:
-        'Implemented PostHog and Mixpanel analytics, enabling data-driven product decisions and measuring engineering ROI.',
+        'AI-driven trip planner for Japan automating itineraries, city connections, and curated local data. Demonstrates scalable full-stack architecture, AI integration, and modern DX tooling.',
     },
   ],
   education: [

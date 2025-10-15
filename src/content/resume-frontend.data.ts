@@ -88,7 +88,7 @@ const resumeFrontendData = {
       description:
         'Led healthcare web applications projects for global pharma clients (MSD, Pfizer, Bayer).',
       bullets: [
-        'Implemented responsive and accessible interfaces within regulated environments.',
+        'Implemented responsive, accessible, and high-performance interfaces within regulated environments.',
         'Front-end CI and review practices, improving quality and delivery consistency.',
       ],
       stack:
@@ -101,7 +101,7 @@ const resumeFrontendData = {
     Backend:
       'Node.js, Express, Prisma, PostgreSQL, MongoDB, REST APIs, PHP, Laravel',
     'DevOps, QA & Tools':
-      'GitHub Actions, Vercel, Railway, Docker, AWS, Vitest, Playwright, Jest, Cypress',
+      'GitHub Actions, CI/CD, Vercel, Railway, Docker, AWS, Vitest, Playwright, Jest, Cypress',
     'Analytics & Monitoring': 'PostHog, Mixpanel',
     Practices:
       'Component-driven design, performance optimization, DX, CI/CD, mentoring',

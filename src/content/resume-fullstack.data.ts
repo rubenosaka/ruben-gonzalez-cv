@@ -4,38 +4,38 @@ import { RoleBasedResumeSchema } from '@/types/role-based-resume'
 const resumeFullstackData = {
   metadata: {
     name: 'Rubén González Aranda',
-    title: 'Tech Lead / Senior Full Stack Developer',
+    title: 'Full-Stack Tech Lead / Engineering Manager',
     email: 'rubenosaka@gmail.com',
     phone: '+34 639 176 921',
     linkedin: 'https://linkedin.com/in/rubengonzalez',
     location: 'Madrid, Spain',
   },
   summary:
-    'Tech Lead and Senior Full Stack Developer with 18+ years of experience building end-to-end web applications. Expert in modern JavaScript ecosystems (Vue 3, React, Node.js) and cloud-native architectures. Proven track record leading technical teams, architecting scalable solutions, and delivering high-impact products in startup environments.',
+    'Full-Stack Tech Lead with 18+ years of experience leading engineering teams and building scalable digital products. Specialized in modern JavaScript ecosystems (Vue 3, React, Node.js, TypeScript) and product-focused architectures. Experienced in roadmap ownership, developer enablement, and cross-functional collaboration with Product, Design, and Business teams. Passionate about clean architecture, AI automation, and developer experience optimization.',
   coreStrengths: [
     {
-      category: 'Full Stack Architecture',
+      category: 'Architecture & Engineering',
       skills:
-        'Vue 3, React, Node.js, TypeScript, Microservices, API Design, Database Design',
+        'TypeScript, Node.js, Vue 3, React, Astro, Prisma, PostgreSQL, REST APIs, modular monorepos',
     },
     {
-      category: 'Backend & Infrastructure',
+      category: 'Leadership & Product',
       skills:
-        'Express, Laravel, PostgreSQL, MongoDB, AWS, Docker, CI/CD, Serverless',
+        'Team mentoring, roadmap ownership, agile delivery, cost estimation, stakeholder alignment',
     },
     {
-      category: 'Frontend & UX',
+      category: 'DevOps & Quality',
       skills:
-        'Modern JS frameworks, TailwindCSS, Performance optimization, Accessibility',
+        'CI/CD, GitHub Actions, Railway, Vercel, AWS, Docker, test automation, observability dashboards',
     },
     {
-      category: 'Leadership & Process',
+      category: 'AI & Automation',
       skills:
-        'Team leadership, Technical mentoring, Code reviews, Agile methodologies',
+        'OpenAI API, automation pipelines, workflow optimization, data-driven feature delivery',
     },
     {
-      category: 'Product & Analytics',
-      skills: 'PostHog, Mixpanel, Business metrics, User behavior analysis',
+      category: 'Analytics & Monitoring',
+      skills: 'PostHog, Mixpanel, user lifecycle tracking, behavioral insights',
     },
   ],
   experience: [
@@ -44,86 +44,75 @@ const resumeFullstackData = {
       role: 'Engineering Manager / Full-Stack Lead',
       period: '02/2021 – 09/2025 · Remote',
       description:
-        'Led full-stack development for a SaaS platform in electromagnetics design and simulation.',
+        'Led engineering team for a SaaS platform in electromagnetics design and simulation.',
       bullets: [
-        'Architected and maintained full-stack solutions with Vue 3 frontend and Node.js/PHP backend.',
-        'Built RESTful APIs and microservices for internal tools and third-party integrations.',
-        'Integrated AI workflows (OpenAI) to automate content generation and improve user experience.',
-        'Improved system performance by 30% through optimization and caching strategies.',
-        'Led team of 3-10 engineers, established code review processes and CI/CD pipelines.',
-        'Collaborated with Product and Business teams to ensure technical solutions drive business value.',
+        'Managed a team of 3–10 engineers across frontend, backend, QA, and DevOps roles.',
+        'Defined technical direction and code standards for Vue 3 + TypeScript and Node.js services.',
+        'Evolved engineering processes (Jira flows, CI/CD, semantic versioning) improving delivery cadence.',
+        'Introduced AI automation workflows to optimize user lifecycle and internal processes.',
+        'Implemented analytics and event-driven dashboards using PostHog and Mixpanel.',
+        'Partnered with Product, Marketing, and Sales to align engineering output with measurable business impact.',
       ],
       stack:
-        'Vue 3, TypeScript, Node.js/Express, PHP/Laravel, PostgreSQL, Pinia, Vitest, AWS (serverless), OpenAI API, Puppeteer',
+        'Vue 3, TypeScript, Node.js/Express, Laravel 9 (REST backend), MySQL, AWS (serverless), Puppeteer, Python, PHP',
     },
     {
       company: 'Isobar (Dentsu Group)',
       role: 'Team Lead / Full-Stack Developer',
       period: '04/2019 – 02/2021 · Madrid',
       description:
-        'Led full-stack development for multi-brand websites and e-commerce platforms.',
+        'Technical lead for web and e-commerce projects across multiple brands and markets.',
       bullets: [
-        'Architected modern full-stack solutions transitioning from legacy PHP to Vue/React + Node.js.',
-        'Established development standards, component libraries, and deployment workflows.',
-        'Improved delivery predictability through automated testing and review processes.',
+        'Led development squads delivering multi-brand, multi-country websites and integrations.',
+        'Implemented CI/CD pipelines and automated testing to improve release predictability.',
       ],
       stack:
-        'Vue, React, Node.js/Express, PHP, Material UI, AWS, DigitalOcean, SQL, MongoDB',
+        'Node.js/Express, React/Material UI, Vue, PHP, Python, Salesforce, WordPress, Drupal, Magento, AWS, DigitalOcean',
     },
     {
       company: 'Product School (Startup)',
       role: 'Full-Stack Developer',
       period: '06/2018 – 04/2019 · Remote',
       description:
-        "Developed and maintained the company's LMS platform and marketing infrastructure.",
+        "Developed and optimized the company's LMS platform and marketing site.",
       bullets: [
-        'Built full-stack features for the learning management system and marketing site.',
-        'Optimized performance and SEO through caching strategies and deployment automation.',
-        'Collaborated with Product and Marketing teams to align technical features with business goals.',
+        'Built reusable components and improved SEO, caching, and overall performance.',
+        'Collaborated with Product and Marketing to align features with growth metrics.',
+        'Contributed to CI/CD pipelines and deployment automation on AWS.',
       ],
-      stack: 'Node.js, React, PostgreSQL, AWS',
+      stack: 'Node.js, TypeScript, React, PostgreSQL, AWS, PHP',
     },
     {
       company: 'Quodem (Healthcare)',
       role: 'Team Lead / Full-Stack Developer',
       period: '12/2015 – 06/2018 · Madrid',
       description:
-        'Led full-stack development for secure, compliant healthcare applications for global pharma clients.',
+        'Led healthcare applications for global pharma clients (MSD, Pfizer, Bayer, GSK).',
       bullets: [
-        'Developed secure, compliant web applications for MSD, Pfizer, Bayer, and other pharma clients.',
-        'Implemented responsive interfaces and backend systems within regulated healthcare environments.',
-        'Established CI/CD practices and code review processes for improved quality and delivery.',
+        'Developed secure and compliant applications within regulated healthcare environments.',
+        'Implemented CI practices and review processes to ensure quality and delivery consistency.',
       ],
-      stack: 'Vue, jQuery, PHP, Bootstrap, Umbraco, Drupal, MySQL',
+      stack:
+        'JavaScript, Vue, jQuery, Bootstrap, Umbraco, Drupal, .NET, WordPress, PHP, Angular',
     },
   ],
   technicalSkills: {
     Frontend:
-      'Vue 3, React, Astro, TypeScript, JavaScript (ESNext), Vite, Pinia, TailwindCSS, HTML5, CSS3',
+      'Vue 3, React, Astro, TypeScript, JavaScript, Vite, Pinia, TailwindCSS, Material UI, HTML5, SCSS',
     Backend:
-      'Node.js, Express, PHP, Laravel, REST APIs, GraphQL, Microservices',
-    Databases:
-      'PostgreSQL, MongoDB, MySQL, Prisma, Database design and optimization',
-    'DevOps & Cloud':
-      'AWS, Docker, GitHub Actions, Vercel, Railway, CI/CD, Serverless',
-    'Testing & QA': 'Vitest, Playwright, Jest, Cypress, API testing',
-    'Analytics & Monitoring': 'PostHog, Mixpanel, Performance monitoring',
+      'Node.js, Express, Prisma, PostgreSQL, MongoDB, REST APIs, PHP, Laravel, Python (Flask/Django), MySQL',
+    'DevOps, QA & Tools':
+      'GitHub Actions, CI/CD, Vercel, Railway, Docker, AWS, Vitest, Playwright, Jest, Cypress',
+    'Analytics & Monitoring':
+      'PostHog, Mixpanel, event tracking, performance dashboards',
+    Practices:
+      'Clean architecture, modular monorepos, DDD, SOLID principles, DX optimization, mentoring, agile workflows',
   },
   projects: [
     {
       name: 'Trinuki',
       description:
-        'AI-driven trip planner with full-stack architecture: Astro frontend, Node.js/Express backend, PostgreSQL database, and AI integration for automated itinerary generation.',
-    },
-    {
-      name: 'Frenetic Platform Architecture',
-      description:
-        'Designed and implemented scalable full-stack architecture for SaaS platform with Vue 3 frontend, Laravel API, and AWS infrastructure.',
-    },
-    {
-      name: 'Healthcare Compliance System',
-      description:
-        'Built secure, compliant full-stack applications for pharma clients with proper data handling and audit trails.',
+        'AI-powered trip planner for Japan featuring automated itinerary generation, POI rendering, and Google Places integration. Demonstrates scalable fullstack architecture with Astro + Node.js and AI-assisted UX workflows.',
     },
   ],
   education: [
@@ -139,14 +128,8 @@ const resumeFullstackData = {
     },
   ],
   languages: [
-    {
-      name: 'Spanish',
-      level: 'native',
-    },
-    {
-      name: 'English',
-      level: 'professional working proficiency',
-    },
+    { name: 'Spanish', level: 'native' },
+    { name: 'English', level: 'professional working proficiency' },
   ],
 }
 
