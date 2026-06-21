@@ -14,9 +14,9 @@ const resumeEngineeringManagerData = {
     'Engineering Manager with 18+ years of experience leading teams and building SaaS products from concept to scale. Skilled at balancing delivery and mentoring, aligning technical decisions with product impact, and integrating AI and automation to improve efficiency. Strong focus on developer experience, measurable outcomes, and cross-functional collaboration in high-growth environments.',
   coreStrengths: [
     {
-      category: 'Leadership & Strategy',
+      category: 'Team Leading and guiding',
       skills:
-        'Team management (3–10 engineers), mentoring, roadmap ownership, stakeholder alignment',
+        'Experienced in hiring, onboarding, mentoring, performance management, and guiding team members through their full employee lifecycle. Experienced in scaling teams, defining career paths, and implementing feedback frameworks that drive engagement and accountability.',
     },
     {
       category: 'Architecture & Development',
@@ -32,11 +32,6 @@ const resumeEngineeringManagerData = {
       category: 'Product & Analytics',
       skills:
         'PostHog, Mixpanel, data-driven roadmaps, observability dashboards, experiment tracking',
-    },
-    {
-      category: 'DevOps & Quality',
-      skills:
-        'CI/CD, GitHub Actions, AWS (serverless), Railway, Docker, Vercel, Vitest, Playwright',
     },
   ],
   experience: [
@@ -102,9 +97,9 @@ const resumeEngineeringManagerData = {
       'Mentoring, hiring, roadmap planning, process improvement, stakeholder communication, cross-functional alignment',
     Architecture:
       'Node.js, TypeScript, Vue 3, React, Astro, Prisma, PostgreSQL, REST APIs, DDD, SOLID, modular monorepos',
-    AI_Automation:
+    'AI & Automation':
       'OpenAI API, prompt engineering, lifecycle automation, content generation, data enrichment',
-    DevOps_QA_Tools:
+    'DevOps & QA Tools':
       'GitHub Actions, CI/CD, Docker, AWS, Railway, Vercel, Vitest, Playwright, Jest, Cypress',
     Analytics:
       'PostHog, Mixpanel, event tracking, product analytics, data-driven insights',

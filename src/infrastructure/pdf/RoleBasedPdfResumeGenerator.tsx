@@ -260,7 +260,11 @@ export class RoleBasedPdfResumeGenerator {
       contentWidth
     )
     y += 6
-    resume.coreStrengths.forEach((strength) => {
+    const isEMRole = resume.metadata.title
+      .toLowerCase()
+      .includes('engineering manager')
+
+    resume.coreStrengths.forEach((strength, index) => {
       doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.contentText)
       doc.text(`${strength.category}:`, contentX, y, { width: contentWidth })
       y += 12
@@ -269,7 +273,16 @@ export class RoleBasedPdfResumeGenerator {
         .fontSize(8)
         .fillColor(this.colors.contentMuted)
       doc.text(strength.skills, contentX, y, { width: contentWidth })
-      y += 16
+
+      const isTeamLeading = strength.category
+        .toLowerCase()
+        .includes('team leading')
+      const shouldAddExtraSpace = isEMRole && isTeamLeading
+
+      const textHeight = doc.heightOfString(strength.skills, {
+        width: contentWidth,
+      })
+      y += textHeight + (shouldAddExtraSpace ? 12 : 8)
     })
     y += 16
     y = this.drawContentSection(

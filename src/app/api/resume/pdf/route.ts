@@ -14,12 +14,14 @@ const roleResumes = {
 
 type Role = keyof typeof roleResumes
 
+const DEFAULT_ROLE: Role = 'engineering-manager'
+
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const role = searchParams.get('role') as Role
+    const roleParam = request.nextUrl.searchParams.get('role')
+    const role = (roleParam ?? DEFAULT_ROLE) as Role
 
-    if (!role || !roleResumes[role]) {
+    if (!roleResumes[role]) {
       return NextResponse.json(
         {
           error: 'Invalid or missing role parameter',

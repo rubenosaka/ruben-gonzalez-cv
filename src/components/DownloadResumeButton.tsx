@@ -11,7 +11,7 @@ export const DownloadResumeButton = () => {
     setIsLoading(true)
 
     try {
-      const response = await fetch('/api/resume/pdf', {
+      const response = await fetch('/api/resume/pdf?role=engineering-manager', {
         method: 'GET',
         headers: {
           Accept: 'application/pdf',
@@ -23,7 +23,7 @@ export const DownloadResumeButton = () => {
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = 'ruben-gonzalez-resume.pdf'
+        a.download = 'ruben-gonzalez-engineering-manager-resume.pdf'
         a.style.display = 'none'
         document.body.appendChild(a)
         a.click()
@@ -31,13 +31,11 @@ export const DownloadResumeButton = () => {
         document.body.removeChild(a)
       } else {
         console.error('Failed to download PDF - Status:', response.status)
-        // Try opening in new window instead of print
-        window.open('/api/resume/pdf', '_blank')
+        window.open('/api/resume/pdf?role=engineering-manager', '_blank')
       }
     } catch (error) {
       console.error('Error downloading PDF:', error)
-      // Try opening in new window instead of print
-      window.open('/api/resume/pdf', '_blank')
+      window.open('/api/resume/pdf?role=engineering-manager', '_blank')
     } finally {
       setIsLoading(false)
     }
