@@ -32,18 +32,18 @@ export function TrinukiBanner({ variant }: TrinukiBannerProps) {
         <div className="h-full w-full bg-black/60 p-6">
           <div className="flex flex-col items-center gap-8 md:flex-row">
             <div className="flex-1 text-center md:text-left">
-              <h2 className="mb-2 text-3xl font-bold text-white">
-                Trinuki – Coming Soon
-              </h2>
+              <h2 className="mb-2 text-3xl font-bold text-white">Trinuki</h2>
               <p className="mb-6 text-lg text-white/90">
                 AI-powered travel planner for Japan
               </p>
-              <button
-                disabled
-                className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md border border-white/30 bg-white/20 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+              <a
+                href="https://trinuki.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md border border-white/30 bg-white/20 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
               >
-                Coming soon
-              </button>
+                Visit Trinuki.com
+              </a>
             </div>
           </div>
         </div>

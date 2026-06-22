@@ -80,43 +80,48 @@ The project provides standard light and dark themes with system preference detec
 
 ## PDF Generation
 
-### Professional Layout
+### Role-Based PDFs
 
-The PDF generator creates a professional resume with:
+The site generates role-specific PDFs via `/api/resume/pdf?role=engineering-manager` (also `frontend` and `fullstack`). Each role uses its own data module in `src/content/resume-{role}.data.ts` and is rendered by `RoleBasedPdfResumeGenerator`.
 
-#### Two-Column Layout
+### Two-Page Layout (Engineering Manager)
 
-- **Left Sidebar**: Contact information, skills, and education
-- **Main Content**: Experience and highlights
-- **Responsive Design**: Adapts to content length
+The Engineering Manager PDF uses a fixed **two-page** layout:
 
-#### Contact Information
+#### Page 1
 
-- **Email**: rubenosaka@gmail.com
-- **Telephone**: +34 639 176 921
-- **Location**: Madrid, Spain
-- **Professional formatting** with clear hierarchy
+- **Left Sidebar**: Photo, contact, education, languages, Trinuki side project
+- **Main Content**: Professional summary, core strengths, and the **three most recent** experience entries
 
-#### Content Sections
+#### Page 2
 
-1. **Career Highlights**: Key achievements with colored borders
-2. **Experience**: Detailed work history with company information
-3. **Skills**: Technical skills organized in chips
-4. **Education**: Academic background and qualifications
+- **Left Sidebar**: Same sidebar repeated on every page
+- **Main Content**: Remaining experience entries and technical skills (two columns)
+
+#### Layout Rules
+
+- Exactly **two pages** — no auto-pagination or blank trailing pages
+- Vertical positioning uses `heightOfString()` so paragraphs, bullets, and stacks never overlap
+- Sidebar is redrawn on each page with `doc.addPage()`
+
+### Two-Column Layout
+
+- **Left Sidebar**: Black background with contact, education, languages, and side projects
+- **Main Content**: White background with summary, strengths, experience, and skills
+- **API**: `GET /api/resume/pdf?role={engineering-manager|frontend|fullstack}`
 
 ### Technical Implementation
 
 #### PDF Generation Process
 
-1. **Data Validation**: Zod schemas ensure data integrity
-2. **Layout Calculation**: Dynamic height calculation for pagination
-3. **Content Rendering**: Professional styling with consistent fonts
-4. **Error Handling**: Graceful fallback to browser print
+1. **Data Validation**: Zod schemas ensure data integrity per role
+2. **Layout Calculation**: Dynamic height via `heightOfString()` before each block
+3. **Content Rendering**: PDFKit with Helvetica, consistent spacing and line gaps
+4. **Error Handling**: API returns 500 with details; client falls back to opening the PDF URL
 
 #### Error Handling
 
 - **Download Fallback**: Opens PDF in new window if download fails
-- **Print Fallback**: Uses browser print as last resort
 - **Mobile Compatibility**: Optimized for mobile browsers
 
 ## Responsive Design

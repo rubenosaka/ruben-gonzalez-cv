@@ -20,7 +20,22 @@ export function NewsSection() {
                 {item.date} -{' '}
                 <span className="font-bold text-foreground">{item.title}</span>
               </div>
-              <p className="text-sm text-muted-foreground">{item.content}</p>
+              <p className="text-sm text-muted-foreground">
+                {item.content}
+                {item.link ? (
+                  <>
+                    {' '}
+                    <a
+                      href={item.link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary underline-offset-4 hover:underline"
+                    >
+                      {item.link.label}
+                    </a>
+                  </>
+                ) : null}
+              </p>
             </li>
           ))}
         </ul>

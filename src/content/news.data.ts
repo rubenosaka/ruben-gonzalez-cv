@@ -4,9 +4,31 @@ const NewsItemSchema = z.object({
   date: z.string(),
   title: z.string(),
   content: z.string(),
+  link: z
+    .object({
+      url: z.string().url(),
+      label: z.string(),
+    })
+    .optional(),
 })
 
 const newsData = [
+  {
+    date: '01/01/2026',
+    title: 'Trinuki open alpha is live',
+    content:
+      'Trinuki.com launches its public alpha — an AI-powered trip planner for Japan, now open for everyone to try.',
+    link: {
+      url: 'https://trinuki.com',
+      label: 'Trinuki.com',
+    },
+  },
+  {
+    date: '01/11/2025',
+    title: 'Joined Multiverse Computing',
+    content:
+      'Started a new role as Project Manager, ensuring secure access and authorization to the company’s AI models.',
+  },
   {
     date: '01/09/2025',
     title: 'My last day in Frenetic!',

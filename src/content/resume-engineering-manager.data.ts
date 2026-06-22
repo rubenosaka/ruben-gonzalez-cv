@@ -11,7 +11,7 @@ const resumeEngineeringManagerData = {
     location: 'Madrid, Spain',
   },
   summary:
-    'Engineering Manager with 18+ years of experience leading teams and building SaaS products from concept to scale. Skilled at balancing delivery and mentoring, aligning technical decisions with product impact, and integrating AI and automation to improve efficiency. Strong focus on developer experience, measurable outcomes, and cross-functional collaboration in high-growth environments.',
+    'Engineering Manager and Product-focused Tech Lead with 18+ years of experience building digital products, leading engineering teams, and driving cross-functional initiatives. Experienced in scaling teams, improving engineering practices, and introducing AI-driven workflows that increase productivity and business impact. Combines hands-on technical leadership with strong product thinking and stakeholder alignment.',
   coreStrengths: [
     {
       category: 'Team Leading and guiding',
@@ -24,9 +24,9 @@ const resumeEngineeringManagerData = {
         'TypeScript, Node.js, Vue 3, React, Astro, Hexagonal Architecture, PostgreSQL, REST APIs, DDD, SOLID',
     },
     {
-      category: 'AI & Automation',
+      category: 'AI Adoption & Automation',
       skills:
-        'OpenAI API, process automation, lifecycle optimization, content workflows, prompt engineering',
+        'AI-assisted workflows, OpenAI API, prompt engineering, process automation, productivity optimization, content generation, developer enablement',
     },
     {
       category: 'Product & Analytics',
@@ -36,18 +36,34 @@ const resumeEngineeringManagerData = {
   ],
   experience: [
     {
+      company: 'Multiverse',
+      role: 'AI Mentor / Technical Mentor',
+      period: '10/2025 – Present · Part-time',
+      description:
+        'Mentoring software engineers in AI-assisted development workflows and modern software engineering practices.',
+      bullets: [
+        'Guided engineers in adopting AI-assisted development workflows to improve productivity and delivery speed.',
+        'Reviewed technical projects and provided feedback on architecture, maintainability, and engineering best practices.',
+        'Mentored developers across frontend, backend, and full-stack technologies including TypeScript, JavaScript, and modern web architectures.',
+        'Promoted effective use of AI tools throughout the software development lifecycle.',
+        'Supported learners in building practical engineering skills through project-based feedback and coaching.',
+      ],
+      stack:
+        'AI-assisted development, TypeScript, JavaScript, Node.js, React, Vue, Software Architecture, Technical Mentoring',
+    },
+    {
       company: 'Frenetic.ai (Startup)',
       role: 'Engineering Manager',
       period: '02/2021 – 09/2025 · Remote',
       description:
         'Led engineering for a SaaS platform for electromagnetic simulation, managing cross-functional teams.',
       bullets: [
-        'Managed a team of 3–10 engineers, balancing delivery with mentoring and onboarding.',
-        'Evolved engineering processes: Jira, Roadmap, semantic versioning, testing branches.',
-        'Collaborated with Product, Business, Marketing, and Sales to ensure measurable outcomes.',
-        'Conducted interviews for frontend, backend, QA, and DevOps roles.',
-        'Introduced AI workflows automating user lifecycle and content generation (~8h/week saved).',
-        'Implemented observability with PostHog and Mixpanel to track user engagement and growth.',
+        'Managed and mentored a team of 3–10 engineers across frontend, backend, QA, and DevOps disciplines.',
+        'Led hiring processes, onboarding, and career development initiatives.',
+        'Improved delivery cadence through engineering process improvements, CI/CD practices, and structured code reviews.',
+        'Collaborated with Product, Business, Marketing, and Sales to align engineering output with business objectives.',
+        'Introduced AI-driven workflows automating user lifecycle and content generation processes (~8h/week saved).',
+        'Implemented observability and analytics using PostHog and Mixpanel to support data-driven decision making.',
       ],
       stack:
         'PHP 8 (Laravel 9), Vue 3, TypeScript, Pinia, MySQL, Python (REST), Node.js/Express, AWS (serverless)',

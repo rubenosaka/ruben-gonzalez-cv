@@ -359,50 +359,21 @@ export const MobileMenu = () => {
 
 ### 7. PDF Generation
 
-#### API Route Implementation
+Role-based PDFs are served from `src/app/api/resume/pdf/route.ts` using `RoleBasedPdfResumeGenerator` and data from `src/content/resume-{role}.data.ts`.
 
-```typescript
-// src/app/api/resume/pdf/route.ts
-import { NextResponse } from 'next/server'
-import { ResumeService } from '@/application/services/ResumeService'
-import { ReactPdfResumeGenerator } from '@/infrastructure/pdf/ReactPdfResumeGenerator'
+The Engineering Manager PDF is a **two-page** document: page 1 holds summary, core strengths, and the three latest roles; page 2 holds older roles and technical skills. The sidebar repeats on both pages. Layout uses explicit `y` advancement with `heightOfString()` to avoid overlapping text.
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
+#### API Route
 
-export async function GET() {
-  try {
-    const resumeService = new ResumeService()
-    const resume = resumeService.getResume()
-
-    const pdfGenerator = new ReactPdfResumeGenerator()
-    const pdfBuffer = await pdfGenerator.generatePDF(resume)
-
-    return new NextResponse(new Uint8Array(pdfBuffer), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition':
-          'attachment; filename="ruben-gonzalez-resume.pdf"',
-        'Cache-Control':
-          'no-store, no-cache, must-revalidate, proxy-revalidate',
-        Pragma: 'no-cache',
-        Expires: '0',
-        'Content-Length': pdfBuffer.length.toString(),
-      },
-    })
-  } catch (error) {
-    console.error('Error generating PDF:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to generate PDF',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
 ```
+GET /api/resume/pdf?role=engineering-manager
+GET /api/resume/pdf?role=frontend
+GET /api/resume/pdf?role=fullstack
+```
+
+#### Local Development Note (Windows)
+
+If the project lives under a path where `\r` is interpreted as a carriage return (e.g. `C:\rga\...`), webpack dev can break. Use `npm run dev` (Turbopack) or move the repo to a path without `\r` in segment names.
 
 #### Client-Side Download Component
 

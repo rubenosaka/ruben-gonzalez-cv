@@ -111,6 +111,17 @@ const resumeData = {
     ],
     experience: [
       {
+        title: 'Project Manager',
+        company: 'Multiverse Computing',
+        period: '11/2025–Present',
+        description:
+          'Ensuring secure access and authorization to the company’s AI models.',
+        highlights: [
+          'Defined and implemented access policies for internal AI model usage.',
+          'Coordinated cross-functional teams to align authorization workflows with business and security requirements.',
+        ],
+      },
+      {
         title: 'Founder & Tech Lead',
         company: 'Trinuki',
         period: '09/2025–Present',

@@ -40,6 +40,22 @@ const resumeFullstackData = {
   ],
   experience: [
     {
+      company: 'Multiverse',
+      role: 'AI Mentor / Technical Mentor',
+      period: '10/2025 – Present · Part-time',
+      description:
+        'Mentoring software engineers in AI-assisted development workflows and modern software engineering practices.',
+      bullets: [
+        'Guided engineers in adopting AI-assisted development workflows to improve productivity and delivery speed.',
+        'Reviewed technical projects and provided feedback on architecture, maintainability, and engineering best practices.',
+        'Mentored developers across frontend, backend, and full-stack technologies including TypeScript, JavaScript, and modern web architectures.',
+        'Promoted effective use of AI tools throughout the software development lifecycle.',
+        'Supported learners in building practical engineering skills through project-based feedback and coaching.',
+      ],
+      stack:
+        'AI-assisted development, TypeScript, JavaScript, Node.js, React, Vue, Software Architecture, Technical Mentoring',
+    },
+    {
       company: 'Frenetic.ai (Startup)',
       role: 'Engineering Manager / Full-Stack Lead',
       period: '02/2021 – 09/2025 · Remote',
