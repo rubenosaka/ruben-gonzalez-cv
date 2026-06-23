@@ -139,6 +139,8 @@ export const ThemeAwareComponent = ({ children }: ComponentProps) => {
 
 The resume uses TypeScript modules with Zod validation for content management, ensuring type safety and data integrity.
 
+**Web resume** (`resume.data.ts`) powers `/resume`. **PDF exports** use `resume-engineering-manager.data.ts`, `resume-frontend.data.ts`, and `resume-fullstack.data.ts`. **Trinuki** copy is centralized in `trinuki-project.data.ts` and imported where needed. Changing Multiverse, Trinuki, or career highlights for PDFs usually means editing the role file (and `resume.data.ts` for the web).
+
 #### Content Structure
 
 **Resume Data** (`src/content/resume.data.ts`):
@@ -361,9 +363,19 @@ export const MobileMenu = () => {
 
 Role-based PDFs are served from `src/app/api/resume/pdf/route.ts` using `RoleBasedPdfResumeGenerator` and data from `src/content/resume-{role}.data.ts`.
 
-The Engineering Manager PDF is a **two-page** document: page 1 holds summary, core strengths, and the three latest roles; page 2 holds older roles and technical skills. The sidebar repeats on both pages. Layout uses explicit `y` advancement with `heightOfString()` to avoid overlapping text.
+The web resume (`src/content/resume.data.ts`) and PDF role files are **independent**. Update both when changing experience copy that should appear everywhere.
 
-#### API Route
+Shared Trinuki content lives in `src/content/trinuki-project.data.ts` and is imported by `resume.data.ts` and each `resume-{role}.data.ts`.
+
+#### Engineering Manager layout (two pages)
+
+**Page 1 — sidebar:** contact, education, languages. **Content:** Professional Summary → Career Highlights → Recent Experience (first 3 roles).
+
+**Page 2 — sidebar:** Technical Skills. **Content:** Trinuki → Remaining Experience → Core Strengths.
+
+Layout uses explicit `y` advancement with `heightOfString()` to avoid overlapping text. Typography and spacing are defined in `typography` and `spacing` on `RoleBasedPdfResumeGenerator`.
+
+#### API routes
 
 ```
 GET /api/resume/pdf?role=engineering-manager
@@ -390,7 +402,7 @@ export const DownloadResumeButton = () => {
   const handleDownload = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/resume/pdf', {
+      const response = await fetch('/api/resume/pdf?role=engineering-manager', {
         method: 'GET',
         headers: {
           Accept: 'application/pdf',
@@ -402,18 +414,18 @@ export const DownloadResumeButton = () => {
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = 'ruben-gonzalez-resume.pdf'
+        a.download = 'ruben-gonzalez-engineering-manager-resume.pdf'
         a.style.display = 'none'
         document.body.appendChild(a)
         a.click()
         window.URL.revokeObjectURL(url)
         document.body.removeChild(a)
       } else {
-        window.open('/api/resume/pdf', '_blank')
+        window.open('/api/resume/pdf?role=engineering-manager', '_blank')
       }
     } catch (error) {
       console.error('Error downloading PDF:', error)
-      window.open('/api/resume/pdf', '_blank')
+      window.open('/api/resume/pdf?role=engineering-manager', '_blank')
     } finally {
       setIsLoading(false)
     }

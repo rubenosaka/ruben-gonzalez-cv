@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { RoleBasedResumeSchema } from '@/types/role-based-resume'
+import { trinukiProject } from './trinuki-project.data'
 
 const resumeFullstackData = {
   metadata: {
@@ -41,19 +42,19 @@ const resumeFullstackData = {
   experience: [
     {
       company: 'Multiverse',
-      role: 'AI Mentor / Technical Mentor',
-      period: '10/2025 – Present · Part-time',
+      role: 'Engineering Manager (Fixed-Term Contract)',
+      period: '10/2025 – Present',
       description:
-        'Mentoring software engineers in AI-assisted development workflows and modern software engineering practices.',
+        'Led the MIAM (Multiverse Identity & Access Management) team responsible for authentication and authorization services across company products.',
       bullets: [
-        'Guided engineers in adopting AI-assisted development workflows to improve productivity and delivery speed.',
-        'Reviewed technical projects and provided feedback on architecture, maintainability, and engineering best practices.',
-        'Mentored developers across frontend, backend, and full-stack technologies including TypeScript, JavaScript, and modern web architectures.',
-        'Promoted effective use of AI tools throughout the software development lifecycle.',
-        'Supported learners in building practical engineering skills through project-based feedback and coaching.',
+        'Managed a cross-functional team of 8 Software and DevOps Engineers, driving delivery, technical direction, and team development.',
+        'Led the design and implementation of a new identity platform, migrating legacy Python/Django/FastAPI services to a modern architecture based on Node.js, TypeScript, Next.js and Logto.',
+        'Coordinated platform initiatives involving Kubernetes, Terraform and Kafka to improve scalability, reliability and operational efficiency.',
+        'Led AI adoption initiatives across engineering teams, introducing AI-assisted workflows that improved documentation quality, reduced manual effort, and accelerated software delivery.',
+        'Mentored engineers in software architecture, engineering best practices and AI-assisted development workflows.',
       ],
       stack:
-        'AI-assisted development, TypeScript, JavaScript, Node.js, React, Vue, Software Architecture, Technical Mentoring',
+        'Node.js, TypeScript, Next.js, Logto, Kubernetes, Terraform, Kafka, AWS, AI-assisted Development',
     },
     {
       company: 'Frenetic.ai (Startup)',
@@ -124,13 +125,7 @@ const resumeFullstackData = {
     Practices:
       'Clean architecture, modular monorepos, DDD, SOLID principles, DX optimization, mentoring, agile workflows',
   },
-  projects: [
-    {
-      name: 'Trinuki',
-      description:
-        'AI-powered trip planner for Japan featuring automated itinerary generation, POI rendering, and Google Places integration. Demonstrates scalable fullstack architecture with Astro + Node.js and AI-assisted UX workflows.',
-    },
-  ],
+  projects: [trinukiProject],
   education: [
     {
       degree: "Master's in Big Data & Business Analytics",

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { trinukiProject, trinukiStackItems } from './trinuki-project.data'
 
 const HighlightSchema = z.object({
   title: z.string(),
@@ -111,42 +112,37 @@ const resumeData = {
     ],
     experience: [
       {
-        title: 'Project Manager',
+        title: 'Engineering Manager (Fixed-Term Contract)',
         company: 'Multiverse Computing',
-        period: '11/2025–Present',
+        period: '10/2025–Present',
         description:
-          'Ensuring secure access and authorization to the company’s AI models.',
+          'Led the MIAM (Multiverse Identity & Access Management) team responsible for authentication and authorization services across company products.',
         highlights: [
-          'Defined and implemented access policies for internal AI model usage.',
-          'Coordinated cross-functional teams to align authorization workflows with business and security requirements.',
+          'Managed a cross-functional team of 8 Software and DevOps Engineers, driving delivery, technical direction, and team development.',
+          'Led the design and implementation of a new identity platform, migrating legacy Python/Django/FastAPI services to a modern architecture based on Node.js, TypeScript, Next.js and Logto.',
+          'Coordinated platform initiatives involving Kubernetes, Terraform and Kafka to improve scalability, reliability and operational efficiency.',
+          'Led AI adoption initiatives across engineering teams, introducing AI-assisted workflows that improved documentation quality, reduced manual effort, and accelerated software delivery.',
+          'Mentored engineers in software architecture, engineering best practices and AI-assisted development workflows.',
+        ],
+        stack: [
+          'Node.js',
+          'TypeScript',
+          'Next.js',
+          'Logto',
+          'Kubernetes',
+          'Terraform',
+          'Kafka',
+          'AWS',
+          'AI-assisted Development',
         ],
       },
       {
         title: 'Founder & Tech Lead',
-        company: 'Trinuki',
+        company: trinukiProject.name,
         period: '09/2025–Present',
-        description:
-          'Building an AI-powered trip planner for Japan, combining automated itineraries with curated local data.',
-        stack: [
-          'Astro',
-          'Vue 3',
-          'TypeScript',
-          'Pinia',
-          'Node.js/Express',
-          'Prisma',
-          'PostgreSQL',
-          'TailwindCSS',
-          'Vitest',
-          'Railway',
-          'Vercel',
-        ],
-        highlights: [
-          'Designed and implemented a monorepo architecture for frontend and backend.',
-          'Developed automatic itinerary generation based on days, cities, and points of interest.',
-          'Integrated external data sources (Google Places, Routes) with local curated content.',
-          'Built an admin backoffice for managing locations, connections, restaurants, and POIs.',
-          'Applied AI-driven workflows to optimize travel planning and content generation.',
-        ],
+        description: trinukiProject.description,
+        stack: trinukiStackItems,
+        highlights: trinukiProject.bullets,
       },
       {
         title: 'Engineering Manager',

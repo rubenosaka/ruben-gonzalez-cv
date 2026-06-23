@@ -19,6 +19,8 @@ const TechnicalSkillsSchema = z.record(z.string(), z.string())
 const ProjectSchema = z.object({
   name: z.string(),
   description: z.string(),
+  bullets: z.array(z.string()).optional(),
+  stack: z.string().optional(),
 })
 
 const EducationItemSchema = z.object({
@@ -48,6 +50,7 @@ const RoleBasedResumeSchema = z.object({
   projects: z.array(ProjectSchema).optional(),
   education: z.array(EducationItemSchema),
   languages: z.array(LanguageSchema),
+  careerHighlights: z.array(z.string()).optional(),
 })
 
 export type RoleBasedResume = z.infer<typeof RoleBasedResumeSchema>

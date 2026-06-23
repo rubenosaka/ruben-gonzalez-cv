@@ -1,6 +1,5 @@
 import PDFDocument from 'pdfkit'
-import type { RoleBasedResume } from '@/types/role-based-resume'
-import type { ExperienceItem } from '@/types/role-based-resume'
+import type { ExperienceItem, Project, RoleBasedResume } from '@/types/role-based-resume'
 
 export class RoleBasedPdfResumeGenerator {
   private page = { width: 595, height: 842, margin: 10 }
@@ -16,6 +15,31 @@ export class RoleBasedPdfResumeGenerator {
     accent: '#000000',
   }
   private fonts = { regular: 'Helvetica', bold: 'Helvetica-Bold' }
+  private typography = {
+    body: 9,
+    small: 7.5,
+    sidebarName: 12,
+    sidebarSubtitle: 8.5,
+    sidebarSection: 12,
+    contentSection: 9,
+    lineGap: 1.5,
+    sidebarSubtitleLineGap: 3,
+    afterParagraph: 4,
+  }
+  private spacing = {
+    xs: 3,
+    sm: 4,
+    md: 6,
+    lg: 8,
+    xl: 10,
+    xxl: 12,
+    section: 15,
+    sidebarBlock: 28,
+    sidebarAfterName: 14,
+    sidebarAfterTitle: 32,
+    afterContentTitle: 10,
+    experienceBetween: 10,
+  }
   private layout = {
     sidebarWidth: 180,
     contentWidth: 595 - 10 - 10 - 180 - 15,
@@ -27,20 +51,14 @@ export class RoleBasedPdfResumeGenerator {
       contact: 'Contact',
       education: 'Education',
       languages: 'Languages',
-      sideProjects: 'Side Projects',
+      technicalSkills: 'TECHNICAL SKILLS',
     },
     content: {
       professionalSummary: 'PROFESSIONAL SUMMARY',
+      careerHighlights: 'CAREER HIGHLIGHTS',
       coreStrengths: 'CORE STRENGTHS',
-      experience: 'EXPERIENCE',
-      technicalSkills: 'TECHNICAL SKILLS',
-    },
-  }
-  private sideProjects = {
-    trinuki: {
-      name: 'Trinuki',
-      description:
-        'AI-driven trip planner for Japan featuring automated itinerary generation, dynamic POI rendering, and Google Places integration. Demonstrates modern frontend architecture, Vue 3 + TypeScript, and AI-assisted UX.',
+      recentExperience: 'RECENT EXPERIENCE',
+      remainingExperience: 'REMAINING EXPERIENCE',
     },
   }
   private contactLabels = {
@@ -74,7 +92,7 @@ export class RoleBasedPdfResumeGenerator {
         this.drawContentPageOne(doc, resume, firstPageExperiences)
 
         doc.addPage({ size: 'A4', margin: this.page.margin })
-        this.drawSidebar(doc, resume)
+        this.drawTechnicalSkillsSidebar(doc, resume)
         this.drawContentPageTwo(doc, resume, secondPageExperiences)
 
         doc.end()
@@ -88,8 +106,18 @@ export class RoleBasedPdfResumeGenerator {
     })
   }
 
-  private getContentX(): number {
+  private getContentX(withSidebar = true): number {
+    if (!withSidebar) {
+      return this.page.margin
+    }
     return this.page.margin + this.layout.sidebarWidth + this.layout.gap
+  }
+
+  private getContentWidth(withSidebar = true): number {
+    if (!withSidebar) {
+      return this.page.width - this.page.margin * 2
+    }
+    return this.layout.contentWidth
   }
 
   private drawSidebar(doc: PDFKit.PDFDocument, resume: RoleBasedResume) {
@@ -104,7 +132,7 @@ export class RoleBasedPdfResumeGenerator {
       .fill(this.colors.sidebarBg)
     doc.restore()
 
-    let y = sidebarY + 20
+    let y = sidebarY + this.spacing.lg
 
     try {
       const photoPath = process.cwd() + '/public/ruben-gonzalez.png'
@@ -116,25 +144,37 @@ export class RoleBasedPdfResumeGenerator {
         fit: [photoSize, photoSize],
         align: 'center',
       })
-      y += photoSize + 15
+      y += photoSize + this.spacing.lg
     } catch {
       // Photo optional
     }
 
     doc.save()
     doc.fillColor(this.colors.sidebarText)
-    doc.font(this.fonts.bold).fontSize(12)
+    doc.font(this.fonts.bold).fontSize(this.typography.sidebarName)
     doc.text(resume.metadata.name, sidebarX + 15, y, {
       width: sidebarWidth - 30,
       align: 'center',
     })
-    y += 15
-    doc.font(this.fonts.regular).fontSize(8)
-    doc.text(resume.metadata.title, sidebarX, y, {
-      width: sidebarWidth,
+    y +=
+      doc.heightOfString(resume.metadata.name, {
+        width: sidebarWidth - 30,
+      }) + this.spacing.sidebarAfterName
+
+    doc.font(this.fonts.regular).fontSize(this.typography.sidebarSubtitle)
+    const titleWidth = sidebarWidth - 30
+    const titleX = sidebarX + 15
+    const titleText = resume.metadata.title.replace(' / ', '\n')
+    doc.text(titleText, titleX, y, {
+      width: titleWidth,
       align: 'center',
+      lineGap: this.typography.sidebarSubtitleLineGap,
     })
-    y += 45
+    y +=
+      doc.heightOfString(titleText, {
+        width: titleWidth,
+        lineGap: this.typography.sidebarSubtitleLineGap,
+      }) + this.spacing.sidebarAfterTitle
 
     y = this.drawSidebarSection(
       doc,
@@ -143,7 +183,7 @@ export class RoleBasedPdfResumeGenerator {
       y,
       sidebarWidth - 30
     )
-    y += 10
+    y += this.spacing.md
     y = this.drawSidebarItem(
       doc,
       this.contactLabels.email,
@@ -152,7 +192,7 @@ export class RoleBasedPdfResumeGenerator {
       y,
       sidebarWidth - 30
     )
-    y += 4
+    y += this.spacing.xs
     y = this.drawSidebarItem(
       doc,
       this.contactLabels.phone,
@@ -161,7 +201,7 @@ export class RoleBasedPdfResumeGenerator {
       y,
       sidebarWidth - 30
     )
-    y += 4
+    y += this.spacing.xs
     y = this.drawSidebarItem(
       doc,
       this.contactLabels.location,
@@ -170,7 +210,7 @@ export class RoleBasedPdfResumeGenerator {
       y,
       sidebarWidth - 30
     )
-    y += 4
+    y += this.spacing.xs
     y = this.drawSidebarItem(
       doc,
       this.contactLabels.linkedin,
@@ -179,7 +219,7 @@ export class RoleBasedPdfResumeGenerator {
       y,
       sidebarWidth - 30
     )
-    y += 30
+    y += this.spacing.sidebarBlock
 
     y = this.drawSidebarSection(
       doc,
@@ -188,33 +228,36 @@ export class RoleBasedPdfResumeGenerator {
       y,
       sidebarWidth - 30
     )
-    y += 10
+    y += this.spacing.md
     resume.education.forEach((edu) => {
-      doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.sidebarText)
+      doc
+        .font(this.fonts.bold)
+        .fontSize(this.typography.body)
+        .fillColor(this.colors.sidebarText)
       doc.text(edu.degree, sidebarX + 15, y, {
         width: sidebarWidth - 30,
-        lineGap: 2,
+        lineGap: this.typography.lineGap,
       })
       y +=
         doc.heightOfString(edu.degree, {
           width: sidebarWidth - 30,
-          lineGap: 2,
-        }) + 4
+          lineGap: this.typography.lineGap,
+        }) + this.spacing.sm
       doc
         .font(this.fonts.regular)
-        .fontSize(8)
+        .fontSize(this.typography.body)
         .fillColor(this.colors.sidebarAccent)
       doc.text(edu.period, sidebarX + 15, y, {
         width: sidebarWidth - 30,
-        lineGap: 2,
+        lineGap: this.typography.lineGap,
       })
       y +=
         doc.heightOfString(edu.period, {
           width: sidebarWidth - 30,
-          lineGap: 2,
-        }) + 10
+          lineGap: this.typography.lineGap,
+        }) + this.spacing.md
     })
-    y += 30
+    y += this.spacing.sidebarBlock
 
     y = this.drawSidebarSection(
       doc,
@@ -223,46 +266,81 @@ export class RoleBasedPdfResumeGenerator {
       y,
       sidebarWidth - 30
     )
-    y += 4
+    y += this.spacing.xs
     resume.languages.forEach((lang) => {
-      doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.sidebarText)
+      doc
+        .font(this.fonts.bold)
+        .fontSize(this.typography.body)
+        .fillColor(this.colors.sidebarText)
       doc.text(lang.name, sidebarX + 15, y, { width: sidebarWidth - 30 })
-      y += doc.heightOfString(lang.name, { width: sidebarWidth - 30 }) + 3
+      y +=
+        doc.heightOfString(lang.name, { width: sidebarWidth - 30 }) +
+        this.spacing.sm
       doc
         .font(this.fonts.regular)
-        .fontSize(8)
+        .fontSize(this.typography.body)
         .fillColor(this.colors.sidebarAccent)
       doc.text(lang.level, sidebarX + 15, y, { width: sidebarWidth - 30 })
-      y += doc.heightOfString(lang.level, { width: sidebarWidth - 30 }) + 6
+      y +=
+        doc.heightOfString(lang.level, { width: sidebarWidth - 30 }) +
+        this.spacing.md
     })
-    y += 20
+    doc.restore()
+  }
+
+  private drawTechnicalSkillsSidebar(
+    doc: PDFKit.PDFDocument,
+    resume: RoleBasedResume
+  ) {
+    const sidebarX = this.page.margin
+    const sidebarY = this.page.margin
+    const sidebarWidth = this.layout.sidebarWidth
+    const sidebarHeight = this.page.height - this.page.margin * 2
+    const textWidth = sidebarWidth - 30
+    const textX = sidebarX + 15
+
+    doc.save()
+    doc
+      .rect(sidebarX, sidebarY, sidebarWidth, sidebarHeight)
+      .fill(this.colors.sidebarBg)
+    doc.restore()
+
+    let y = sidebarY + this.spacing.xl
 
     y = this.drawSidebarSection(
       doc,
-      this.sectionTitles.sidebar.sideProjects,
-      sidebarX + 15,
+      this.sectionTitles.sidebar.technicalSkills,
+      textX,
       y,
-      sidebarWidth - 30
+      textWidth
     )
-    y += 4
-    doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.sidebarText)
-    doc.text(this.sideProjects.trinuki.name, sidebarX + 15, y, {
-      width: sidebarWidth - 30,
-    })
-    y +=
-      doc.heightOfString(this.sideProjects.trinuki.name, {
-        width: sidebarWidth - 30,
-      }) + 3
-    doc
-      .font(this.fonts.regular)
-      .fontSize(8)
-      .fillColor(this.colors.sidebarAccent)
-    doc.text(this.sideProjects.trinuki.description, sidebarX + 15, y, {
-      width: sidebarWidth - 30,
-      lineGap: 1,
-    })
+    y += this.spacing.md
 
-    doc.restore()
+    Object.entries(resume.technicalSkills).forEach(([label, value]) => {
+      if (!value) return
+
+      doc
+        .font(this.fonts.bold)
+        .fontSize(this.typography.body)
+        .fillColor(this.colors.sidebarText)
+      doc.text(`${label}:`, textX, y, { width: textWidth })
+      y +=
+        doc.heightOfString(`${label}:`, { width: textWidth }) + this.spacing.sm
+
+      doc
+        .font(this.fonts.regular)
+        .fontSize(this.typography.body)
+        .fillColor(this.colors.sidebarAccent)
+      doc.text(value, textX, y, {
+        width: textWidth,
+        lineGap: this.typography.lineGap,
+      })
+      y +=
+        doc.heightOfString(value, {
+          width: textWidth,
+          lineGap: this.typography.lineGap,
+        }) + this.spacing.md
+    })
   }
 
   private drawContentPageOne(
@@ -271,8 +349,8 @@ export class RoleBasedPdfResumeGenerator {
     experiences: ExperienceItem[]
   ) {
     const contentX = this.getContentX()
-    const contentWidth = this.layout.contentWidth
-    let y = this.page.margin + 8
+    const contentWidth = this.getContentWidth()
+    let y = this.page.margin + this.spacing.md
 
     y = this.drawContentSection(
       doc,
@@ -281,7 +359,6 @@ export class RoleBasedPdfResumeGenerator {
       y,
       contentWidth
     )
-    y += 8
     y = this.drawParagraph(
       doc,
       resume.summary,
@@ -290,7 +367,81 @@ export class RoleBasedPdfResumeGenerator {
       contentWidth,
       this.colors.contentMuted
     )
-    y += 12
+    y += this.spacing.lg
+
+    if (resume.careerHighlights?.length) {
+      y = this.drawContentSection(
+        doc,
+        this.sectionTitles.content.careerHighlights,
+        contentX,
+        y,
+        contentWidth
+      )
+      y = this.drawBulletList(
+        doc,
+        resume.careerHighlights,
+        contentX,
+        y,
+        contentWidth,
+        this.colors.contentMuted
+      )
+      y += this.spacing.lg
+    }
+
+    y = this.drawContentSection(
+      doc,
+      this.sectionTitles.content.recentExperience,
+      contentX,
+      y,
+      contentWidth
+    )
+
+    experiences.forEach((exp, index) => {
+      y = this.drawExperienceItem(doc, exp, contentX, y, contentWidth)
+      if (index < experiences.length - 1) {
+        y += this.spacing.experienceBetween
+      }
+    })
+  }
+
+  private drawContentPageTwo(
+    doc: PDFKit.PDFDocument,
+    resume: RoleBasedResume,
+    experiences: ExperienceItem[]
+  ) {
+    const contentX = this.getContentX()
+    const contentWidth = this.getContentWidth()
+    let y = this.page.margin + this.spacing.md
+
+    const featuredProject = resume.projects?.[0]
+    if (featuredProject) {
+      y = this.drawProjectSection(
+        doc,
+        featuredProject,
+        contentX,
+        y,
+        contentWidth
+      )
+      y += this.spacing.lg
+    }
+
+    if (experiences.length > 0) {
+      y = this.drawContentSection(
+        doc,
+        this.sectionTitles.content.remainingExperience,
+        contentX,
+        y,
+        contentWidth
+      )
+
+      experiences.forEach((exp, index) => {
+        y = this.drawExperienceItem(doc, exp, contentX, y, contentWidth)
+        if (index < experiences.length - 1) {
+          y += this.spacing.experienceBetween
+        }
+      })
+      y += this.spacing.lg
+    }
 
     y = this.drawContentSection(
       doc,
@@ -299,18 +450,20 @@ export class RoleBasedPdfResumeGenerator {
       y,
       contentWidth
     )
-    y += 6
 
     const isEMRole = resume.metadata.title
       .toLowerCase()
       .includes('engineering manager')
 
     resume.coreStrengths.forEach((strength) => {
-      doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.contentText)
+      doc
+        .font(this.fonts.bold)
+        .fontSize(this.typography.body)
+        .fillColor(this.colors.contentText)
       doc.text(`${strength.category}:`, contentX, y, { width: contentWidth })
       y +=
         doc.heightOfString(`${strength.category}:`, { width: contentWidth }) +
-        2
+        this.spacing.sm
 
       y = this.drawParagraph(
         doc,
@@ -324,65 +477,91 @@ export class RoleBasedPdfResumeGenerator {
       const isTeamLeading = strength.category
         .toLowerCase()
         .includes('team leading')
-      y += isEMRole && isTeamLeading ? 8 : 4
-    })
-
-    y += 8
-    y = this.drawContentSection(
-      doc,
-      this.sectionTitles.content.experience,
-      contentX,
-      y,
-      contentWidth
-    )
-    y += 8
-
-    experiences.forEach((exp, index) => {
-      y = this.drawExperienceItem(doc, exp, contentX, y, contentWidth)
-      if (index < experiences.length - 1) {
-        y += 6
-      }
+      y += isEMRole && isTeamLeading ? this.spacing.md : this.spacing.xs
     })
   }
 
-  private drawContentPageTwo(
+  private drawProjectSection(
     doc: PDFKit.PDFDocument,
-    resume: RoleBasedResume,
-    experiences: ExperienceItem[]
-  ) {
-    const contentX = this.getContentX()
-    const contentWidth = this.layout.contentWidth
-    let y = this.page.margin + 8
-
-    if (experiences.length > 0) {
-      y = this.drawContentSection(
-        doc,
-        this.sectionTitles.content.experience,
-        contentX,
-        y,
-        contentWidth
-      )
-      y += 8
-
-      experiences.forEach((exp, index) => {
-        y = this.drawExperienceItem(doc, exp, contentX, y, contentWidth)
-        if (index < experiences.length - 1) {
-          y += 6
-        }
-      })
-      y += 12
-    }
-
+    project: Project,
+    contentX: number,
+    y: number,
+    contentWidth: number
+  ): number {
     y = this.drawContentSection(
       doc,
-      this.sectionTitles.content.technicalSkills,
+      project.name.toUpperCase(),
       contentX,
       y,
       contentWidth
     )
-    y += 10
+    y = this.drawParagraph(
+      doc,
+      project.description,
+      contentX,
+      y,
+      contentWidth,
+      this.colors.contentMuted
+    )
 
-    y = this.drawTechnicalSkills(doc, resume, contentX, y, contentWidth)
+    if (project.bullets?.length) {
+      y = this.drawBulletList(
+        doc,
+        project.bullets,
+        contentX,
+        y,
+        contentWidth,
+        this.colors.contentMuted
+      )
+    }
+
+    if (project.stack) {
+      y += this.spacing.sm
+      const stackLine = `Stack: ${project.stack}`
+      doc
+        .font(this.fonts.bold)
+        .fontSize(this.typography.small)
+        .fillColor(this.colors.contentSoft)
+      doc.text(stackLine, contentX, y, {
+        width: contentWidth,
+        lineGap: this.typography.lineGap,
+      })
+      y +=
+        doc.heightOfString(stackLine, {
+          width: contentWidth,
+          lineGap: this.typography.lineGap,
+        }) + this.spacing.xs
+    }
+
+    return y
+  }
+
+  private drawBulletList(
+    doc: PDFKit.PDFDocument,
+    bullets: string[],
+    contentX: number,
+    y: number,
+    contentWidth: number,
+    color: string
+  ): number {
+    bullets.forEach((bullet) => {
+      const bulletText = `• ${bullet}`
+      doc
+        .font(this.fonts.regular)
+        .fontSize(this.typography.body)
+        .fillColor(color)
+      doc.text(bulletText, contentX + 10, y, {
+        width: contentWidth - 10,
+        lineGap: this.typography.lineGap,
+      })
+      y +=
+        doc.heightOfString(bulletText, {
+          width: contentWidth - 10,
+          lineGap: this.typography.lineGap,
+        }) + this.spacing.sm
+    })
+
+    return y
   }
 
   private drawExperienceItem(
@@ -392,14 +571,19 @@ export class RoleBasedPdfResumeGenerator {
     y: number,
     contentWidth: number
   ): number {
-    doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.contentText)
+    doc
+      .font(this.fonts.bold)
+      .fontSize(this.typography.body)
+      .fillColor(this.colors.contentText)
     doc.text(exp.company, contentX, y, { width: contentWidth })
-    y += doc.heightOfString(exp.company, { width: contentWidth }) + 2
+    y +=
+      doc.heightOfString(exp.company, { width: contentWidth }) + this.spacing.sm
 
-    doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.contentSoft)
+    doc.font(this.fonts.bold).fontSize(this.typography.body).fillColor(this.colors.contentSoft)
     const roleLine = `${exp.role} - ${exp.period}`
     doc.text(roleLine, contentX, y, { width: contentWidth })
-    y += doc.heightOfString(roleLine, { width: contentWidth }) + 4
+    y +=
+      doc.heightOfString(roleLine, { width: contentWidth }) + this.spacing.xs
 
     y = this.drawParagraph(
       doc,
@@ -415,106 +599,39 @@ export class RoleBasedPdfResumeGenerator {
         const bulletText = `• ${bullet}`
         doc
           .font(this.fonts.regular)
-          .fontSize(8)
+          .fontSize(this.typography.body)
           .fillColor(this.colors.contentMuted)
-        doc.text(bulletText, contentX + 8, y, {
-          width: contentWidth - 8,
-          lineGap: 1,
+        doc.text(bulletText, contentX + 10, y, {
+          width: contentWidth - 10,
+          lineGap: this.typography.lineGap,
         })
         y +=
           doc.heightOfString(bulletText, {
-            width: contentWidth - 8,
-            lineGap: 1,
-          }) + 2
+            width: contentWidth - 10,
+            lineGap: this.typography.lineGap,
+          }) + this.spacing.sm
       })
     }
 
     if (exp.stack) {
-      y += 2
+      y += this.spacing.sm
       const stackLine = `Stack: ${exp.stack}`
-      doc.font(this.fonts.bold).fontSize(7).fillColor(this.colors.contentSoft)
-      doc.text(stackLine, contentX, y, { width: contentWidth, lineGap: 1 })
+      doc
+        .font(this.fonts.bold)
+        .fontSize(this.typography.small)
+        .fillColor(this.colors.contentSoft)
+      doc.text(stackLine, contentX, y, {
+        width: contentWidth,
+        lineGap: this.typography.lineGap,
+      })
       y +=
         doc.heightOfString(stackLine, {
           width: contentWidth,
-          lineGap: 1,
-        }) + 4
+          lineGap: this.typography.lineGap,
+        }) + this.spacing.xs
     }
 
     return y
-  }
-
-  private drawTechnicalSkills(
-    doc: PDFKit.PDFDocument,
-    resume: RoleBasedResume,
-    contentX: number,
-    startY: number,
-    contentWidth: number
-  ): number {
-    const skillKeys = Object.keys(resume.technicalSkills)
-    const leadershipKey = skillKeys.find((key) =>
-      key.toLowerCase().includes('leadership')
-    )
-    const isEngineeringManager = !!leadershipKey
-
-    const columnWidth = contentWidth / 2 - 10
-    const rightColumnX = contentX + contentWidth / 2 + 10
-    const leftColumnSkills = skillKeys.slice(0, Math.ceil(skillKeys.length / 2))
-    const rightColumnSkills = skillKeys.slice(Math.ceil(skillKeys.length / 2))
-
-    let leftY = startY
-    leftColumnSkills.forEach((skill) => {
-      const value = resume.technicalSkills[skill]
-      if (!value) return
-      leftY = this.drawSkillBlock(
-        doc,
-        skill,
-        value,
-        contentX,
-        leftY,
-        columnWidth,
-        isEngineeringManager
-      )
-    })
-
-    let rightY = startY
-    rightColumnSkills.forEach((skill) => {
-      const value = resume.technicalSkills[skill]
-      if (!value) return
-      rightY = this.drawSkillBlock(
-        doc,
-        skill,
-        value,
-        rightColumnX,
-        rightY,
-        columnWidth,
-        isEngineeringManager
-      )
-    })
-
-    return Math.max(leftY, rightY)
-  }
-
-  private drawSkillBlock(
-    doc: PDFKit.PDFDocument,
-    label: string,
-    value: string,
-    x: number,
-    y: number,
-    width: number,
-    isEngineeringManager: boolean
-  ): number {
-    if (!value) {
-      return y
-    }
-
-    const title = `${label}:`
-    doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.contentText)
-    doc.text(title, x, y, { width })
-    y += doc.heightOfString(title, { width }) + 2
-
-    y = this.drawParagraph(doc, value, x, y, width, this.colors.contentMuted)
-    return y + (isEngineeringManager ? 6 : 4)
   }
 
   private drawParagraph(
@@ -525,12 +642,18 @@ export class RoleBasedPdfResumeGenerator {
     width: number,
     color: string
   ): number {
-    doc.font(this.fonts.regular).fontSize(8).fillColor(color)
-    doc.text(text, x, y, { width, lineGap: 1 })
+    doc
+      .font(this.fonts.regular)
+      .fontSize(this.typography.body)
+      .fillColor(color)
+    doc.text(text, x, y, { width, lineGap: this.typography.lineGap })
     return (
       y +
-      doc.heightOfString(text, { width, lineGap: 1 }) +
-      4
+      doc.heightOfString(text, {
+        width,
+        lineGap: this.typography.lineGap,
+      }) +
+      this.typography.afterParagraph
     )
   }
 
@@ -542,10 +665,13 @@ export class RoleBasedPdfResumeGenerator {
     width: number
   ): number {
     doc.save()
-    doc.font(this.fonts.bold).fontSize(12).fillColor(this.colors.sidebarText)
+    doc
+      .font(this.fonts.bold)
+      .fontSize(this.typography.sidebarSection)
+      .fillColor(this.colors.sidebarText)
     doc.text(title, x, y, { width, align: 'center' })
     doc.restore()
-    return y + 15
+    return y + this.spacing.section
   }
 
   private drawSidebarItem(
@@ -557,15 +683,18 @@ export class RoleBasedPdfResumeGenerator {
     width: number
   ): number {
     doc.save()
-    doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.sidebarText)
+    doc
+      .font(this.fonts.bold)
+      .fontSize(this.typography.body)
+      .fillColor(this.colors.sidebarText)
     doc.text(label, x, y, { width })
-    y += doc.heightOfString(label, { width }) + 3
+    y += doc.heightOfString(label, { width }) + this.spacing.sm
     doc
       .font(this.fonts.regular)
-      .fontSize(8)
+      .fontSize(this.typography.body)
       .fillColor(this.colors.sidebarAccent)
     doc.text(value, x, y, { width })
-    y += doc.heightOfString(value, { width }) + 6
+    y += doc.heightOfString(value, { width }) + this.spacing.md
     doc.restore()
     return y
   }
@@ -578,15 +707,24 @@ export class RoleBasedPdfResumeGenerator {
     width: number
   ): number {
     doc.save()
-    doc.font(this.fonts.bold).fontSize(8).fillColor(this.colors.contentText)
+    doc
+      .font(this.fonts.bold)
+      .fontSize(this.typography.contentSection)
+      .fillColor(this.colors.contentText)
     doc.text(title, x, y, { width })
     const textWidth = doc.widthOfString(title)
-    doc.moveTo(x, y + 9)
-    doc.lineTo(x + textWidth, y + 9)
+    const underlineY = y + this.typography.contentSection + 1
+    doc.moveTo(x, underlineY)
+    doc.lineTo(x + textWidth, underlineY)
     doc.lineWidth(1)
     doc.strokeColor(this.colors.accent)
     doc.stroke()
     doc.restore()
-    return y + 12
+    return (
+      y +
+      this.typography.contentSection +
+      1 +
+      this.spacing.afterContentTitle
+    )
   }
 }

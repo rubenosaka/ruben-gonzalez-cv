@@ -91,7 +91,9 @@ content: {
 
 ### 3. Revisar Casts y Guards Innecesarios en PDF Generator
 
-**Problema**: En `ReactPdfResumeGenerator.tsx` hay casts y guards redundantes si los datos ya están validados con Zod.
+**Archivo**: `src/infrastructure/pdf/RoleBasedPdfResumeGenerator.tsx`
+
+**Problema**: En `RoleBasedPdfResumeGenerator.tsx` hay casts y guards redundantes si los datos ya están validados con Zod.
 
 **Ejemplos**:
 
@@ -107,7 +109,7 @@ const items = (resume.content.experience || []) as Experience[]
 
 **Archivos afectados**:
 
-- `src/infrastructure/pdf/ReactPdfResumeGenerator.tsx` (líneas 186, 244)
+- `src/infrastructure/pdf/RoleBasedPdfResumeGenerator.tsx`
 
 **Estimación**: 10 minutos
 
@@ -151,7 +153,7 @@ npx @next/codemod@canary next-lint-to-eslint-cli .
 
 ### 6. Agregar Tests para PDF Generator
 
-**Problema**: El generador de PDF (`ReactPdfResumeGenerator.tsx`) no tiene tests unitarios.
+**Problema**: El generador de PDF (`RoleBasedPdfResumeGenerator.tsx`) no tiene tests unitarios.
 
 **Solución**: Crear tests que verifiquen:
 
@@ -162,7 +164,7 @@ npx @next/codemod@canary next-lint-to-eslint-cli .
 
 **Archivos a crear**:
 
-- `src/infrastructure/pdf/__tests__/ReactPdfResumeGenerator.test.tsx`
+- `src/infrastructure/pdf/__tests__/RoleBasedPdfResumeGenerator.test.tsx`
 
 **Estimación**: 2-3 horas
 
@@ -271,7 +273,7 @@ npx @next/codemod@canary next-lint-to-eslint-cli .
 ### Prioridad Media
 
 - [ ] Eliminar campo 'featured' no utilizado en resume.data.ts
-- [ ] Limpiar casts innecesarios en ReactPdfResumeGenerator.tsx
+- [ ] Limpiar casts innecesarios en RoleBasedPdfResumeGenerator.tsx
 - [ ] Decidir sobre comentarios en globals.css
 - [ ] Migrar de `next lint` a ESLint CLI
 

@@ -49,10 +49,11 @@ Professional PDF generation for traditional resume distribution, maintaining con
 
 ### PDF Generation
 
-- **Professional layout** with sidebar and main content areas
-- **Contact information** including email and telephone
-- **Responsive design** that works in print and digital formats
-- **Error handling** with fallback to browser print
+- **Role-based PDFs** via `RoleBasedPdfResumeGenerator` and `src/content/resume-{role}.data.ts`
+- **Two-page Engineering Manager layout** with page-specific sidebars (profile vs technical skills)
+- **Web resume** uses separate data in `src/content/resume.data.ts`
+- **Shared project copy** in `src/content/trinuki-project.data.ts`
+- **API**: `GET /api/resume/pdf?role=engineering-manager|frontend|fullstack`
 
 ## Key Decisions
 

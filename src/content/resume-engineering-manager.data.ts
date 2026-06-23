@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { RoleBasedResumeSchema } from '@/types/role-based-resume'
+import { trinukiProject } from './trinuki-project.data'
 
 const resumeEngineeringManagerData = {
   metadata: {
@@ -37,19 +38,19 @@ const resumeEngineeringManagerData = {
   experience: [
     {
       company: 'Multiverse',
-      role: 'AI Mentor / Technical Mentor',
-      period: '10/2025 – Present · Part-time',
+      role: 'Engineering Manager (Fixed-Term Contract)',
+      period: '10/2025 – Present',
       description:
-        'Mentoring software engineers in AI-assisted development workflows and modern software engineering practices.',
+        'Led the MIAM (Multiverse Identity & Access Management) team responsible for authentication and authorization services across company products.',
       bullets: [
-        'Guided engineers in adopting AI-assisted development workflows to improve productivity and delivery speed.',
-        'Reviewed technical projects and provided feedback on architecture, maintainability, and engineering best practices.',
-        'Mentored developers across frontend, backend, and full-stack technologies including TypeScript, JavaScript, and modern web architectures.',
-        'Promoted effective use of AI tools throughout the software development lifecycle.',
-        'Supported learners in building practical engineering skills through project-based feedback and coaching.',
+        'Managed a cross-functional team of 8 Software and DevOps Engineers, driving delivery, technical direction, and team development.',
+        'Led the design and implementation of a new identity platform, migrating legacy Python/Django/FastAPI services to a modern architecture based on Node.js, TypeScript, Next.js and Logto.',
+        'Coordinated platform initiatives involving Kubernetes, Terraform and Kafka to improve scalability, reliability and operational efficiency.',
+        'Led AI adoption initiatives across engineering teams, introducing AI-assisted workflows that improved documentation quality, reduced manual effort, and accelerated software delivery.',
+        'Mentored engineers in software architecture, engineering best practices and AI-assisted development workflows.',
       ],
       stack:
-        'AI-assisted development, TypeScript, JavaScript, Node.js, React, Vue, Software Architecture, Technical Mentoring',
+        'Node.js, TypeScript, Next.js, Logto, Kubernetes, Terraform, Kafka, AWS, AI-assisted Development',
     },
     {
       company: 'Frenetic.ai (Startup)',
@@ -122,13 +123,7 @@ const resumeEngineeringManagerData = {
     Practices:
       'Code reviews, performance optimization, automation, DX improvement, documentation',
   },
-  projects: [
-    {
-      name: 'Trinuki',
-      description:
-        'AI-driven trip planner for Japan automating itineraries, city connections, and curated local data. Demonstrates scalable full-stack architecture, AI integration, and modern DX tooling.',
-    },
-  ],
+  projects: [trinukiProject],
   education: [
     {
       degree: "Master's in Big Data & Business Analytics",
@@ -150,6 +145,16 @@ const resumeEngineeringManagerData = {
       name: 'English',
       level: 'professional working proficiency',
     },
+  ],
+  careerHighlights: [
+    '5+ years leading engineering teams in startup and scale-up environments.',
+    'Managed and mentored cross-functional teams of up to 10 engineers across Software, QA and DevOps disciplines.',
+    'Led hiring, onboarding and career development initiatives to grow engineering capabilities and team performance.',
+    'Accelerated software delivery through CI/CD adoption, engineering process improvements and continuous delivery practices.',
+    'Led platform modernization initiatives, including large-scale migrations and greenfield platform development.',
+    'Drove AI adoption across engineering teams through workflow automation, developer enablement and process optimization.',
+    'Built observability and product analytics capabilities using PostHog and Mixpanel to support data-driven decision making.',
+    'Partnered with Product, Design and Business stakeholders to align engineering execution with strategic company goals.',
   ],
 }
 

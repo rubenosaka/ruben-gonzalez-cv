@@ -84,37 +84,58 @@ The project provides standard light and dark themes with system preference detec
 
 The site generates role-specific PDFs via `/api/resume/pdf?role=engineering-manager` (also `frontend` and `fullstack`). Each role uses its own data module in `src/content/resume-{role}.data.ts` and is rendered by `RoleBasedPdfResumeGenerator`.
 
+The web resume at `/resume` uses a **separate** data source: `src/content/resume.data.ts`. Web content and PDF content are not synced automatically.
+
+### Content Sources
+
+| Source | Used by |
+|--------|---------|
+| `src/content/resume.data.ts` | Web `/resume` page |
+| `src/content/resume-engineering-manager.data.ts` | PDF `?role=engineering-manager` |
+| `src/content/resume-frontend.data.ts` | PDF `?role=frontend` |
+| `src/content/resume-fullstack.data.ts` | PDF `?role=fullstack` |
+| `src/content/trinuki-project.data.ts` | Shared Trinuki copy imported by web and all PDF role files |
+
+Role-based resumes support optional `careerHighlights` (string array) and `projects` (name, description, bullets, stack).
+
 ### Two-Page Layout (Engineering Manager)
 
-The Engineering Manager PDF uses a fixed **two-page** layout:
+The Engineering Manager PDF uses a fixed **two-page** layout with **different sidebars per page**:
 
 #### Page 1
 
-- **Left Sidebar**: Photo, contact, education, languages, Trinuki side project
-- **Main Content**: Professional summary, core strengths, and the **three most recent** experience entries
+- **Sidebar**: Photo, name, title, contact, education, languages
+- **Main content** (in order):
+  1. Professional Summary
+  2. Career Highlights
+  3. Recent Experience (Multiverse, Frenetic, Isobar)
 
 #### Page 2
 
-- **Left Sidebar**: Same sidebar repeated on every page
-- **Main Content**: Remaining experience entries and technical skills (two columns)
+- **Sidebar**: Technical Skills (single column)
+- **Main content** (in order):
+  1. Trinuki (project section with description, bullets, stack)
+  2. Remaining Experience (Product School, Quodem)
+  3. Core Strengths
 
 #### Layout Rules
 
 - Exactly **two pages** — no auto-pagination or blank trailing pages
 - Vertical positioning uses `heightOfString()` so paragraphs, bullets, and stacks never overlap
-- Sidebar is redrawn on each page with `doc.addPage()`
+- Typography and spacing are centralized in `typography` and `spacing` config objects inside the generator
+- Experience entries show up to three bullets in the PDF; project sections render all bullets
 
-### Two-Column Layout
+### API
 
-- **Left Sidebar**: Black background with contact, education, languages, and side projects
-- **Main Content**: White background with summary, strengths, experience, and skills
-- **API**: `GET /api/resume/pdf?role={engineering-manager|frontend|fullstack}`
+`GET /api/resume/pdf?role={engineering-manager|frontend|fullstack}`
+
+Default role when omitted: `engineering-manager` (see `DownloadResumeButton`).
 
 ### Technical Implementation
 
 #### PDF Generation Process
 
-1. **Data Validation**: Zod schemas ensure data integrity per role
+1. **Data Validation**: Zod schemas in `src/types/role-based-resume.ts` ensure data integrity per role
 2. **Layout Calculation**: Dynamic height via `heightOfString()` before each block
 3. **Content Rendering**: PDFKit with Helvetica, consistent spacing and line gaps
 4. **Error Handling**: API returns 500 with details; client falls back to opening the PDF URL
